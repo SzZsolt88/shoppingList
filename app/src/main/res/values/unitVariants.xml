@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="unit_variants">
+        <item>db</item>
+        <item>m</item>
+        <item>g</item>
+        <item>dkg</item>
+        <item>kg</item>
+        <item>cl</item>
+        <item>dl</item>
+        <item>l</item>
+    </string-array>
+</resources>

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ShoppingList</string>
+    <string name="productName">Termék neve</string>
+    <string name="quantityP">Me.:</string>
+    <string name="delete">Törlés</string>
+    <string name="setting">Beállítások</string>
+    <string name="logOut">Kijelentkezés</string>
+    <string name="edit">Szerkesztés</string>
+    <string name="modify">Változtatás</string>
+    <string name="listName">A lista neve</string>
+</resources>

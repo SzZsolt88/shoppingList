@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".shoppingListActivity"
+    android:layout_rowWeight="1">
+
+    <AutoCompleteTextView
+        android:id="@+id/modifyName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="@string/productName"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/quantityProduct"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/quantityProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:autofillHints=""
+        android:hint="@string/quantityP"
+        android:inputType="numberDecimal"
+        android:maxLength="3"
+        app:layout_constraintBottom_toBottomOf="@+id/modifyName"
+        app:layout_constraintEnd_toStartOf="@+id/unitSpinner"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/modifyName"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/unitSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/quantityProduct"
+        app:layout_constraintEnd_toStartOf="@+id/modifyButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/quantityProduct"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/modifyButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/ic_input_add"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/unitSpinner"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/shoppingLists"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/modifyName" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
