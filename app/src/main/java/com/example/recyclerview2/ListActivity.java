@@ -2,7 +2,6 @@ package com.example.recyclerview2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -10,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -17,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -24,20 +26,19 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class listsActivity extends AppCompatActivity implements listsAdapter.OnListItemCL, listsAdapter.OnListItemLongCL, OnShoppingListEL {
+public class ListActivity extends AppCompatActivity implements ListAdapter.OnListItemCL, ListAdapter.OnListItemLongCL, OnShoppingListEL {
     private EditText listName;
     private Button addList;
     private RecyclerView shoppingListsView;
-    private List<listsShoppingListClass> shoppingList = new ArrayList<>();
-    private listsAdapter adapter;
+    private List<ListClass> shoppingList = new ArrayList<>();
+    private ListAdapter adapter;
     private listsViewModel listsViewModel;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lists);
-
+        deleteDatabase("shoppingList_Database");
 
         listName = findViewById(R.id.shoppingListName);
         addList = findViewById(R.id.createListButton);
@@ -46,14 +47,14 @@ public class listsActivity extends AppCompatActivity implements listsAdapter.OnL
         shoppingListsView.setHasFixedSize(true);
         shoppingListsView.setLayoutManager(new LinearLayoutManager(this));
         shoppingListsView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new listsAdapter(shoppingList,this, this);
+        adapter = new ListAdapter(shoppingList,this, this);
         shoppingListsView.setAdapter(adapter);
 
         listsViewModel = new ViewModelProvider(this).get(listsViewModel.class);
-        listsViewModel.getAllLists().observe(this, new Observer<List<listsShoppingListClass>>() {
+        listsViewModel.getAllLists().observe(this, new Observer<List<ListClass>>() {
             @Override
-            public void onChanged(List<listsShoppingListClass> listsShoppingListClasses) {
-                adapter.setLists(listsShoppingListClasses);
+            public void onChanged(List<ListClass> ListClasses) {
+                adapter.setLists(ListClasses);
             }
         });
 
@@ -69,7 +70,7 @@ public class listsActivity extends AppCompatActivity implements listsAdapter.OnL
                     listName.requestFocus();
                 }
                 else {
-                    listsViewModel.insert(new listsShoppingListClass(name));
+                    listsViewModel.insertList(new ListClass(name));
                     listName.getText().clear();
                     listName.requestFocus();
                 }
@@ -80,7 +81,7 @@ public class listsActivity extends AppCompatActivity implements listsAdapter.OnL
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.shoppinglist_menu, menu);
-        setTitle("Bevásárló listák");
+        setTitle("Bevásárlólisták");
         return true;
     }
 
@@ -88,15 +89,14 @@ public class listsActivity extends AppCompatActivity implements listsAdapter.OnL
         if (item.getItemId() == R.id.delete) {
             for (int i = 0; i < listsViewModel.getAllLists().getValue().size(); i++) {
                 if (listsViewModel.getAllLists().getValue().get(i).isSelected()) {
-                    listsViewModel.delete(listsViewModel.getAllLists().getValue().get(i));
-                    Log.d("TAG", "onOptionsItemSelected: torolve");
+                    listsViewModel.deleteList(listsViewModel.getAllLists().getValue().get(i));
                 }
             }
         }
         if (item.getItemId() == R.id.edit) {
             for (int i = 0; i < listsViewModel.getAllLists().getValue().size(); i++) {
                 if (listsViewModel.getAllLists().getValue().get(i).isSelected()) {
-                    listsEditFragment editDialog = new listsEditFragment(this, i, listsViewModel.getAllLists().getValue().get(i).getName());
+                    ListEditFragment editDialog = new ListEditFragment(this, i, listsViewModel.getAllLists().getValue().get(i).getName());
                     editDialog.show(getSupportFragmentManager(), "listNameEdit");
                 }
             }
@@ -108,13 +108,13 @@ public class listsActivity extends AppCompatActivity implements listsAdapter.OnL
     @Override
     public void editShoppingList(String input, int position) {
         int ID = listsViewModel.getAllLists().getValue().get(position).getListID();
-        listsShoppingListClass updateList = new listsShoppingListClass(input);
+        ListClass updateList = new ListClass(input);
         updateList.setListID(ID);
-        listsViewModel.update(updateList);
+        listsViewModel.updateList(updateList);
         adapter.notifyDataSetChanged();
     }
 
-    public boolean alreadyExits(String name) {
+    private boolean alreadyExits(String name) {
         boolean exits = false;
         for (int i = 0; i < listsViewModel.getAllLists().getValue().size(); i++) {
             if (listsViewModel.getAllLists().getValue().get(i).getName().equals(name)) {
@@ -124,19 +124,18 @@ public class listsActivity extends AppCompatActivity implements listsAdapter.OnL
         return exits;
     }
 
+
     @Override
-    public void onListClick(listsShoppingListClass list) {
-        Intent intent = new Intent(listsActivity.this, shoppingListActivity.class);
+    public void onListClick(ListClass list) {
+        Intent intent = new Intent(ListActivity.this, ProductActivity.class);
         intent.putExtra("name", list.getName());
+        intent.putExtra("ID", list.getListID());
         startActivity(intent);
     }
 
     @Override
-    public void onLongItemClick(listsShoppingListClass list) {
-        if(!list.isSelected()){
-            list.setSelected(true);
-        }
-        else list.setSelected(false);
+    public void onLongItemClick(ListClass list) {
+        list.setSelected(!list.isSelected());
         adapter.notifyDataSetChanged();
     }
 }

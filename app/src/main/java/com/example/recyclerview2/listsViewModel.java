@@ -12,8 +12,9 @@ import java.util.List;
 
 public class listsViewModel extends AndroidViewModel {
     private repository listReposirtory;
-    private LiveData<List<listsShoppingListClass>> allLists;
-    private LiveData<List<shoppingListProductClass>> allProducts;
+    private LiveData<List<ListClass>> allLists;
+    private LiveData<List<ProductClass>> allProducts;
+    private LiveData<List<ProductClass>> allProductsOfList;
 
     public listsViewModel(@NonNull Application application){
         super(application);
@@ -22,36 +23,40 @@ public class listsViewModel extends AndroidViewModel {
         allProducts = listReposirtory.getAllProducts();
     }
 
-    public void insert(listsShoppingListClass list){
+    public void insertList(ListClass list){
         listReposirtory.insertList(list);
     }
 
-    public void update(listsShoppingListClass list) {
+    public void updateList(ListClass list) {
         listReposirtory.updateList(list);
     }
 
-    public void delete(listsShoppingListClass list){
+    public void deleteList(ListClass list){
         listReposirtory.deleteList(list);
     }
 
-    public LiveData<List<listsShoppingListClass>> getAllLists() {
+    public LiveData<List<ListClass>> getAllLists() {
         return allLists;
     }
 
-    public void insertProduct(shoppingListProductClass product) {
+    public void insertProduct(ProductClass product) {
         listReposirtory.insertProduct(product);
     }
 
-    public void deleteProduct(shoppingListProductClass product) {
+    public void deleteProduct(ProductClass product) {
         listReposirtory.deleteProduct(product);
     }
 
-    public void updateProduct(shoppingListProductClass product) {
+    public void updateProduct(ProductClass product) {
         listReposirtory.updateProduct(product);
     }
 
-    public LiveData<List<shoppingListProductClass>> getAllProducts() {
+    public LiveData<List<ProductClass>> getAllProducts() {
         return  allProducts;
     }
 
+    public LiveData<List<ProductClass>> getAllProductsOfList(int ID) {
+        allProductsOfList = listReposirtory.getAllProductsOfList(ID);
+        return allProductsOfList;
+    }
 }

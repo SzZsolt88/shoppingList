@@ -2,87 +2,86 @@ package com.example.recyclerview2.repository;
 
 import android.app.Application;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Update;
 
-import com.example.recyclerview2.appDataBase.shoppingListProductDao;
-import com.example.recyclerview2.appDataBase.appDataBase;
-import com.example.recyclerview2.appDataBase.listsShoppingListDao;
-import com.example.recyclerview2.shoppingListProductClass;
-import com.example.recyclerview2.listsShoppingListClass;
+import com.example.recyclerview2.ListClass;
+import com.example.recyclerview2.ProductClass;
+import com.example.recyclerview2.appDataBase.LocalDB;
+import com.example.recyclerview2.appDataBase.LocalDBDao;
 
 import java.util.List;
 
 public class repository {
-    private shoppingListProductDao productDao;
-    private listsShoppingListDao listDao;
-    private LiveData<List<shoppingListProductClass>> allProducts;
-    private LiveData<List<listsShoppingListClass>> allLists;
+    private LocalDBDao localDBDao;
+    private LiveData<List<ProductClass>> allProducts;
+    private LiveData<List<ProductClass>> allProductsOfList;
+    private LiveData<List<ListClass>> allLists;
 
     public repository(Application application){
-        appDataBase appDatabase = appDataBase.getDbInstance(application);
-        productDao = appDatabase.productDao();
-        listDao = appDatabase.shoppingListDAO();
-        allProducts = productDao.getAllProducts();
-        allLists = listDao.getAllList();
+        LocalDB appDatabase = LocalDB.getDbInstance(application);
+        localDBDao = appDatabase.localDBDao();
+        allProducts = localDBDao.getAllProducts();
+        allLists = localDBDao.getAllList();
     }
 
-    public void insertProduct(shoppingListProductClass shoppingListProductClass){
-        new InsertProductAsyncTask(productDao).execute(shoppingListProductClass);
-    }
-
-    public void updateProduct(shoppingListProductClass shoppingListProductClass){
-        new  UpdateProductAsyncTask(productDao).execute(shoppingListProductClass);
-    }
-
-    public void deleteProduct(shoppingListProductClass shoppingListProductClass){
-        new DeleteProductAsyncTask(productDao).execute(shoppingListProductClass);
-    }
-
-    public LiveData<List<shoppingListProductClass>> getAllProducts() {
+    ////
+    //// Termékekkel kapcsolatos műveletek!
+    ////
+    public LiveData<List<ProductClass>> getAllProducts() {
         return allProducts;
     }
+    public LiveData<List<ProductClass>> getAllProductsOfList(int ID) {
+        allProductsOfList = localDBDao.getAllProductsOfList(ID);
+        return allProductsOfList;
+    }
 
-    private static class InsertProductAsyncTask extends AsyncTask<shoppingListProductClass, Void, Void> {
-        private  shoppingListProductDao shoppingListProductDao;
+    public void insertProduct(ProductClass ProductClass){
+        new InsertProductAsyncTask(localDBDao).execute(ProductClass);
+    }
+    public void updateProduct(ProductClass ProductClass){
+        new  UpdateProductAsyncTask(localDBDao).execute(ProductClass);
+    }
+    public void deleteProduct(ProductClass ProductClass){
+        new DeleteProductAsyncTask(localDBDao).execute(ProductClass);
+    }
 
-        private InsertProductAsyncTask(shoppingListProductDao shoppingListProductDao){
-            this.shoppingListProductDao = shoppingListProductDao;
+    private static class InsertProductAsyncTask extends AsyncTask<ProductClass, Void, Void> {
+        private LocalDBDao localDBDao;
+
+        private InsertProductAsyncTask(LocalDBDao shoppingListProductDao){
+            this.localDBDao = shoppingListProductDao;
         }
 
         @Override
-        protected Void doInBackground(shoppingListProductClass... shoppingListProductClasses) {
-            shoppingListProductDao.insertProduct(shoppingListProductClasses[0]);
+        protected Void doInBackground(ProductClass... ProductClasses) {
+            localDBDao.insertProduct(ProductClasses[0]);
             return null;
         }
     }
+    private static class UpdateProductAsyncTask extends AsyncTask<ProductClass, Void, Void> {
+        private LocalDBDao shoppingListProductDao;
 
-    private static class DeleteProductAsyncTask extends AsyncTask<shoppingListProductClass, Void, Void> {
-        private  shoppingListProductDao shoppingListProductDao;
-
-        private DeleteProductAsyncTask(shoppingListProductDao shoppingListProductDao){
-            this.shoppingListProductDao = shoppingListProductDao;
+        private UpdateProductAsyncTask(LocalDBDao shoppingListDao){
+            this.shoppingListProductDao = shoppingListDao;
         }
 
         @Override
-        protected Void doInBackground(shoppingListProductClass... shoppingListProductClasses) {
-            shoppingListProductDao.delete(shoppingListProductClasses[0]);
+        protected Void doInBackground(ProductClass... ProductClasses) {
+            shoppingListProductDao.updateProduct(ProductClasses[0]);
             return null;
         }
     }
+    private static class DeleteProductAsyncTask extends AsyncTask<ProductClass, Void, Void> {
+        private LocalDBDao shoppingListDao;
 
-    private static class UpdateProductAsyncTask extends AsyncTask<shoppingListProductClass, Void, Void> {
-        private  shoppingListProductDao shoppingListProductDao;
-
-        private UpdateProductAsyncTask(shoppingListProductDao shoppingListProductDao){
-            this.shoppingListProductDao = shoppingListProductDao;
+        private DeleteProductAsyncTask(LocalDBDao localDBDao){
+            this.shoppingListDao = localDBDao;
         }
 
         @Override
-        protected Void doInBackground(shoppingListProductClass... shoppingListProductClasses) {
-            shoppingListProductDao.update(shoppingListProductClasses[0]);
+        protected Void doInBackground(ProductClass... ProductClasses) {
+            shoppingListDao.deleteProduct(ProductClasses[0]);
             return null;
         }
     }
@@ -91,63 +90,58 @@ public class repository {
     //// Listával kapcsolatos műveletek!
     ////
 
-    public void insertList(listsShoppingListClass listsShoppingListClass){
-        new InsertListAsyncTask(listDao).execute(listsShoppingListClass) ;
-
-    }
-    public void updateList(listsShoppingListClass listsShoppingListClass){
-        new UpdateListAsyncTask(listDao).execute(listsShoppingListClass);
-    }
-    public void deleteList(listsShoppingListClass listsShoppingListClass){
-        new DeleteListAsyncTask(listDao).execute(listsShoppingListClass);
-    }
-
-    public LiveData<List<listsShoppingListClass>> getAllLists() {
+    public LiveData<List<ListClass>> getAllLists() {
         return allLists;
     }
 
-    private static class InsertListAsyncTask extends AsyncTask<listsShoppingListClass, Void, Void> {
-        private  listsShoppingListDao listsShoppingListDao;
+    public void insertList(ListClass ListClass){
+        new InsertListAsyncTask(localDBDao).execute(ListClass) ;
 
-        private InsertListAsyncTask(listsShoppingListDao listsShoppingListDao){
-            this.listsShoppingListDao = listsShoppingListDao;
+    }
+    public void updateList(ListClass ListClass){
+        new UpdateListAsyncTask(localDBDao).execute(ListClass);
+    }
+    public void deleteList(ListClass ListClass){
+        new DeleteListAsyncTask(localDBDao).execute(ListClass);
+    }
+
+    private static class InsertListAsyncTask extends AsyncTask<ListClass, Void, Void> {
+        private LocalDBDao localDBDao;
+
+        private InsertListAsyncTask(LocalDBDao localDBDao){
+            this.localDBDao = localDBDao;
         }
 
         @Override
-        protected Void doInBackground(listsShoppingListClass... listsShoppingListClasses) {
-            listsShoppingListDao.insertList(listsShoppingListClasses[0]);
+        protected Void doInBackground(ListClass... ListClasses) {
+            localDBDao.insertList(ListClasses[0]);
             return null;
         }
     }
+    private static class UpdateListAsyncTask extends AsyncTask<ListClass, Void, Void> {
+        private LocalDBDao localDBDao;
 
-    private static class DeleteListAsyncTask extends AsyncTask<listsShoppingListClass, Void, Void> {
-        private  listsShoppingListDao listsShoppingListDao;
-
-        private DeleteListAsyncTask(listsShoppingListDao listsShoppingListDao){
-            this.listsShoppingListDao = listsShoppingListDao;
+        private UpdateListAsyncTask(LocalDBDao localDBDao){
+            this.localDBDao = localDBDao;
         }
 
         @Override
-        protected Void doInBackground(listsShoppingListClass... listsShoppingListClasses) {
-            listsShoppingListDao.deleteList(listsShoppingListClasses[0]);
+        protected Void doInBackground(ListClass... ListClasses) {
+            localDBDao.updateList(ListClasses[0]);
             return null;
         }
     }
+    private static class DeleteListAsyncTask extends AsyncTask<ListClass, Void, Void> {
+        private LocalDBDao localDBDao;
 
-    private static class UpdateListAsyncTask extends AsyncTask<listsShoppingListClass, Void, Void> {
-        private  listsShoppingListDao listsShoppingListDao;
-
-        private UpdateListAsyncTask(listsShoppingListDao listsShoppingListDao){
-            this.listsShoppingListDao = listsShoppingListDao;
+        private DeleteListAsyncTask(LocalDBDao localDBDao){
+            this.localDBDao = localDBDao;
         }
 
         @Override
-        protected Void doInBackground(listsShoppingListClass... listsShoppingListClasses) {
-            listsShoppingListDao.updateList(listsShoppingListClasses[0]);
+        protected Void doInBackground(ListClass... ListClasses) {
+            localDBDao.deleteList(ListClasses[0]);
             return null;
         }
     }
-
-
-
 }

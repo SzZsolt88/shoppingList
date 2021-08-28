@@ -6,8 +6,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class listsShoppingListClass {
-
+public class ListClass {
     //változók
     @PrimaryKey(autoGenerate = true)
     int listID;
@@ -15,15 +14,12 @@ public class listsShoppingListClass {
     @ColumnInfo(name = "name")
     private String name;
 
-    @ColumnInfo(name = "Status")
-    private boolean checked = false;
-
     //kijelölés állapota törlésre és módosításra
     @Ignore
     private boolean selected = false;
 
     //metódusok, constructor és getter/setter
-    public listsShoppingListClass(String name) {
+    public ListClass(String name) {
         this.name = name;
     }
 
@@ -50,13 +46,5 @@ public class listsShoppingListClass {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public boolean isChecked() {
-        return checked;
-    }
-
-    public void setChecked(boolean checked) {
-        this.checked = checked;
     }
 }

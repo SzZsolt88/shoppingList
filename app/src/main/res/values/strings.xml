@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">ShoppingList</string>
+    <string name="Login">Bejelentkezés</string>
+    <string name="app_name">Bevásárlólista</string>
     <string name="productName">Termék neve</string>
     <string name="quantityP">Me.:</string>
     <string name="delete">Törlés</string>
@@ -8,4 +9,8 @@
     <string name="edit">Szerkesztés</string>
     <string name="modify">Változtatás</string>
     <string name="listName">A lista neve</string>
+    <string name="username">Felhasználónév</string>
+    <string name="register">Regisztráció</string>
+    <string name="name">Név:</string>
+    <string name="e_mail">E-mail cím:</string>
 </resources>

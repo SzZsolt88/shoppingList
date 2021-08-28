@@ -17,7 +17,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.snackbar.Snackbar;
 
-public class shoppingListEditFragment extends DialogFragment {
+public class ProductEditFragment extends DialogFragment {
 
     public OnProductEL onProductEL;
 
@@ -31,7 +31,7 @@ public class shoppingListEditFragment extends DialogFragment {
 
     private int position;
 
-    public shoppingListEditFragment(OnProductEL onProductEL, String productName, String productQuantity, String productQuantityType, int position) {
+    public ProductEditFragment(OnProductEL onProductEL, String productName, String productQuantity, String productQuantityType, int position) {
         this.productName = productName;
         this.productQuantity = productQuantity;
         this.productQuantityType = productQuantityType;
@@ -42,7 +42,7 @@ public class shoppingListEditFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.shopping_list_item_edit, container, false);
+        View v = inflater.inflate(R.layout.product_edit, container, false);
         nameField = v.findViewById(R.id.modifyName);
         quantityField = v.findViewById(R.id.quantityProduct);
         unitSpinnerField = v.findViewById(R.id.unitSpinner);

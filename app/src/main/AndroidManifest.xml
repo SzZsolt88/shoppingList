@@ -9,15 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RecyclerView2">
-        <activity android:name=".listsActivity">
+        <activity android:name=".user.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".shoppingListActivity">
-
-        </activity>
+        <activity android:name=".user.RegisterActivity"/>
+        <activity android:name=".ListActivity"/>
+        <activity android:name=".ProductActivity"/>
     </application>
 
 </manifest>

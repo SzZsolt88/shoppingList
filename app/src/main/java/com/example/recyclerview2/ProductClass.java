@@ -1,13 +1,12 @@
 package com.example.recyclerview2;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class shoppingListProductClass {
+public class ProductClass {
     //adatbazisba
     @PrimaryKey(autoGenerate = true)
     private int ProductID;
@@ -20,8 +19,9 @@ public class shoppingListProductClass {
     @ColumnInfo(name = "Statusz")
     private boolean checked = false;
 
-    @ColumnInfo(name = "lista")
-    private String productToList;
+    @ColumnInfo(name = "listID")
+    private int listID;
+
 
     //segédváltozó a törlés és módosítás funkciókhoz
     @Ignore
@@ -29,31 +29,18 @@ public class shoppingListProductClass {
 
     //Constructor
     @Ignore
-    public shoppingListProductClass(String name, String quantity, String quantityType) {
+    public ProductClass(String name, String quantity, String quantityType) {
         this.name = name;
         this.quantity = quantity;
         this.quantityType = quantityType;
     }
 
-    public shoppingListProductClass(int ID) {
-        this.ProductID = ID;
-    }
-
-    public shoppingListProductClass(String name, String quantity, String quantityType, boolean checked, String productToList) {
+    public ProductClass(String name, String quantity, String quantityType, boolean checked, int listID) {
         this.name = name;
         this.quantity = quantity;
         this.quantityType = quantityType;
         this.checked = checked;
-        this.productToList = productToList;
-    }
-
-    public shoppingListProductClass(int productID, String name, String quantity, String quantityType, boolean checked, String productToList) {
-        this.ProductID = productID;
-        this.name = name;
-        this.quantity = quantity;
-        this.quantityType = quantityType;
-        this.checked = checked;
-        this.productToList = productToList;
+        this.listID = listID;
     }
 
     //Getter&Setter
@@ -101,22 +88,23 @@ public class shoppingListProductClass {
         return selected;
     }
 
-    public void setSelected(boolean selected) {
+    public boolean setSelected(boolean selected) {
         this.selected = selected;
+        return selected;
     }
 
-    public String getProductToList() {
-        return productToList;
+    public int getListID() {
+        return listID;
     }
 
-    public void setProductToList(String productToList) {
-        this.productToList = productToList;
+    public void setListID(int listID) {
+        this.listID = listID;
     }
 
 
     @Override
     public String toString() {
-        return "shoppingListProductClass{" +
+        return "ProductClass{" +
                 "name='" + name + '\'' +
                 ", quantity='" + quantity + '\'' +
                 ", quantityType='" + quantityType + '\'' +

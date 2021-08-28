@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 
-public class listsEditFragment extends DialogFragment {
+public class ListEditFragment extends DialogFragment {
 
     public OnShoppingListEL onShoppingListEL;
 
@@ -24,7 +24,7 @@ public class listsEditFragment extends DialogFragment {
     private int position;
     private String name;
 
-    public listsEditFragment(OnShoppingListEL onShoppingListEL, int position, String name) {
+    public ListEditFragment(OnShoppingListEL onShoppingListEL, int position, String name) {
         this.onShoppingListEL = onShoppingListEL;
         this.position = position;
         this.name = name;
