@@ -38,7 +38,7 @@ public class ListActivity extends AppCompatActivity implements ListAdapter.OnLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lists);
-        deleteDatabase("shoppingList_Database");
+        //deleteDatabase("shoppingList_Database");
 
         listName = findViewById(R.id.shoppingListName);
         addList = findViewById(R.id.createListButton);

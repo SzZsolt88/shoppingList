@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:backgroundTint="@color/teal_200"
     android:orientation="vertical"
     android:padding="16dp">
@@ -54,7 +54,7 @@
     </com.google.android.material.textfield.TextInputLayout>
     <!--A felhasználó email címe újra:-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/userMailAgain"
+        android:id="@+id/userMailConfirm"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,26 +70,28 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Jelszó:"
+            android:hint="@string/password"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
     <!--A felhasználó jelszava újra:-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/userPasswordAgain"
+        android:id="@+id/userPasswordConfirm"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Jelszó megerősítése:"
+            android:hint="@string/passwordAgain"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
     <!--Regisztrációs gomb:-->
