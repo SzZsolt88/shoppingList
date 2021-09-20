@@ -101,6 +101,7 @@ public class ListActivity extends AppCompatActivity implements ListAdapter.OnLis
                 }
             }
         }
+        if(item.getItemId() == R.id.logOutMenu) finish();
         adapter.notifyDataSetChanged();
         return super.onOptionsItemSelected(item);
     }

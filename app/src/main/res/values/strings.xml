@@ -15,4 +15,9 @@
     <string name="e_mail">E-mail cím:</string>
     <string name="password">Jelszó:</string>
     <string name="passwordAgain">Jelszó megerősítése:</string>
+    <string name="loginactivitypicture">loginActivityPicture</string>
+    <string name="forgetPasswordUserName">Elfelejtette felhasználónevét vagy jelszavát?</string>
+    <string name="rememberMe">Jegyezz meg!</string>
+    <string name="send">Email küldése</string>
+    <string name="emailAddresseInput">Add meg az email címed!</string>
 </resources>

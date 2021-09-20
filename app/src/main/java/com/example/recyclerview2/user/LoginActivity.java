@@ -6,10 +6,12 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.recyclerview2.ListActivity;
+import com.example.recyclerview2.ListEditFragment;
 import com.example.recyclerview2.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -17,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button registerButton;
     private EditText userName;
     private EditText userPassword;
+    private TextView forgetNP;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         registerButton = findViewById(R.id.registerButton);
         userName = findViewById(R.id.userName);
         userPassword = findViewById(R.id.userPassword);
+        forgetNP = findViewById(R.id.forgetPasswordUsername);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,11 +47,13 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        setTitle(R.string.app_name);
-        return super.onCreateOptionsMenu(menu);
+        forgetNP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ForgetUserNamePassword editDialog = new ForgetUserNamePassword();
+                editDialog.show(getSupportFragmentManager(), "listNameEdit");
+            }
+        });
     }
 }

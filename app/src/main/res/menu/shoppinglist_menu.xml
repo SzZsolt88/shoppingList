@@ -16,10 +16,7 @@
         android:visible="true"/>
 
     <item
-        android:title="@string/setting"
-        app:showAsAction="never"/>
-    <item
+        android:id="@+id/logOutMenu"
         android:title="@string/logOut"
         app:showAsAction="never"/>
-
 </menu>
