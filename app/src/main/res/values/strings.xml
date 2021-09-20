@@ -4,10 +4,9 @@
     <string name="productName">Termék neve</string>
     <string name="quantityP">Me.:</string>
     <string name="delete">Törlés</string>
-    <string name="setting">Beállítások</string>
     <string name="logOut">Kijelentkezés</string>
     <string name="edit">Szerkesztés</string>
-    <string name="modify">Változtatás</string>
+    <string name="modify">Módosítás</string>
     <string name="listName">A lista neve</string>
     <string name="username">Felhasználónév:</string>
     <string name="register">Regisztráció</string>
@@ -20,4 +19,10 @@
     <string name="rememberMe">Jegyezz meg!</string>
     <string name="send">Email küldése</string>
     <string name="emailAddresseInput">Add meg az email címed!</string>
+    <string name="user">Felhasználó</string>
+    <string name="personalData">Személyes adatok</string>
+    <string name="actualPassword">Aktuális jelszó:</string>
+    <string name="newPassword">Új jelszó:</string>
+    <string name="newPasswordAgain">Új jelszó megerősítése:</string>
+    <string name="deleteUser">Felhasználó Törlése</string>
 </resources>

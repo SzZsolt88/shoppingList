@@ -9,18 +9,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import com.example.recyclerview2.user.EditUserDataActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -100,6 +97,10 @@ public class ListActivity extends AppCompatActivity implements ListAdapter.OnLis
                     editDialog.show(getSupportFragmentManager(), "listNameEdit");
                 }
             }
+        }
+        if(item.getItemId() == R.id.userEditActivity){
+            Intent intent = new Intent(ListActivity.this, EditUserDataActivity.class);
+            startActivity(intent);
         }
         if(item.getItemId() == R.id.logOutMenu) finish();
         adapter.notifyDataSetChanged();

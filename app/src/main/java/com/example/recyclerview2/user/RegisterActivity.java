@@ -57,7 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.cancelRegister) {
+        if (item.getItemId() == R.id.cancelActivity) {
             finish();
         }
         return true;

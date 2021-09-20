@@ -16,6 +16,11 @@
         android:visible="true"/>
 
     <item
+        android:id="@+id/userEditActivity"
+        android:title="@string/user"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/logOutMenu"
         android:title="@string/logOut"
         app:showAsAction="never"/>

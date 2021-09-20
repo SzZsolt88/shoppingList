@@ -2,7 +2,6 @@ package com.example.recyclerview2.user ;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.recyclerview2.ListActivity;
-import com.example.recyclerview2.ListEditFragment;
 import com.example.recyclerview2.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -51,8 +49,8 @@ public class LoginActivity extends AppCompatActivity {
         forgetNP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ForgetUserNamePassword editDialog = new ForgetUserNamePassword();
-                editDialog.show(getSupportFragmentManager(), "listNameEdit");
+                ForgetPasswordFragment editDialog = new ForgetPasswordFragment();
+                editDialog.show(getSupportFragmentManager(), "forgetPassword");
             }
         });
     }
