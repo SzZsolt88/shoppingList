@@ -1,14 +1,25 @@
 package com.example.recyclerview2.user;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.IOException;
+import java.util.HashMap;
+
+import okhttp3.Request;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import com.example.recyclerview2.R;
 import com.google.android.material.snackbar.Snackbar;
@@ -23,6 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputLayout userPasswordConfirm;
     private Button registerButton;
 
+    private UsersRepository usersRepository;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,6 +49,8 @@ public class RegisterActivity extends AppCompatActivity {
         userPasswordConfirm = findViewById(R.id.userPasswordConfirm);
         registerButton = findViewById(R.id.sendRegisterButton);
 
+        usersRepository = usersRepository.getInstance();
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,6 +58,22 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
                 Snackbar.make(registerButton, "Ok!", Snackbar.LENGTH_LONG).show();
+                User u = new User(
+                        realName.getEditText().getText().toString(),
+                        userName.getEditText().getText().toString(),
+                        userMail.getEditText().getText().toString(),
+                        userPassword.getEditText().getText().toString()
+                );
+                usersRepository.getUsersService().insertUser(u).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> r) {
+                        Toast.makeText(getApplicationContext(), "User " + " inserted", Toast.LENGTH_SHORT).show();
+                    }
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Error Inserting User: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
