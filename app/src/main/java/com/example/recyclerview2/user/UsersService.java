@@ -1,7 +1,6 @@
 package com.example.recyclerview2.user;
 
 
-import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;

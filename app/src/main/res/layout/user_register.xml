@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/name" />
     </com.google.android.material.textfield.TextInputLayout>
-    <!--A felhasználó felhasználóneve:-->
+    <!--A felhasználó felhasználó neve:-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/userName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -62,7 +62,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="E-mail cím megerősítése:" />
+            android:hint="@string/e_mailAgain" />
     </com.google.android.material.textfield.TextInputLayout>
     <!--A felhasználó jelszava:-->
     <com.google.android.material.textfield.TextInputLayout
@@ -100,7 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Regisztráció" />
+        android:text="@string/register" />
 
 
 </LinearLayout>

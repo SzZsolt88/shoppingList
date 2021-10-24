@@ -9,33 +9,30 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.recyclerview2.interfaces.OnListItemCL;
+
 import java.util.List;
 
 import static com.example.recyclerview2.R.drawable.item_background;
 import static com.example.recyclerview2.R.drawable.item_background_selected;
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
+public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listViewHolder> {
     private List<ListClass> listShoppingLists;
     private OnListItemCL onListCL;
-    private OnListItemLongCL onListItemLongCL;
 
-    ListAdapter(List<ListClass> listShoppingLists, OnListItemCL onListCL, OnListItemLongCL onListLongCL){
+    ListAdapter(List<ListClass> listShoppingLists, OnListItemCL onListCL){
         this.listShoppingLists = listShoppingLists;
         this.onListCL = onListCL;
-        this.onListItemLongCL = onListLongCL;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder  {
-        public TextView listName;
+    public class listViewHolder extends RecyclerView.ViewHolder  {
         public CardView itemContainer;
-        OnListItemCL onListCL;
-        OnListItemLongCL onListItemLongCL;
+        public TextView listName;
 
-        public ViewHolder(View itemView, OnListItemCL onListCL, OnListItemLongCL onListLongCL) {
+        public listViewHolder(View itemView, OnListItemCL onListCL) {
             super(itemView);
             listName = itemView.findViewById(R.id.listName);
             itemContainer = itemView.findViewById(R.id.shoppingListContainer);
-            this.onListCL = onListCL;
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -45,13 +42,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                     }
                 }
             });
-            this.onListItemLongCL = onListLongCL;
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     int position = getAbsoluteAdapterPosition();
-                    if(onListLongCL != null && position != RecyclerView.NO_POSITION) {
-                        onListLongCL.onLongItemClick(listShoppingLists.get(position));
+                    if(onListCL != null && position != RecyclerView.NO_POSITION) {
+                        onListCL.onListLongClick(listShoppingLists.get(position));
                     }
                     return false;
                 }
@@ -61,13 +57,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public listViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.shopping_card,parent,false);
-        return new ViewHolder(view, onListCL, onListItemLongCL);
+        return new listViewHolder(view, onListCL);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull listViewHolder holder, int position) {
         final ListClass shoppingList = listShoppingLists.get(position);
         holder.listName.setText(shoppingList.getName());
         if (shoppingList.isSelected()) holder.itemContainer.setBackgroundResource(item_background_selected);
@@ -84,11 +80,4 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public interface OnListItemCL {
-        void onListClick(ListClass list);
-    }
-
-    public interface OnListItemLongCL {
-        void onLongItemClick(ListClass list);
-    }
 }

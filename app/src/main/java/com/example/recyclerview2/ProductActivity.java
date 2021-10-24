@@ -1,6 +1,7 @@
 package com.example.recyclerview2;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,12 +22,15 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.recyclerview2.charts.ChartActivity;
+import com.example.recyclerview2.interfaces.OnProductItemCL;
+import com.example.recyclerview2.user.EditUserDataActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductActivity extends AppCompatActivity implements ProductAdapter.OnProductItemCL, OnProductEL {
+public class ProductActivity extends AppCompatActivity implements OnProductItemCL {
     private Button addProduct;
     private AutoCompleteTextView productName;
     private EditText productQuantity;
@@ -33,7 +38,7 @@ public class ProductActivity extends AppCompatActivity implements ProductAdapter
     private RecyclerView shoppingListView;
     private List<ProductClass> shoppingList = new ArrayList<ProductClass>();
     private ProductAdapter adapter;
-    private listsViewModel listsViewModel;
+    private ViewModel ViewModel;
     //A bevásárlólista címe
     private String title;
     private int listID;
@@ -54,15 +59,15 @@ public class ProductActivity extends AppCompatActivity implements ProductAdapter
         productQuantityUnit = findViewById(R.id.unitSpinner);
         shoppingListView = findViewById(R.id.shoppingLists);
 
-        adapter= new ProductAdapter(shoppingList, this);
+        adapter= new ProductAdapter(shoppingList,  this);
         shoppingListView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         shoppingListView.setLayoutManager(layoutManager);
         shoppingListView.setItemAnimator(new DefaultItemAnimator());
         shoppingListView.setAdapter(adapter);
 
-        listsViewModel = new ViewModelProvider(this).get(listsViewModel.class);
-        listsViewModel.getAllProductsOfList(listID).observe(this, new Observer<List<ProductClass>>() {
+        ViewModel = new ViewModelProvider(this).get(ViewModel.class);
+        ViewModel.getAllProductsOfList(listID).observe(this, new Observer<List<ProductClass>>() {
             @Override
             public void onChanged(List<ProductClass> ProductClasses) {
                 adapter.setProducts(ProductClasses);
@@ -70,12 +75,12 @@ public class ProductActivity extends AppCompatActivity implements ProductAdapter
         });
 
 
-        //A termék neve mezőhőz kapcsolása a javasolt termékek listájának erőforrások -> product_variants
+        //A termék neve mező kapcsolása a javasolt termékek listájának erőforrások -> product_variants
         String[] productVariants = getResources().getStringArray(R.array.product_variants);
         ArrayAdapter<String> adapterProducts = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, productVariants);
         productName.setAdapter(adapterProducts);
 
-        //A mennyisége egység spinner-hez értékek társítása a "unit_variants" erőforássból
+        //A mennyiségi egység spinner-hez értékek társítása a "unit_variants" erőforrásból
         String[] units = getResources().getStringArray(R.array.unit_variants);
         ArrayAdapter<String> adapterUnits = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,units);
         productQuantityUnit.setAdapter(adapterUnits);
@@ -85,7 +90,13 @@ public class ProductActivity extends AppCompatActivity implements ProductAdapter
             public void onClick(View v) {
                 String listItem = productName.getText().toString();
                 String quantity = productQuantity.getText().toString();
-                String unit = productQuantityUnit.getSelectedItem().toString();
+                String unit;
+                if (quantity.length() > 0) {
+                    unit = productQuantityUnit.getSelectedItem().toString();
+                }
+                else {
+                    unit = "NN";
+                }
                 Boolean checked = false;
                 if (listItem.isEmpty())
                     Snackbar.make(shoppingListView, "Adj nevet a terméknek!", Snackbar.LENGTH_LONG).show();
@@ -93,14 +104,14 @@ public class ProductActivity extends AppCompatActivity implements ProductAdapter
                     productName.getText().clear();
                     productQuantity.getText().clear();
                     productName.requestFocus();
-                    listsViewModel.insertProduct(new ProductClass(listItem, quantity, unit, checked, listID));
+                    ViewModel.insertProduct(new ProductClass(listItem, quantity, unit, checked, listID));
                     adapter.notifyDataSetChanged();
                 }
             }
         });
     }
 
-    //menü megjelenítés és címállítás
+    //menü megjelenítés és a cím átállítása
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.shoppinglist_menu, menu);
@@ -109,30 +120,64 @@ public class ProductActivity extends AppCompatActivity implements ProductAdapter
     }
 
     //menü kattintás funkciók beállítása
-    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.delete) {
-            for (int i = 0; i < adapter.getItemCount(); i++) {
-                if (adapter.getItem(i).isSelected()) {
-                    listsViewModel.deleteProduct(adapter.getItem(i));
-                }
-            }
-        }
-        if (item.getItemId() == R.id.edit){
-            for (int i = 0; i < adapter.getItemCount(); i++) {
-                if (adapter.getItem(i).isSelected()) {
-                    ProductEditFragment editDialog = new ProductEditFragment(this,
-                            adapter.getItem(i).getName(),
-                            adapter.getItem(i).getQuantity(),
-                            adapter.getItem(i).getQuantityType(),
-                            i);
-                    editDialog.show(getSupportFragmentManager(), "listNameEdit");
-                }
-            }
+        switch (item.getItemId()){
+            case R.id.delete:
+                confirmationAndDelete();
+                break;
+            case R.id.edit:
+                editProduct();
+                break;
+            case R.id.userEditActivity:
+                createActivity(this,EditUserDataActivity.class);
+                break;
+            case R.id.chartsMenuButton:
+                createActivity(this,ChartActivity.class);
+                break;
+            case R.id.logOutMenu:
+                finish();
+                break;
         }
         adapter.notifyDataSetChanged();
         return super.onOptionsItemSelected(item);
+    }
+
+    private void confirmationAndDelete() {
+        AlertDialog.Builder deleteDialog = new AlertDialog.Builder(this);
+        deleteDialog.setMessage("Szeretné törölni a kijelölt elemeket?")
+                .setCancelable(false)
+                .setPositiveButton("Igen", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {  deleteProduct(); }
+                }).setNegativeButton("Nem", null);
+        deleteDialog.show();
+    }
+
+    private void deleteProduct() {
+        for (int i = 0; i < adapter.getItemCount(); i++) {
+            if (adapter.getItem(i).isSelected()) {
+                ViewModel.deleteProduct(adapter.getItem(i));
+            }
+        }
+    }
+
+    private void editProduct(){
+        for (int i = 0; i < adapter.getItemCount(); i++) {
+            if (adapter.getItem(i).isSelected()) {
+                ProductEditFragment editDialog = new ProductEditFragment(
+                        adapter.getItem(i).getName(),
+                        adapter.getItem(i).getQuantity(),
+                        adapter.getItem(i).getQuantityType(),
+                        i);
+                editDialog.show(getSupportFragmentManager(), "listNameEdit");
+            }
+        }
+    }
+
+    private void createActivity(Context context, Class cls){
+        Intent startActivity = new Intent(context, cls);
+        startActivity(startActivity);
     }
 
     //elem kijelölése a listában
@@ -144,25 +189,22 @@ public class ProductActivity extends AppCompatActivity implements ProductAdapter
 
     @Override
     public void saveCheckedStatus(ProductClass product) {
-        listsViewModel.updateProduct(product);
+        ViewModel.updateProduct(product);
         adapter.notifyDataSetChanged();
     }
 
-    @Override
+    //elem módosítása
     public void editProduct(String name, String quantity, int quantityType, int position) {
         adapter.getItem(position).setName(name);
         adapter.getItem(position).setQuantity(quantity);
-        adapter.getItem(position).setQuantityType(productQuantityUnit.getItemAtPosition(quantityType).toString());
-        listsViewModel.updateProduct(adapter.getItem(position));
+        if (adapter.getItem(position).getQuantity().length() > 0) {
+            adapter.getItem(position).setQuantityType(productQuantityUnit.getItemAtPosition(quantityType).toString());
+        }
+        else {
+            adapter.getItem(position).setQuantityType("NN");
+        }
+        ViewModel.updateProduct(adapter.getItem(position));
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        for (int i = 0; i < adapter.getItemCount(); i++) {
-            adapter.getItem(i).setChecked(adapter.getItem(i).isChecked());
-            listsViewModel.updateProduct(adapter.getItem(i));
-        }
-    }
 }

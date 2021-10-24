@@ -7,17 +7,6 @@
     android:background="@android:drawable/editbox_dropdown_light_frame"
     tools:context=".ProductActivity">
 
-    <Button
-        android:id="@+id/sendEmailForgetUPButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/teal_700"
-        android:text="@string/send"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailForgetUP" />
-
     <AutoCompleteTextView
         android:id="@+id/emailForgetUP"
         android:layout_width="match_parent"
@@ -27,5 +16,17 @@
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/sendEmailForgetUPButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/teal_700"
+        android:text="@string/send"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center_vertical"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailForgetUP" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,17 +12,23 @@
     <string name="register">Regisztráció</string>
     <string name="name">Név:</string>
     <string name="e_mail">E-mail cím:</string>
+    <string name="e_mailAgain">E-mail cím megerősítése:</string>
     <string name="password">Jelszó:</string>
     <string name="passwordAgain">Jelszó megerősítése:</string>
     <string name="loginactivitypicture">loginActivityPicture</string>
-    <string name="forgetPasswordUserName">Elfelejtette felhasználónevét vagy jelszavát?</string>
+    <string name="forgetPasswordUserName"><u>Elfelejtette felhasználónevét vagy jelszavát?</u></string>
     <string name="rememberMe">Jegyezz meg!</string>
     <string name="send">Email küldése</string>
     <string name="emailAddresseInput">Add meg az email címed!</string>
     <string name="user">Felhasználó</string>
-    <string name="personalData">Személyes adatok</string>
     <string name="actualPassword">Aktuális jelszó:</string>
     <string name="newPassword">Új jelszó:</string>
     <string name="newPasswordAgain">Új jelszó megerősítése:</string>
     <string name="deleteUser">Felhasználó Törlése</string>
+    <string name="bar_chart_title"><u><b><i>Oszlop Diagram:</i></b></u></string>
+    <string name="line_chart_title"><u><b><i>Vonal Diagram:</i></b></u></string>
+    <string name="pie_chart_title"><u><b><i>Torta Diagram:</i></b></u></string>
+    <string name="bar_chart_description">Az oszlop diagram segítségével megtekintheti a vásárlási szokásait havi lebontásban termékkategóriákként</string>
+    <string name="line_chart_description">A vonal diagram segítségével megtekintheti a vásárlási szokásait havi lebontásban termékkategóriákként</string>
+    <string name="pie_chart_description">A torta diagram segítségével megtekintheti a vásárlási szokásait havi lebontásban termékkategóriákként</string>
 </resources>

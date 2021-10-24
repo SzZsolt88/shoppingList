@@ -1,8 +1,6 @@
 package com.example.recyclerview2;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +14,13 @@ import androidx.fragment.app.DialogFragment;
 
 public class ListEditFragment extends DialogFragment {
 
-    public OnShoppingListEL onShoppingListEL;
-
     //widgets
     private AutoCompleteTextView listName;
     private Button modify;
     private int position;
     private String name;
 
-    public ListEditFragment(OnShoppingListEL onShoppingListEL, int position, String name) {
-        this.onShoppingListEL = onShoppingListEL;
+    public ListEditFragment(int position, String name) {
         this.position = position;
         this.name = name;
     }
@@ -43,20 +38,10 @@ public class ListEditFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 String modifiedName = listName.getText().toString();
-                onShoppingListEL.editShoppingList(modifiedName, position);
+                ((ListActivity)getActivity()).editShoppingList(modifiedName, position);
                 getDialog().dismiss();
             }
         });
         return v;
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try{
-            onShoppingListEL = (OnShoppingListEL) getActivity();
-        }catch (ClassCastException e) {
-            Log.d("TAG", "onAttach: ClassCastException:  " + e.getMessage());
-        }
     }
 }

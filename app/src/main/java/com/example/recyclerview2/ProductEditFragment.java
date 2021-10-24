@@ -18,9 +18,6 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 
 public class ProductEditFragment extends DialogFragment {
-
-    public OnProductEL onProductEL;
-
     private String productName;
     private String productQuantity;
     private String productQuantityType;
@@ -31,11 +28,10 @@ public class ProductEditFragment extends DialogFragment {
 
     private int position;
 
-    public ProductEditFragment(OnProductEL onProductEL, String productName, String productQuantity, String productQuantityType, int position) {
+    public ProductEditFragment(String productName, String productQuantity, String productQuantityType, int position) {
         this.productName = productName;
         this.productQuantity = productQuantity;
         this.productQuantityType = productQuantityType;
-        this.onProductEL = onProductEL;
         this.position = position;
     }
 
@@ -70,7 +66,7 @@ public class ProductEditFragment extends DialogFragment {
                 String modifiedQuantity = quantityField.getText().toString();
                 int modifiedQuantityType = unitSpinnerField.getSelectedItemPosition();
                 if (modifiedName.length() > 0) {
-                    onProductEL.editProduct(modifiedName, modifiedQuantity, modifiedQuantityType, position);
+                    ((ProductActivity)getActivity()).editProduct(modifiedName, modifiedQuantity, modifiedQuantityType, position);
                     getDialog().dismiss();
                 }
                 else Snackbar.make(v, "Adj nevet a terméknek!", Snackbar.LENGTH_LONG).show();

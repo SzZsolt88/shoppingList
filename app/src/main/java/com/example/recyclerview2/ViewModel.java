@@ -10,29 +10,30 @@ import com.example.recyclerview2.repository.repository;
 
 import java.util.List;
 
-public class listsViewModel extends AndroidViewModel {
-    private repository listReposirtory;
+public class ViewModel extends AndroidViewModel {
+    private repository repository;
     private LiveData<List<ListClass>> allLists;
     private LiveData<List<ProductClass>> allProducts;
     private LiveData<List<ProductClass>> allProductsOfList;
 
-    public listsViewModel(@NonNull Application application){
+    public ViewModel(@NonNull Application application){
         super(application);
-        listReposirtory = new repository(application);
-        allLists = listReposirtory.getAllLists();
-        allProducts = listReposirtory.getAllProducts();
+        repository = new repository(application);
+        allLists = repository.getAllLists();
+        allProducts = repository.getAllProducts();
     }
 
-    public void insertList(ListClass list){
-        listReposirtory.insertList(list);
+    public void insertList(ListClass list) {
+        repository.insertList(list);
     }
 
     public void updateList(ListClass list) {
-        listReposirtory.updateList(list);
+        repository.updateList(list);
     }
 
-    public void deleteList(ListClass list){
-        listReposirtory.deleteList(list);
+    public void deleteList(ListClass list, int ID){
+        repository.deleteList(list);
+        repository.deleteAllProductOfList(ID);
     }
 
     public LiveData<List<ListClass>> getAllLists() {
@@ -40,15 +41,15 @@ public class listsViewModel extends AndroidViewModel {
     }
 
     public void insertProduct(ProductClass product) {
-        listReposirtory.insertProduct(product);
+        repository.insertProduct(product);
     }
 
     public void deleteProduct(ProductClass product) {
-        listReposirtory.deleteProduct(product);
+        repository.deleteProduct(product);
     }
 
     public void updateProduct(ProductClass product) {
-        listReposirtory.updateProduct(product);
+        repository.updateProduct(product);
     }
 
     public LiveData<List<ProductClass>> getAllProducts() {
@@ -56,7 +57,7 @@ public class listsViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<ProductClass>> getAllProductsOfList(int ID) {
-        allProductsOfList = listReposirtory.getAllProductsOfList(ID);
+        allProductsOfList = repository.getAllProductsOfList(ID);
         return allProductsOfList;
     }
 }

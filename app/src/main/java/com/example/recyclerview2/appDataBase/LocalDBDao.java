@@ -49,6 +49,10 @@ public interface LocalDBDao {
     @Query("SELECT * FROM ProductClass WHERE listID = :ID")
     LiveData<List<ProductClass>> getAllProductsOfList(int ID);
 
+    //Listához tartozó termékek törlése:
+    @Query("DELETE FROM ProductClass WHERE ListID = :ID")
+    void deleteAllProductsOfList(int ID);
+
     //Termék beillesztése:
     @Insert
     void insertProduct(ProductClass productClass);

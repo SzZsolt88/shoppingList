@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class ProductClass {
-    //adatbazisba
+    //adatbázisba
     @PrimaryKey(autoGenerate = true)
     private int ProductID;
     @ColumnInfo(name = "Termek neve")

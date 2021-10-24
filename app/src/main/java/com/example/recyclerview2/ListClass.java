@@ -18,7 +18,7 @@ public class ListClass {
     @Ignore
     private boolean selected = false;
 
-    //metódusok, constructor és getter/setter
+    //metódus-ok, constructor és getter/setter
     public ListClass(String name) {
         this.name = name;
     }
@@ -30,7 +30,6 @@ public class ListClass {
     public void setListID(int listID) {
         this.listID = listID;
     }
-
 
     public boolean isSelected() {
         return selected;

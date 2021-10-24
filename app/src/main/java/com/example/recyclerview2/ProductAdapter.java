@@ -10,12 +10,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.recyclerview2.interfaces.OnProductItemCL;
+
 import java.util.List;
 
 import static com.example.recyclerview2.R.drawable.item_background;
 import static com.example.recyclerview2.R.drawable.item_background_selected;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productViewHolder> {
     private List<ProductClass> shoppingListProductClassList;
     private OnProductItemCL onProductClickListener;
 
@@ -24,18 +27,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         this.onProductClickListener = onProductClickListener;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView pName;
-        public CheckBox checkBox;
-        public LinearLayout itemContainer;
-        OnProductItemCL onProductItemCL;
+    public class productViewHolder extends RecyclerView.ViewHolder {
+        private LinearLayout itemContainer;
+        private TextView pName;
+        private CheckBox checkBox;
 
-        public ViewHolder(View itemView, OnProductItemCL onProductClickListener) {
+        public productViewHolder(View itemView, OnProductItemCL onProductItemCL) {
             super(itemView);
             pName = itemView.findViewById(R.id.itemName);
             checkBox = itemView.findViewById(R.id.checkBox);
             itemContainer = itemView.findViewById(R.id.shoppingListItemContainer);
-            this.onProductItemCL = onProductClickListener;
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -50,13 +51,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public productViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_view,parent,false);
-        return new ViewHolder(view, onProductClickListener);
+        return new productViewHolder(view, onProductClickListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull productViewHolder holder, int position) {
         final ProductClass ProductClass = shoppingListProductClassList.get(position);
 
         if (ProductClass.getQuantity().length() > 0) holder.pName.setText(ProductClass.getName() + " - " + ProductClass.getQuantity() + " " + ProductClass.getQuantityType());
@@ -95,11 +96,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     public List<ProductClass> getShoppingListProductClassList() {
         return shoppingListProductClassList;
-    }
-
-    public interface OnProductItemCL {
-        void onProductClick(ProductClass list);
-        void saveCheckedStatus(ProductClass product);
     }
 }
 
