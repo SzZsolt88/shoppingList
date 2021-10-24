@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bar_chart_title"/>
+
+            <TextView
+                android:id="@+id/barChartDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/bar_chart_description" />
+
+            <Button
+                android:id="@+id/barChartButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Oszlop Diagram" />
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/line_chart_title" />
+
+
+        <TextView
+            android:id="@+id/lineChartDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/line_chart_description" />
+
+        <Button
+            android:id="@+id/lineChartButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vonal Diagram" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pie_chart_title"/>
+
+        <TextView
+            android:id="@+id/pieChartDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pie_chart_description" />
+
+        <Button
+            android:id="@+id/pieChartButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Torta Diagram" />
+    </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
