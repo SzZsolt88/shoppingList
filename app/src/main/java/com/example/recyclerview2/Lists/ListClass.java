@@ -1,6 +1,5 @@
-package com.example.recyclerview2;
+package com.example.recyclerview2.Lists;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -10,17 +9,19 @@ public class ListClass {
     //változók
     @PrimaryKey(autoGenerate = true)
     int listID;
-
-    @ColumnInfo(name = "name")
     private String name;
+    String owner;
+    boolean isShared = false;
+    int syncStatus = 0;
 
     //kijelölés állapota törlésre és módosításra
     @Ignore
     private boolean selected = false;
 
     //metódus-ok, constructor és getter/setter
-    public ListClass(String name) {
+    public ListClass(String name, String owner) {
         this.name = name;
+        this.owner = owner;
     }
 
     public int getListID() {
@@ -45,5 +46,29 @@ public class ListClass {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public boolean isShared() {
+        return isShared;
+    }
+
+    public void setShared(boolean shared) {
+        isShared = shared;
+    }
+
+    public int getSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(int syncStatus) {
+        this.syncStatus = syncStatus;
     }
 }

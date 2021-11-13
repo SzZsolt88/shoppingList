@@ -2,9 +2,8 @@ package com.example.recyclerview2.appDataBase;
 
 import android.content.Context;
 
-import com.example.recyclerview2.ListClass;
+import com.example.recyclerview2.Lists.ListClass;
 import com.example.recyclerview2.ProductClass;
-import com.example.recyclerview2.user.User;
 
 import androidx.room.Database;
 import androidx.room.Room;

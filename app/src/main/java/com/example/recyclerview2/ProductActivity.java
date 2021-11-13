@@ -23,8 +23,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recyclerview2.charts.ChartActivity;
+import com.example.recyclerview2.contacts.ContactsActivity;
 import com.example.recyclerview2.interfaces.OnProductItemCL;
-import com.example.recyclerview2.user.EditUserDataActivity;
+import com.example.recyclerview2.user.UserEditDataActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -43,12 +44,11 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
     private String title;
     private int listID;
 
-
     //létrehozás, nézet elemeinek és funkcióinak beállítása
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.shopping_list);
+        setContentView(R.layout.products);
         Intent intent = getIntent();
         title = intent.getStringExtra("name");
         listID = intent.getIntExtra("ID",0);
@@ -88,6 +88,7 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String listItem = productName.getText().toString();
                 String quantity = productQuantity.getText().toString();
                 String unit;
@@ -130,7 +131,10 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
                 editProduct();
                 break;
             case R.id.userEditActivity:
-                createActivity(this,EditUserDataActivity.class);
+                createActivity(this, UserEditDataActivity.class);
+                break;
+            case R.id.contacts:
+                createActivity(this, ContactsActivity.class);
                 break;
             case R.id.chartsMenuButton:
                 createActivity(this,ChartActivity.class);
@@ -206,5 +210,4 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
         ViewModel.updateProduct(adapter.getItem(position));
         adapter.notifyDataSetChanged();
     }
-
 }

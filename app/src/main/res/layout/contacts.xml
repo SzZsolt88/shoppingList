@@ -7,35 +7,33 @@
     tools:context=".Lists.ListActivity">
 
     <EditText
-        android:id="@+id/shoppingListName"
+        android:id="@+id/contactMailAddressET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/listName"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/createListButton"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:hint="@string/contactMailAddress"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toStartOf="@+id/addContactBtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:autofillHints="" />
 
     <Button
-        android:id="@+id/createListButton"
+        android:id="@+id/addContactBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@android:drawable/ic_input_add"
-        app:layout_constraintBottom_toBottomOf="@+id/shoppingListName"
+        app:layout_constraintBottom_toBottomOf="@+id/contactMailAddressET"
         app:layout_constraintDimensionRatio="1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/shoppingListName"
+        app:layout_constraintStart_toEndOf="@+id/contactMailAddressET"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/shoppingLists"
+        android:id="@+id/contactsLists"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shoppingListName" />
+        app:layout_constraintTop_toBottomOf="@+id/contactMailAddressET" />
 </androidx.constraintlayout.widget.ConstraintLayout>

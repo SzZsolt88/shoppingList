@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.recyclerview2.repository.repository;
+import com.example.recyclerview2.Lists.ListClass;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ public class ViewModel extends AndroidViewModel {
     private LiveData<List<ListClass>> allLists;
     private LiveData<List<ProductClass>> allProducts;
     private LiveData<List<ProductClass>> allProductsOfList;
+    private LiveData<List<ListClass>> allListsOfUser;
 
     public ViewModel(@NonNull Application application){
         super(application);
@@ -39,6 +40,10 @@ public class ViewModel extends AndroidViewModel {
     public LiveData<List<ListClass>> getAllLists() {
         return allLists;
     }
+
+    public LiveData<List<ListClass>> getAllListsOfUser(String userID) {
+        allListsOfUser = repository.getAllListOfUser(userID);
+        return allListsOfUser; }
 
     public void insertProduct(ProductClass product) {
         repository.insertProduct(product);

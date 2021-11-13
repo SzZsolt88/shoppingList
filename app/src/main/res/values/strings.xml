@@ -31,4 +31,7 @@
     <string name="bar_chart_description">Az oszlop diagram segítségével megtekintheti a vásárlási szokásait havi lebontásban termékkategóriákként</string>
     <string name="line_chart_description">A vonal diagram segítségével megtekintheti a vásárlási szokásait havi lebontásban termékkategóriákként</string>
     <string name="pie_chart_description">A torta diagram segítségével megtekintheti a vásárlási szokásait havi lebontásban termékkategóriákként</string>
+    <string name="contacts">Ismerősök</string>
+    <string name="contactMailAddress">Az ismerősöd email címe</string>
+    <string name="share">Megosztás</string>
 </resources>

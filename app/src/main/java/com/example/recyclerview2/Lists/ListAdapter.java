@@ -1,4 +1,4 @@
-package com.example.recyclerview2;
+package com.example.recyclerview2.Lists;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.recyclerview2.R;
 import com.example.recyclerview2.interfaces.OnListItemCL;
 
 import java.util.List;
@@ -58,7 +59,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listViewHolder
     @NonNull
     @Override
     public listViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.shopping_card,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_card,parent,false);
         return new listViewHolder(view, onListCL);
     }
 
@@ -73,6 +74,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listViewHolder
     @Override
     public int getItemCount() {
         return listShoppingLists.size();
+    }
+
+    public ListClass getItem(int position){
+        return listShoppingLists.get(position);
     }
 
     public void setLists(List<ListClass> lists){

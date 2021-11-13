@@ -19,7 +19,7 @@
         android:theme="@style/shoppingListTheme"
         android:usesCleartextTraffic="true"
         android:fullBackupContent="@xml/backup_descriptor">
-        <activity android:name=".user.LoginActivity"
+        <activity android:name=".user.UserLoginActivity"
             android:theme="@style/shoppingListTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -27,10 +27,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".user.RegisterActivity"/>
-        <activity android:name=".user.EditUserDataActivity"/>
-        <activity android:name=".ListActivity"/>
+        <activity android:name=".user.UserRegisterActivity"/>
+        <activity android:name=".user.UserEditDataActivity"/>
+        <activity android:name=".Lists.ListActivity"/>
         <activity android:name=".ProductActivity"/>
+        <activity android:name=".contacts.ContactsActivity"/>
         <activity android:name=".charts.ChartActivity"/>
         <activity android:name=".charts.BarChartActivity"/>
         <activity android:name=".charts.LineChartActivity"/>

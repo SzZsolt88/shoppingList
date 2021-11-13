@@ -5,19 +5,31 @@
         android:id="@+id/edit"
         android:icon="@drawable/ic_edit"
         android:title="@string/edit"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always|withText"
+        android:visible="true"/>
+
+    <item
+        android:id="@+id/share"
+        android:icon="@drawable/ic_share"
+        android:title="@string/share"
+        app:showAsAction="always|withText"
         android:visible="true"/>
 
     <item
         android:id="@+id/delete"
         android:icon="@drawable/ic_delete"
         android:title="@string/delete"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always|withText"
         android:visible="true"/>
 
     <item
         android:id="@+id/userEditActivity"
         android:title="@string/user"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/contacts"
+        android:title="@string/contacts"
         app:showAsAction="never" />
 
     <item

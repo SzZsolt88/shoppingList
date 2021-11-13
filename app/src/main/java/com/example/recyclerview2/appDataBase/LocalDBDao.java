@@ -8,7 +8,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
-import com.example.recyclerview2.ListClass;
+import com.example.recyclerview2.Lists.ListClass;
 import com.example.recyclerview2.ProductClass;
 
 import java.util.List;
@@ -23,6 +23,9 @@ public interface LocalDBDao {
     //Listák lekérdezése:
     @Query("SELECT * FROM ListClass")
     LiveData<List<ListClass>> getAllList();
+
+    @Query("SELECT * FROM ListClass WHERE owner = :ID")
+    LiveData<List<ListClass>> getAllListOfUser(String ID);
 
     //Lista beillesztése:
     @Insert

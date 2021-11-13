@@ -5,22 +5,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import androidx.lifecycle.Observer;
 
 import com.example.recyclerview2.R;
+import com.example.recyclerview2.appDataBase.UserRegister;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class RegisterActivity extends AppCompatActivity {
+public class UserRegisterActivity extends AppCompatActivity {
     private TextInputLayout realName;
     private TextInputLayout userName;
     private TextInputLayout userMail;
@@ -28,8 +24,8 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputLayout userPassword;
     private TextInputLayout userPasswordConfirm;
     private Button registerButton;
+    private UserRegister userRegister;
 
-    private UsersRepository usersRepository;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,32 +39,33 @@ public class RegisterActivity extends AppCompatActivity {
         userPassword = findViewById(R.id.userPassword);
         userPasswordConfirm = findViewById(R.id.userPasswordConfirm);
         registerButton = findViewById(R.id.sendRegisterButton);
+        userRegister = new UserRegister();
 
-        usersRepository = usersRepository.getInstance();
+        userRegister.getIsRegSuccess().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean regSuccessful) {
+                if(regSuccessful) {
+                    Snackbar.make(registerButton, "Felhasználó sikeresen regisztrálva!", Snackbar.LENGTH_LONG).show();
+                } else {
+                    Snackbar.make(registerButton, "Hiba történt, próbálja újra!", Snackbar.LENGTH_LONG).show();
+                }
+            }
+        });
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String email = userMail.getEditText().getText().toString().trim();
+                String password = userPassword.getEditText().getText().toString().trim();
+                String fName = realName.getEditText().getText().toString().trim();
+                String uName = userName.getEditText().getText().toString().trim();
+
                 if(!validateName() | !validateUserName()| !validateMail() | !validateMailConfirmation() |!validatePassword() | !validatePasswordConfirm()) {
                     return;
                 }
-                Snackbar.make(registerButton, "Ok!", Snackbar.LENGTH_LONG).show();
-                User u = new User(
-                        realName.getEditText().getText().toString(),
-                        userName.getEditText().getText().toString(),
-                        userMail.getEditText().getText().toString(),
-                        userPassword.getEditText().getText().toString()
-                );
-                usersRepository.getUsersService().insertUser(u).enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> r) {
-                        Toast.makeText(getApplicationContext(), "User " + " inserted", Toast.LENGTH_SHORT).show();
-                    }
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), "Error Inserting User: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                else {
+                    userRegister.regUser(fName,email,uName,password);
+                }
             }
         });
     }
@@ -143,6 +140,9 @@ public class RegisterActivity extends AppCompatActivity {
         String inputPassword = userPassword.getEditText().getText().toString().trim();
         if(inputPassword.isEmpty()) {
             userPassword.setError("Kötelező mező!");
+            return false;
+        } else if (inputPassword.length() < 6) {
+            userPassword.setError("A jelszó legalább 6 karakter hosszú kell legyen!");
             return false;
         } else {
             userPassword.setError(null);

@@ -1,4 +1,4 @@
-package com.example.recyclerview2;
+package com.example.recyclerview2.Lists;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +10,9 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import com.example.recyclerview2.R;
+import com.google.android.material.snackbar.Snackbar;
 
 
 public class ListEditFragment extends DialogFragment {
@@ -38,8 +41,15 @@ public class ListEditFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 String modifiedName = listName.getText().toString();
-                ((ListActivity)getActivity()).editShoppingList(modifiedName, position);
-                getDialog().dismiss();
+                if (modifiedName.isEmpty())
+                    Snackbar.make(modify, "Adj nevet a listának!", Snackbar.LENGTH_LONG).show();
+                else if (((ListActivity) getActivity()).alreadyExits(modifiedName)) {
+                    Snackbar.make(modify, "Van már ilyen nevü lista, adj másik nevet!", Snackbar.LENGTH_LONG).show();
+                }
+                else {
+                    ((ListActivity) getActivity()).editShoppingList(modifiedName, position);
+                    getDialog().dismiss();
+                }
             }
         });
         return v;

@@ -1,11 +1,10 @@
-package com.example.recyclerview2.repository;
+package com.example.recyclerview2;
 
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.recyclerview2.ListClass;
-import com.example.recyclerview2.ProductClass;
+import com.example.recyclerview2.Lists.ListClass;
 import com.example.recyclerview2.appDataBase.LocalDB;
 import com.example.recyclerview2.appDataBase.LocalDBDao;
 
@@ -20,8 +19,6 @@ public class repository {
         LocalDB appDatabase = LocalDB.getDbInstance(application);
         localDBDao = appDatabase.localDBDao();
     }
-
-
 
     ////
     //// Termékekkel kapcsolatos műveletek!
@@ -80,6 +77,9 @@ public class repository {
 
     public LiveData<List<ListClass>> getAllLists() {
         return localDBDao.getAllList();
+    }
+    public LiveData<List<ListClass>> getAllListOfUser(String ID) {
+        return localDBDao.getAllListOfUser(ID);
     }
 
     public void insertList(ListClass ListClass){
