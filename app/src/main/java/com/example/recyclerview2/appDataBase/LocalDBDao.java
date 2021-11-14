@@ -21,8 +21,8 @@ public interface LocalDBDao {
     //------------------------------//
 
     //Listák lekérdezése:
-    @Query("SELECT * FROM ListClass")
-    LiveData<List<ListClass>> getAllList();
+   //@Query("SELECT * FROM ListClass")
+  /*  LiveData<List<ListClass>> getAllList();
 
     @Query("SELECT * FROM ListClass WHERE owner = :ID")
     LiveData<List<ListClass>> getAllListOfUser(String ID);
@@ -67,4 +67,6 @@ public interface LocalDBDao {
     //Termék adatainak frissítése:
     @Update
     void updateProduct(ProductClass productClass);
+
+   */
 }

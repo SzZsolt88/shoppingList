@@ -23,7 +23,7 @@ import android.widget.EditText;
 
 import com.example.recyclerview2.ProductActivity;
 import com.example.recyclerview2.R;
-import com.example.recyclerview2.ViewModel;
+//import com.example.recyclerview2.ViewModel;
 import com.example.recyclerview2.appDataBase.ListDB;
 import com.example.recyclerview2.appDataBase.User;
 import com.example.recyclerview2.charts.ChartActivity;
@@ -40,12 +40,12 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     private EditText listName;
     private Button addList;
     private RecyclerView shoppingListsView;
-    private List<ListClass> shoppingList = new ArrayList<>();
     private ListAdapter adapter;
-    private com.example.recyclerview2.ViewModel ViewModel;
+    //private com.example.recyclerview2.ViewModel ViewModel;
     private ListDB listDB;
     private User currentUser;
     private String ownerMail;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +55,7 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
         Intent getCurrentUser = getIntent();
         currentUser = getCurrentUser.getParcelableExtra("currentUser");
         ownerMail = currentUser.getuMail();
+        userId = currentUser.getUserID();
 
         listDB = new ListDB();
 
@@ -65,16 +66,19 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
         shoppingListsView.setHasFixedSize(true);
         shoppingListsView.setLayoutManager(new LinearLayoutManager(this));
         shoppingListsView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new ListAdapter(shoppingList,this);
+        adapter = new ListAdapter(listDB.getListOfUser(ownerMail),this);
         shoppingListsView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
-        ViewModel = new ViewModelProvider(this).get(ViewModel.class);
-        ViewModel.getAllListsOfUser(ownerMail).observe(this, new Observer<List<ListClass>>() {
-            @Override
-            public void onChanged(List<ListClass> ListClasses) {
-                adapter.setLists(ListClasses);
-            }
-        });
+        //ViewModel = new ViewModelProvider(this).get(ViewModel.class);
+        //ViewModel.getAllListsOfUser(ownerMail).observe(this, new Observer<List<ListClass>>() {
+        //    @Override
+        //    public void onChanged(List<ListClass> ListClasses) {
+
+        //        adapter.setLists(ListClasses);
+        //    }
+        //});
+
         addList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,7 +162,7 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     private void deleteLists() {
         for (int i = 0; i < adapter.getItemCount(); i++) {
             if (adapter.getItem(i).isSelected()) {
-                ViewModel.deleteList(adapter.getItem(i), adapter.getItem(i).getListID());
+        //        ViewModel.deleteList(adapter.getItem(i), adapter.getItem(i).getListID());
             }
         }
     }
@@ -169,10 +173,10 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     }
     // lista szerkesztése, adatbázis frissítése
     public void editShoppingList(String input, int position) {
-            int ID = adapter.getItem(position).getListID();
-            ListClass updateList = new ListClass(input, ownerMail);
-            updateList.setListID(ID);
-            ViewModel.updateList(updateList);
+            //int ID = adapter.getItem(position).getListID();
+      //      ListClass updateList = new ListClass(input, ownerMail);
+      //      updateList.setListID(ID);
+      //      ViewModel.updateList(updateList);
         }
 
     // Megvizsgálja, hogy van-e hasonló nevű lista
@@ -190,7 +194,8 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     public void onListClick(ListClass list) {
         Intent openList = new Intent(ListActivity.this, ProductActivity.class);
         openList.putExtra("name", list.getName());
-        openList.putExtra("ID", list.getListID());
+        openList.putExtra("mail", ownerMail);
+        //openList.putExtra("ID", list.getListID());
         startActivity(openList);
     }
     // lista elemre hosszan kattintás

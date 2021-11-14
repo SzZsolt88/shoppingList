@@ -21,7 +21,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listViewHolder
     private List<ListClass> listShoppingLists;
     private OnListItemCL onListCL;
 
-    ListAdapter(List<ListClass> listShoppingLists, OnListItemCL onListCL){
+    ListAdapter(List<ListClass> listShoppingLists,  OnListItemCL onListCL){
         this.listShoppingLists = listShoppingLists;
         this.onListCL = onListCL;
     }

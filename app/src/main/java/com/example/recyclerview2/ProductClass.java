@@ -1,46 +1,37 @@
 package com.example.recyclerview2;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-@Entity
-public class ProductClass {
+public class ProductClass implements Parcelable {
     //adatbázisba
-    @PrimaryKey(autoGenerate = true)
+
     private int ProductID;
-    @ColumnInfo(name = "Termek neve")
     private String name;
-    @ColumnInfo(name = "Mennyiseg")
-    private String quantity;
-    @ColumnInfo(name = "Egyseg")
+    private int quantity;
     private String quantityType;
-    @ColumnInfo(name = "Statusz")
     private boolean checked = false;
 
-    @ColumnInfo(name = "listID")
-    private int listID;
-
-
     //segédváltozó a törlés és módosítás funkciókhoz
-    @Ignore
+
     private boolean selected = false;
 
     //Constructor
-    @Ignore
-    public ProductClass(String name, String quantity, String quantityType) {
+    public ProductClass() {
+    }
+
+    //Constructor
+    public ProductClass(String name, int quantity, String quantityType) {
         this.name = name;
         this.quantity = quantity;
         this.quantityType = quantityType;
     }
 
-    public ProductClass(String name, String quantity, String quantityType, boolean checked, int listID) {
+    public ProductClass(String name, int quantity, String quantityType, boolean checked, int listID) {
         this.name = name;
         this.quantity = quantity;
         this.quantityType = quantityType;
         this.checked = checked;
-        this.listID = listID;
     }
 
     //Getter&Setter
@@ -60,11 +51,11 @@ public class ProductClass {
         this.name = name;
     }
 
-    public String getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
@@ -92,23 +83,41 @@ public class ProductClass {
         this.selected = selected;
         return selected;
     }
-
-    public int getListID() {
-        return listID;
+    protected ProductClass(Parcel in) {
+        ProductID = in.readInt();
+        name = in.readString();
+        quantity = in.readInt();
+        quantityType = in.readString();
+        checked = in.readByte() != 0;
+        selected = in.readByte() != 0;
     }
-
-    public void setListID(int listID) {
-        this.listID = listID;
-    }
-
 
     @Override
-    public String toString() {
-        return "ProductClass{" +
-                "name='" + name + '\'' +
-                ", quantity='" + quantity + '\'' +
-                ", quantityType='" + quantityType + '\'' +
-                ", checked=" + checked +
-                '}';
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(ProductID);
+        dest.writeString(name);
+        dest.writeInt(quantity);
+        dest.writeString(quantityType);
+        dest.writeByte((byte) (checked ? 1 : 0));
+        dest.writeByte((byte) (selected ? 1 : 0));
     }
-}
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<ProductClass> CREATOR = new Creator<ProductClass>() {
+        @Override
+        public ProductClass createFromParcel(Parcel in) {
+            return new ProductClass(in);
+        }
+
+        @Override
+        public ProductClass[] newArray(int size) {
+            return new ProductClass[size];
+        }
+    };
+
+    }
+

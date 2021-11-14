@@ -1,36 +1,34 @@
 package com.example.recyclerview2.Lists;
 
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-@Entity
-public class ListClass {
+public class ListClass implements Parcelable {
     //változók
-    @PrimaryKey(autoGenerate = true)
-    int listID;
+    //int listID;
     private String name;
-    String owner;
-    boolean isShared = false;
-    int syncStatus = 0;
+
 
     //kijelölés állapota törlésre és módosításra
-    @Ignore
     private boolean selected = false;
 
     //metódus-ok, constructor és getter/setter
-    public ListClass(String name, String owner) {
+    public ListClass(String name) {
         this.name = name;
-        this.owner = owner;
     }
 
-    public int getListID() {
-        return listID;
+    //metódus-ok, constructor és getter/setter
+    public ListClass() {
+        this.name = "Unnamed";
     }
 
-    public void setListID(int listID) {
-        this.listID = listID;
-    }
+    //public int getListID() {
+      //  return listID;
+    //}
+
+    //public void setListID(int listID) {
+      //  this.listID = listID;
+    //}
 
     public boolean isSelected() {
         return selected;
@@ -48,27 +46,34 @@ public class ListClass {
         this.name = name;
     }
 
-    public String getOwner() {
-        return owner;
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        //dest.writeInt(listID);
+        dest.writeString(name);
+
     }
 
-    public boolean isShared() {
-        return isShared;
+    protected ListClass(Parcel in) {
+        //listID = in.readInt();
+        name = in.readString();
     }
 
-    public void setShared(boolean shared) {
-        isShared = shared;
-    }
+    public static final Creator<ListClass> CREATOR = new Creator<ListClass>() {
+        @Override
+        public ListClass createFromParcel(Parcel in) {
+            return new ListClass(in);
+        }
 
-    public int getSyncStatus() {
-        return syncStatus;
-    }
+        @Override
+        public ListClass[] newArray(int size) {
+            return new ListClass[size];
+        }
+    };
 
-    public void setSyncStatus(int syncStatus) {
-        this.syncStatus = syncStatus;
-    }
 }

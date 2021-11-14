@@ -53,7 +53,7 @@ public class UserLogin {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     User currentUser = new User();
-                    currentUser.setUserID(fAuth.getCurrentUser().getUid());
+                    currentUser.setUserID(userID);
                     currentUser.setuMail(userMailAddress);
                     currentUser.setFullName(task.getResult().getString("fullName"));
                     currentUser.setuName(task.getResult().getString("userName"));
