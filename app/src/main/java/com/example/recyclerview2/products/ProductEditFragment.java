@@ -22,7 +22,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class ProductEditFragment extends DialogFragment {
     private String productName;
-    private String productQuantity;
+    private int productQuantity;
     private String productQuantityType;
     private AutoCompleteTextView nameField;
     private EditText quantityField;
@@ -31,7 +31,7 @@ public class ProductEditFragment extends DialogFragment {
 
     private int position;
 
-    public ProductEditFragment(String productName, String productQuantity, String productQuantityType, int position) {
+    public ProductEditFragment(String productName, int productQuantity, String productQuantityType, int position) {
         this.productName = productName;
         this.productQuantity = productQuantity;
         this.productQuantityType = productQuantityType;
@@ -68,7 +68,7 @@ public class ProductEditFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 String modifiedName = nameField.getText().toString();
-                String modifiedQuantity = quantityField.getText().toString();
+                int modifiedQuantity = Integer.getInteger(quantityField.getText().toString());
                 int modifiedQuantityType = unitSpinnerField.getSelectedItemPosition();
                 if (modifiedName.length() > 0) {
                     ((ProductActivity)getActivity()).updateProduct(modifiedName, modifiedQuantity, modifiedQuantityType, originalProduct);
