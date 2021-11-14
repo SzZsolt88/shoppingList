@@ -37,8 +37,7 @@ public class UserLogin {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    String userID = fAuth.getCurrentUser().getUid();
-                    startListActivity(userID);
+                    startListActivity();
                 } else {
                     userLoginInterface.createListActivity(null);
                 }
@@ -46,13 +45,13 @@ public class UserLogin {
         });
     }
 
-    public void startListActivity(String userID) {
+    public void startListActivity() {
         String userMailAddress = fAuth.getCurrentUser().getEmail();
         fStore.collection("users").document(userMailAddress).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    User currentUser = new User();
+                    UserClass currentUser = new UserClass();
                     currentUser.setUserID(fAuth.getCurrentUser().getUid());
                     currentUser.setuMail(userMailAddress);
                     currentUser.setFullName(task.getResult().getString("fullName"));

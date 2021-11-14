@@ -3,15 +3,15 @@ package com.example.recyclerview2.appDataBase;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class User implements Parcelable {
+public class UserClass implements Parcelable {
     private String userID;
     private String fullName;
     private String uName;
     private String uMail;
 
-    public User() {};
+    public UserClass() {};
 
-    public User(String userID, String fullName, String uName, String uMail) {
+    public UserClass(String userID, String fullName, String uName, String uMail) {
         this.userID = userID;
         this.fullName = fullName;
         this.uName = uName;
@@ -64,22 +64,22 @@ public class User implements Parcelable {
         dest.writeString(uMail);
     }
 
-    protected User(Parcel in) {
+    protected UserClass(Parcel in) {
         userID = in.readString();
         fullName = in.readString();
         uName = in.readString();
         uMail = in.readString();
     }
 
-    public static final Creator<User> CREATOR = new Creator<User>() {
+    public static final Creator<UserClass> CREATOR = new Creator<UserClass>() {
         @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
+        public UserClass createFromParcel(Parcel in) {
+            return new UserClass(in);
         }
 
         @Override
-        public User[] newArray(int size) {
-            return new User[size];
+        public UserClass[] newArray(int size) {
+            return new UserClass[size];
         }
     };
 }

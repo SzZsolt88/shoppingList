@@ -11,16 +11,10 @@
         android:id="@+id/loginImageContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="0"
         android:visibility="invisible"
-        >
-        <ImageView
-            android:id="@+id/LoginActivityPicture"
-            android:layout_width="wrap_content"
-            android:layout_height= "match_parent"
-            android:layout_marginTop="4dp"
-            app:srcCompat="@drawable/login_picture"/>
-    </RelativeLayout>
+        />
+
     <LinearLayout
         android:id="@+id/loginContainer"
         android:layout_width="match_parent"

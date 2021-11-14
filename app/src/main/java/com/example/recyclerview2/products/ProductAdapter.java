@@ -1,6 +1,7 @@
-package com.example.recyclerview2;
+package com.example.recyclerview2.products;
 
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.recyclerview2.interfaces.OnProductItemCL;
+import com.example.recyclerview2.appDataBase.ListClass;
+import com.example.recyclerview2.appDataBase.ProductClass;
+import com.example.recyclerview2.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.recyclerview2.R.drawable.item_background;
@@ -22,8 +26,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
     private List<ProductClass> shoppingListProductClassList;
     private OnProductItemCL onProductClickListener;
 
-    ProductAdapter(List<ProductClass> productsList, OnProductItemCL onProductClickListener){
-        this.shoppingListProductClassList = productsList;
+    ProductAdapter(OnProductItemCL onProductClickListener){
+        shoppingListProductClassList = new ArrayList<>();
         this.onProductClickListener = onProductClickListener;
     }
 
@@ -85,17 +89,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
         return shoppingListProductClassList.size();
     }
 
+    public ProductClass getItem(int position){   return shoppingListProductClassList.get(position);
+    }
+
     public void setProducts(List<ProductClass> product){
         this.shoppingListProductClassList = product;
-        notifyDataSetChanged();
-    }
-
-    public ProductClass getItem(int position){
-        return shoppingListProductClassList.get(position);
-    }
-
-    public List<ProductClass> getShoppingListProductClassList() {
-        return shoppingListProductClassList;
+        this.notifyDataSetChanged();
     }
 }
 

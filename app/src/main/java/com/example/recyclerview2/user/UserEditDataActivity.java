@@ -1,8 +1,8 @@
 package com.example.recyclerview2.user;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,19 +15,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 
-import com.example.recyclerview2.Lists.ListActivity;
 import com.example.recyclerview2.R;
-import com.example.recyclerview2.appDataBase.User;
+import com.example.recyclerview2.appDataBase.UserClass;
 import com.example.recyclerview2.appDataBase.UserEditData;
 import com.example.recyclerview2.appDataBase.UserEditDataInterface;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class UserEditDataActivity extends AppCompatActivity implements UserEditDataInterface {
     private UserEditData userEditData;
@@ -37,6 +30,7 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
     private TextInputLayout userActualPW;
     private TextInputLayout userNewPW;
     private TextInputLayout userNewPWConfirm;
+    private ProgressDialog UEDDialog;
 
     private String uMail;
 
@@ -59,6 +53,7 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         userEditData.getChangePWSuccess().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isSuccess) {
+                UEDDialog.dismiss();
                 if (isSuccess) {
                     Snackbar.make(deleteUserButton, "A felhasználó jelszava megváltozott!", Snackbar.LENGTH_LONG).show();
                 } else {
@@ -70,6 +65,7 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         userEditData.getDeleteSuccess().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isSuccess) {
+                UEDDialog.dismiss();
                 if (isSuccess) {
                     Snackbar.make(deleteUserButton, "A felhasználót töröltük!", Snackbar.LENGTH_LONG).show();
                 } else {
@@ -84,7 +80,10 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         modifyPWButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validatePassword() && validatePasswordConfirm()) {
+                if (!validatePassword() | !validatePasswordConfirm() | !actualPassword()) {
+
+                } else {
+                    createDialog("Jelszó változtatás folyamatban!");
                     String uActualPW = userActualPW.getEditText().getText().toString();
                     String uNewPW = userNewPW.getEditText().getText().toString();
                     userEditData.changePW(uMail, uActualPW, uNewPW);
@@ -108,6 +107,7 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
                     public void onClick(DialogInterface dialog, int which) {
                         String actualPW = uActualPW.getText().toString().trim();
                         if (actualPW.length() > 0) {
+                            createDialog("Felhasználó törlése folyamatban!");
                             userEditData.deleteUser(uMail, actualPW);
                         }
                         else {
@@ -127,6 +127,14 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         return super.onCreateOptionsMenu(menu);
     }
 
+    private void createDialog(String text) {
+        UEDDialog = new ProgressDialog(UserEditDataActivity.this);
+        UEDDialog.setCancelable(false);
+        UEDDialog.setCanceledOnTouchOutside(false);
+        UEDDialog.setMessage(text);
+        UEDDialog.show();
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.cancelActivity) {
@@ -136,11 +144,22 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
     }
 
     @Override
-    public void getUser(User currentUser) {
+    public void getUser(UserClass currentUser) {
         realName.getEditText().setText(currentUser.getFullName());
         userName.getEditText().setText(currentUser.getuName());
         userMail.getEditText().setText(currentUser.getuMail());
         uMail = userMail.getEditText().getText().toString();
+    }
+
+    private boolean actualPassword() {
+        String inputPassword = userActualPW.getEditText().getText().toString().trim();
+        if(inputPassword.isEmpty()) {
+            userActualPW.setError("Kötelező mező!");
+            return false;
+        }else {
+            userActualPW.setError(null);
+            return true;
+        }
     }
 
     private boolean validatePassword() {

@@ -1,4 +1,4 @@
-package com.example.recyclerview2;
+package com.example.recyclerview2.products;
 
 
 import android.os.Bundle;
@@ -15,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.recyclerview2.R;
+import com.example.recyclerview2.appDataBase.ProductClass;
+import com.example.recyclerview2.products.ProductActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 public class ProductEditFragment extends DialogFragment {
@@ -59,6 +62,8 @@ public class ProductEditFragment extends DialogFragment {
         quantityField.setText(productQuantity);
         unitSpinnerField.setSelection(adapterUnits.getPosition(productQuantityType));
 
+        ProductClass originalProduct = new ProductClass(productName, productQuantity, productQuantityType);
+
         modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,7 +71,7 @@ public class ProductEditFragment extends DialogFragment {
                 String modifiedQuantity = quantityField.getText().toString();
                 int modifiedQuantityType = unitSpinnerField.getSelectedItemPosition();
                 if (modifiedName.length() > 0) {
-                    ((ProductActivity)getActivity()).editProduct(modifiedName, modifiedQuantity, modifiedQuantityType, position);
+                    ((ProductActivity)getActivity()).updateProduct(modifiedName, modifiedQuantity, modifiedQuantityType, originalProduct);
                     getDialog().dismiss();
                 }
                 else Snackbar.make(v, "Adj nevet a terméknek!", Snackbar.LENGTH_LONG).show();

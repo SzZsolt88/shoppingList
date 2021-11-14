@@ -1,5 +1,6 @@
 package com.example.recyclerview2.user;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +26,7 @@ public class UserRegisterActivity extends AppCompatActivity {
     private TextInputLayout userPasswordConfirm;
     private Button registerButton;
     private UserRegister userRegister;
+    private ProgressDialog regDialog;
 
 
     @Override
@@ -44,6 +46,7 @@ public class UserRegisterActivity extends AppCompatActivity {
         userRegister.getIsRegSuccess().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean regSuccessful) {
+                regDialog.dismiss();
                 if(regSuccessful) {
                     Snackbar.make(registerButton, "Felhasználó sikeresen regisztrálva!", Snackbar.LENGTH_LONG).show();
                 } else {
@@ -55,13 +58,15 @@ public class UserRegisterActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                createRegDialog();
+                regDialog.show();
                 String email = userMail.getEditText().getText().toString().trim();
                 String password = userPassword.getEditText().getText().toString().trim();
                 String fName = realName.getEditText().getText().toString().trim();
                 String uName = userName.getEditText().getText().toString().trim();
 
-                if(!validateName() | !validateUserName()| !validateMail() | !validateMailConfirmation() |!validatePassword() | !validatePasswordConfirm()) {
-                    return;
+                if(!validateName() | !validateUserName() | !validateMail() | !validateMailConfirmation() |!validatePassword() | !validatePasswordConfirm()) {
+                    regDialog.dismiss();
                 }
                 else {
                     userRegister.regUser(fName,email,uName,password);
@@ -84,6 +89,15 @@ public class UserRegisterActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    private void createRegDialog() {
+        regDialog = new ProgressDialog(UserRegisterActivity.this);
+        regDialog.setCancelable(false);
+        regDialog.setCanceledOnTouchOutside(false);
+        regDialog.setMessage("Regisztráció folyamatban!");
+        regDialog.show();
+    }
+
 
     private boolean validateName(){
         String inputRealName = realName.getEditText().getText().toString().trim();

@@ -1,4 +1,4 @@
-package com.example.recyclerview2.interfaces;
+package com.example.recyclerview2.contacts;
 
 import com.example.recyclerview2.contacts.ContactsClass;
 

@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recyclerview2.R;
-import com.example.recyclerview2.interfaces.OnContactItemCL;
 
 import java.util.ArrayList;
 import java.util.List;

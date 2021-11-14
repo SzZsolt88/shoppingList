@@ -1,5 +1,6 @@
-package com.example.recyclerview2.Lists;
+package com.example.recyclerview2.lists;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recyclerview2.R;
-import com.example.recyclerview2.interfaces.OnListItemCL;
+import com.example.recyclerview2.appDataBase.ListClass;
 
 import java.util.List;
 
@@ -20,20 +21,24 @@ import static com.example.recyclerview2.R.drawable.item_background_selected;
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listViewHolder> {
     private List<ListClass> listShoppingLists;
     private OnListItemCL onListCL;
+    private String ownerUName;
 
-    ListAdapter(List<ListClass> listShoppingLists, OnListItemCL onListCL){
+    ListAdapter(List<ListClass> listShoppingLists, OnListItemCL onListCL, String ownerUName){
         this.listShoppingLists = listShoppingLists;
         this.onListCL = onListCL;
+        this.ownerUName = ownerUName;
     }
 
     public class listViewHolder extends RecyclerView.ViewHolder  {
         public CardView itemContainer;
         public TextView listName;
+        public TextView ownerName;
 
         public listViewHolder(View itemView, OnListItemCL onListCL) {
             super(itemView);
-            listName = itemView.findViewById(R.id.listName);
             itemContainer = itemView.findViewById(R.id.shoppingListContainer);
+            listName = itemView.findViewById(R.id.listName);
+            ownerName = itemView.findViewById(R.id.ownerName);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -67,6 +72,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listViewHolder
     public void onBindViewHolder(@NonNull listViewHolder holder, int position) {
         final ListClass shoppingList = listShoppingLists.get(position);
         holder.listName.setText(shoppingList.getName());
+        holder.ownerName.setText(ownerUName + " listája");
         if (shoppingList.isSelected()) holder.itemContainer.setBackgroundResource(item_background_selected);
         else holder.itemContainer.setBackgroundResource(item_background);
     }

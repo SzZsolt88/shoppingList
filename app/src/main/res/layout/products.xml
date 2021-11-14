@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProductActivity"
+    tools:context=".products.ProductActivity"
     android:layout_rowWeight="1">
 
     <AutoCompleteTextView
-        android:id="@+id/modifyName"
+        android:id="@+id/productNameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:autofillHints=""
@@ -27,10 +27,10 @@
         android:hint="@string/quantityP"
         android:inputType="numberDecimal"
         android:maxLength="3"
-        app:layout_constraintBottom_toBottomOf="@+id/modifyName"
+        app:layout_constraintBottom_toBottomOf="@+id/productNameTextView"
         app:layout_constraintEnd_toStartOf="@+id/unitSpinner"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/modifyName"
+        app:layout_constraintStart_toEndOf="@+id/productNameTextView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
@@ -38,13 +38,13 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/quantityProduct"
-        app:layout_constraintEnd_toStartOf="@+id/modifyButton"
+        app:layout_constraintEnd_toStartOf="@+id/addProductBtn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/quantityProduct"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/modifyButton"
+        android:id="@+id/addProductBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@android:drawable/ic_input_add"
@@ -55,10 +55,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/shoppingLists"
+        android:id="@+id/productsLists"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/modifyName" />
+        app:layout_constraintTop_toBottomOf="@+id/productNameTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

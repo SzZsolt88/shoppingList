@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.recyclerview2.R;
-import com.example.recyclerview2.interfaces.OnContactItemCL;
 
 
 import java.util.List;

@@ -1,41 +1,26 @@
-package com.example.recyclerview2;
+package com.example.recyclerview2.appDataBase;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
+import java.util.List;
+import java.util.Map;
 
-@Entity
 public class ProductClass {
-    //adatbázisba
-    @PrimaryKey(autoGenerate = true)
     private int ProductID;
-    @ColumnInfo(name = "Termek neve")
     private String name;
-    @ColumnInfo(name = "Mennyiseg")
     private String quantity;
-    @ColumnInfo(name = "Egyseg")
     private String quantityType;
-    @ColumnInfo(name = "Statusz")
     private boolean checked = false;
-
-    @ColumnInfo(name = "listID")
-    private int listID;
+    private String listID;
 
 
-    //segédváltozó a törlés és módosítás funkciókhoz
-    @Ignore
     private boolean selected = false;
 
-    //Constructor
-    @Ignore
     public ProductClass(String name, String quantity, String quantityType) {
         this.name = name;
         this.quantity = quantity;
         this.quantityType = quantityType;
     }
 
-    public ProductClass(String name, String quantity, String quantityType, boolean checked, int listID) {
+    public ProductClass(String name, String quantity, String quantityType, boolean checked, String listID) {
         this.name = name;
         this.quantity = quantity;
         this.quantityType = quantityType;
@@ -93,11 +78,11 @@ public class ProductClass {
         return selected;
     }
 
-    public int getListID() {
+    public String getListID() {
         return listID;
     }
 
-    public void setListID(int listID) {
+    public void setListID(String listID) {
         this.listID = listID;
     }
 

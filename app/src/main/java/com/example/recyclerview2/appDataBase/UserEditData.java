@@ -14,13 +14,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class UserEditData {
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;
-    private User currentUser;
+    private UserClass currentUser;
     private UserEditDataInterface userEditDataInterface;
     private MutableLiveData<Boolean> isChangePWSuccess;
     private MutableLiveData<Boolean> isDeleteSuccess;
@@ -32,7 +29,7 @@ public class UserEditData {
     public UserEditData(UserEditDataInterface userEditDataInterface) {
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
-        currentUser = new User();
+        currentUser = new UserClass();
         this.userEditDataInterface = userEditDataInterface;
         isChangePWSuccess = new MutableLiveData<>();
         isDeleteSuccess = new MutableLiveData<>();
