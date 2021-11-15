@@ -6,7 +6,7 @@ import com.google.firebase.firestore.Exclude;
 import java.util.List;
 import java.util.Map;
 
-public class ListClass {
+public class ListClass implements Comparable<ListClass> {
     //változók
     private String listID;
     private String name;
@@ -73,4 +73,8 @@ public class ListClass {
         this.selected = selected;
     }
 
+    @Override
+    public int compareTo(ListClass o) {
+        return this.getName().compareToIgnoreCase(o.getName());
+    }
 }

@@ -38,7 +38,6 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     private EditText listName;
     private Button addList;
     private RecyclerView shoppingListsView;
-    private List<ListClass> shoppingList = new ArrayList<>();
     private ListAdapter adapter;
     private ListDB listDB;
     private UserClass currentUser;
@@ -71,7 +70,7 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
         shoppingListsView.setHasFixedSize(true);
         shoppingListsView.setLayoutManager(new LinearLayoutManager(this));
         shoppingListsView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new ListAdapter(shoppingList,this, currentUser.getuName());
+        adapter = new ListAdapter(this, currentUser.getuName());
         shoppingListsView.setAdapter(adapter);
 
         addList.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +136,7 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     // felhasználói adatainak módosítása vagy a kimutatás elindítás
     private void createActivity(Context context, Class cls){
         Intent startActivity = new Intent(context, cls);
+        startActivity.putExtra("currentUser", currentUser);
         startActivity(startActivity);
     }
 
@@ -183,7 +183,7 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
 
     // lista tényleges törlése
     private void deleteLists() {
-        for (int i = 0; i < adapter.getItemCount(); i++) {
+        for (int i = adapter.getItemCount()-1; i >= 0;  i--) {
             if (adapter.getItem(i).isSelected()) {
                 listDB.deleteList(adapter.getItem(i));
             }

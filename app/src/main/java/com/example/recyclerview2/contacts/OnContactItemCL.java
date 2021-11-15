@@ -1,7 +1,7 @@
 package com.example.recyclerview2.contacts;
 
-import com.example.recyclerview2.contacts.ContactsClass;
+import com.example.recyclerview2.appDataBase.ContactClass;
 
 public interface OnContactItemCL {
-    void OnContactClick(ContactsClass contactsClass);
+    void OnContactClick(ContactClass contactClass);
 }

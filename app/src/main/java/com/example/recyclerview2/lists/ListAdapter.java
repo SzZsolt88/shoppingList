@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.recyclerview2.R;
 import com.example.recyclerview2.appDataBase.ListClass;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.recyclerview2.R.drawable.item_background;
@@ -23,8 +24,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listViewHolder
     private OnListItemCL onListCL;
     private String ownerUName;
 
-    ListAdapter(List<ListClass> listShoppingLists, OnListItemCL onListCL, String ownerUName){
-        this.listShoppingLists = listShoppingLists;
+    ListAdapter(OnListItemCL onListCL, String ownerUName){
+        listShoppingLists = new ArrayList<>();
         this.onListCL = onListCL;
         this.ownerUName = ownerUName;
     }

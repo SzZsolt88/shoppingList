@@ -21,6 +21,7 @@ import com.google.firebase.firestore.auth.User;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,7 @@ public class ListDB {
                         ListClass listOfUser = new ListClass(document.getString("name"), document.getString("listID"), document.getString("owner"));
                         shoppingLists.add(listOfUser);
                     }
+                    Collections.sort(shoppingLists);
                     listMutableLiveData.postValue(shoppingLists);
                 }
             }
@@ -71,6 +73,7 @@ public class ListDB {
                 newListRef.update("listID", newListRef.getId());
                 newList.setListID(newListRef.getId());
                 shoppingLists.add(0, newList);
+                Collections.sort(shoppingLists);
                 listMutableLiveData.postValue(shoppingLists);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -92,6 +95,7 @@ public class ListDB {
         DocumentReference updateListRef = getDocRef(updateList);
         updateListRef.update("name", newName);
         shoppingLists.get(position).setName(newName);
+        Collections.sort(shoppingLists);
         listMutableLiveData.postValue(shoppingLists);
     }
 

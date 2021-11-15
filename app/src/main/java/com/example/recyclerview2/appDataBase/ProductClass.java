@@ -1,9 +1,6 @@
 package com.example.recyclerview2.appDataBase;
 
-import java.util.List;
-import java.util.Map;
-
-public class ProductClass {
+public class ProductClass implements Comparable<ProductClass>{
     private int ProductID;
     private String name;
     private String quantity;
@@ -73,9 +70,8 @@ public class ProductClass {
         return selected;
     }
 
-    public boolean setSelected(boolean selected) {
+    public void setSelected(boolean selected) {
         this.selected = selected;
-        return selected;
     }
 
     public String getListID() {
@@ -86,7 +82,6 @@ public class ProductClass {
         this.listID = listID;
     }
 
-
     @Override
     public String toString() {
         return "ProductClass{" +
@@ -95,5 +90,10 @@ public class ProductClass {
                 ", quantityType='" + quantityType + '\'' +
                 ", checked=" + checked +
                 '}';
+    }
+
+    @Override
+    public int compareTo(ProductClass o) {
+        return this.getName().compareToIgnoreCase(o.getName());
     }
 }

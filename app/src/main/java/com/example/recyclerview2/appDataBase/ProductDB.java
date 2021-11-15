@@ -1,5 +1,7 @@
 package com.example.recyclerview2.appDataBase;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
@@ -12,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +45,7 @@ public class ProductDB {
                             ProductClass getProduct = new ProductClass(productName, quantity, quantityUnit);
                             productsList.add(getProduct);
                         }
+                        Collections.sort(productsList);
                         productsMutableLiveData.postValue(productsList);
                     }
                 }
@@ -58,7 +62,9 @@ public class ProductDB {
         //newProduct.put("checked", String.valueOf(productChecked));
         //newProduct.put("selected", String.valueOf(productSelected));
         listRef.update("products", FieldValue.arrayUnion(newProduct));
+        Log.d("TAG", "newProduct: "+ productClass.getName());
         productsList.add(productClass);
+        Collections.sort(productsList);
         productsMutableLiveData.postValue(productsList);
     }
 
@@ -74,8 +80,8 @@ public class ProductDB {
     }
 
     public void updateProduct(String ownerMail, String listID, ProductClass originalProduct, ProductClass alreadyUpdatedProduct) {
-        registerNewProduct(ownerMail,listID,alreadyUpdatedProduct);
         deleteProduct(ownerMail,listID,originalProduct);
+        registerNewProduct(ownerMail,listID,alreadyUpdatedProduct);
     }
 
     public MutableLiveData<List<ProductClass>> getProductsMutableLiveData() {

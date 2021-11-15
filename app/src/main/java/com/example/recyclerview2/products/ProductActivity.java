@@ -98,7 +98,7 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
                     unitString = productQuantityUnit.getItemAtPosition(unit).toString();
                 }
                 else {
-                    unitString = "NN";
+                    unitString = "";
                 }
                 Boolean checked = false;
                 if (listItem.isEmpty())
@@ -110,9 +110,7 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
                     productName.requestFocus();
                 }
                 else {
-                    Log.d("TAG", "onClick: " + unitString);
                     ProductClass newProduct = new ProductClass(listItem,quantity,unitString);
-                    Log.d("TAG", "onClick: " + newProduct.getQuantityType());
                     productDB.registerNewProduct(ownerMail,listID, newProduct);
                     productName.getText().clear();
                     productQuantity.getText().clear();
@@ -166,10 +164,9 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
     }
 
     private void deleteProduct() {
-        for (int i = 0; i < adapter.getItemCount(); i++) {
+        for (int i = adapter.getItemCount()-1; i >= 0;  i--) {
             if (adapter.getItem(i).isSelected()) {
                 productDB.deleteProduct(ownerMail, listID, adapter.getItem(i));
-                i--;
             }
         }
     }
@@ -177,24 +174,21 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
     private void editProduct(){
         for (int i = 0; i < adapter.getItemCount(); i++) {
             if (adapter.getItem(i).isSelected()) {
-                ProductEditFragment editDialog = new ProductEditFragment(
-                        adapter.getItem(i).getName(),
-                        adapter.getItem(i).getQuantity(),
-                        adapter.getItem(i).getQuantityType(),
-                        i);
+                ProductClass originalProduct = new ProductClass(adapter.getItem(i).getName(), adapter.getItem(i).getQuantity(), adapter.getItem(i).getQuantityType());
+                ProductEditFragment editDialog = new ProductEditFragment(originalProduct,i);
                 editDialog.show(getSupportFragmentManager(), "listNameEdit");
             }
         }
     }
 
     //elem módosítása
-    public void updateProduct(String updatedName, String updatedQuantity, int quantityType, ProductClass originalProduct) {
+    public void updateProduct(String updatedName, String updatedQuantity, int quantityType, int position) {
         String updatedQuantityType = "";
         if (updatedQuantity.length() > 0) {
             updatedQuantityType = productQuantityUnit.getItemAtPosition(quantityType).toString();
         }
         ProductClass alreadyUpdatedProduct = new ProductClass(updatedName,updatedQuantity,updatedQuantityType);
-        productDB.updateProduct(ownerMail, listID, originalProduct, alreadyUpdatedProduct);
+        productDB.updateProduct(ownerMail, listID, adapter.getItem(position), alreadyUpdatedProduct);
     }
 
     //elem kijelölése a listában

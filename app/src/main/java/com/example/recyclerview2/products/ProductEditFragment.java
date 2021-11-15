@@ -2,6 +2,7 @@ package com.example.recyclerview2.products;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,19 +23,21 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class ProductEditFragment extends DialogFragment {
     private String productName;
-    private int productQuantity;
+    private String productQuantity;
     private String productQuantityType;
     private AutoCompleteTextView nameField;
     private EditText quantityField;
     private Spinner unitSpinnerField;
     private Button modify;
+    private ProductClass originalProduct;
 
     private int position;
 
-    public ProductEditFragment(String productName, int productQuantity, String productQuantityType, int position) {
-        this.productName = productName;
-        this.productQuantity = productQuantity;
-        this.productQuantityType = productQuantityType;
+    public ProductEditFragment(ProductClass originalProduct, int position) {
+        this.productName = originalProduct.getName();
+        this.productQuantity = originalProduct.getQuantity();
+        this.productQuantityType = originalProduct.getQuantityType();
+        this.originalProduct = originalProduct;
         this.position = position;
     }
 
@@ -62,16 +65,15 @@ public class ProductEditFragment extends DialogFragment {
         quantityField.setText(productQuantity);
         unitSpinnerField.setSelection(adapterUnits.getPosition(productQuantityType));
 
-        ProductClass originalProduct = new ProductClass(productName, productQuantity, productQuantityType);
-
         modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String modifiedName = nameField.getText().toString();
-                int modifiedQuantity = Integer.getInteger(quantityField.getText().toString());
+                String modifiedQuantity = quantityField.getText().toString();
                 int modifiedQuantityType = unitSpinnerField.getSelectedItemPosition();
                 if (modifiedName.length() > 0) {
-                    ((ProductActivity)getActivity()).updateProduct(modifiedName, modifiedQuantity, modifiedQuantityType, originalProduct);
+                    Log.d("TAG", "onCreateView: " + originalProduct.getName());
+                    ((ProductActivity)getActivity()).updateProduct(modifiedName, modifiedQuantity, modifiedQuantityType, position);
                     getDialog().dismiss();
                 }
                 else Snackbar.make(v, "Adj nevet a terméknek!", Snackbar.LENGTH_LONG).show();

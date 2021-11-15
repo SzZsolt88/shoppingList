@@ -9,8 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.recyclerview2.R;
+import com.example.recyclerview2.appDataBase.ContactClass;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.recyclerview2.R.drawable.contact_background_confirm_needed;
@@ -18,11 +20,11 @@ import static com.example.recyclerview2.R.drawable.contact_background_not_confir
 import static com.example.recyclerview2.R.drawable.item_background;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.contactsViewHolder> {
-    private List<ContactsClass> contactsList;
+    private List<ContactClass> contactsList;
     private OnContactItemCL onContactItemCL;
 
-    ContactsAdapter(List<ContactsClass> contactsList, OnContactItemCL onContactItemCL) {
-        this.contactsList = contactsList;
+    ContactsAdapter(OnContactItemCL onContactItemCL) {
+        this.contactsList = new ArrayList<>();
         this.onContactItemCL = onContactItemCL;
     }
 
@@ -35,8 +37,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.contac
 
     @Override
     public void onBindViewHolder(@NonNull contactsViewHolder holder, int position) {
-        final ContactsClass contact = contactsList.get(position);
-        holder.contactUserName.setText("Felhasználó: " + contact.getUserName() + " (" + contact.getFullName() + ")");
+        final ContactClass contact = contactsList.get(position);
+        holder.contactUserName.setText("Felhasználó: " + contact.getContactUserName() + " (" + contact.getContactFullName() + ")");
         holder.contactStatus.setText(contact.getContactStatus());
         if (contact.getContactStatus().trim().equals("Megerősített")) {
             holder.contactContainer.setBackgroundResource(item_background);
@@ -81,7 +83,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.contac
         }
     }
 
-    public void setContacts(List<ContactsClass> contacts){
+    public void setContacts(List<ContactClass> contacts){
         this.contactsList = contacts;
         notifyDataSetChanged();
     }

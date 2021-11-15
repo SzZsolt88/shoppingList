@@ -64,7 +64,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
     public void onBindViewHolder(@NonNull productViewHolder holder, int position) {
         final ProductClass ProductClass = shoppingListProductClassList.get(position);
 
-        if (ProductClass.getQuantity() > 0) holder.pName.setText(ProductClass.getName() + " - " + ProductClass.getQuantity() + " " + ProductClass.getQuantityType());
+        if (ProductClass.getQuantity().length() > 0) holder.pName.setText(ProductClass.getName() + " - " + ProductClass.getQuantity() + " " + ProductClass.getQuantityType());
         else holder.pName.setText(ProductClass.getName());
 
         if (ProductClass.isChecked()) holder.pName.setPaintFlags(holder.pName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
