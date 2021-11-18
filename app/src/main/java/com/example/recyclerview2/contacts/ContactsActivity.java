@@ -36,6 +36,10 @@ public class ContactsActivity extends AppCompatActivity implements OnContactItem
     private UserClass currentUser;
     private String currentUserMail;
 
+    private static final String CONTACT_CONFIRMED = "0";
+    private static final String CONTACT_NOT_CONFIRMED = "1";
+    private static final String CONTACT_NEED_CONFIRM = "2";
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,6 +83,7 @@ public class ContactsActivity extends AppCompatActivity implements OnContactItem
                 }
             }
         });
+        contactDB.getAllConfirmedUser();
     }
 
     @Override
@@ -97,9 +102,9 @@ public class ContactsActivity extends AppCompatActivity implements OnContactItem
     }
 
     @Override
-    public void OnContactClick(ContactClass contactsClass) {
+    public void OnContactClick(ContactClass contactsClass, int position) {
         final AlertDialog.Builder editContactDialog = new AlertDialog.Builder(ContactsActivity.this);
-        if (contactsClass.getContactStatus().contains("Megerősítendő")) {
+        if (contactsClass.getContactStatus().equals(CONTACT_NEED_CONFIRM)) {
             editContactDialog.setTitle("Felkérés visszaigozolása");
             editContactDialog.setMessage(contactsClass.getContactUserName() + " (" + contactsClass.getContactFullName() + ")" +
                     " fel szeretné venni veled a kapcsolatot, elfogadod a felkérést?");
@@ -107,17 +112,17 @@ public class ContactsActivity extends AppCompatActivity implements OnContactItem
             editContactDialog.setPositiveButton("Megerősítés", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    contactDB.updateContact(contactsClass);
+                    contactDB.updateContact(contactsClass, position);
 
                 }
             });
             editContactDialog.setNegativeButton("Elutasítás", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
+                    contactDB.deleteContact(contactsClass, position);
                 }
             });
-        } else if (contactsClass.getContactStatus().trim().equals("Megerősített")) {
+        } else if (contactsClass.getContactStatus().equals(CONTACT_CONFIRMED)) {
             editContactDialog.setTitle("Ismerős törlése");
             editContactDialog.setMessage(contactsClass.getContactUserName() + " (" + contactsClass.getContactFullName() + ")" +
                     " szeretnéd törölni az ismerőseid közül?");
@@ -125,7 +130,7 @@ public class ContactsActivity extends AppCompatActivity implements OnContactItem
             editContactDialog.setPositiveButton("Törlés", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
+                    contactDB.deleteContact(contactsClass, position);
                 }
             });
             editContactDialog.setNegativeButton("Mégse", new DialogInterface.OnClickListener() {
@@ -135,7 +140,7 @@ public class ContactsActivity extends AppCompatActivity implements OnContactItem
                 }
             });
         }
-        else if (contactsClass.getContactStatus().trim().equals("Megerősítettlen")) {
+        else if (contactsClass.getContactStatus().equals(CONTACT_NOT_CONFIRMED)) {
             editContactDialog.setTitle("Felkérés visszavonása");
             editContactDialog.setMessage(contactsClass.getContactUserName() + " (" + contactsClass.getContactFullName() + ")" +
                     " még nem igazolta vissza a felkérést, szeretnéd visszavonni?");
@@ -143,7 +148,7 @@ public class ContactsActivity extends AppCompatActivity implements OnContactItem
             editContactDialog.setPositiveButton("Visszavonás", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
+                    contactDB.deleteContact(contactsClass, position);
                 }
             });
             editContactDialog.setNegativeButton("Mégse", new DialogInterface.OnClickListener() {

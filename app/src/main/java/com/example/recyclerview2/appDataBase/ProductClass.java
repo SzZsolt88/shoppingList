@@ -1,13 +1,14 @@
 package com.example.recyclerview2.appDataBase;
 
+import com.google.firebase.firestore.Exclude;
+
+import java.util.Comparator;
+
 public class ProductClass implements Comparable<ProductClass>{
-    private int ProductID;
     private String name;
     private String quantity;
     private String quantityType;
     private boolean checked = false;
-    private String listID;
-
 
     private boolean selected = false;
 
@@ -17,22 +18,14 @@ public class ProductClass implements Comparable<ProductClass>{
         this.quantityType = quantityType;
     }
 
-    public ProductClass(String name, String quantity, String quantityType, boolean checked, String listID) {
+    public ProductClass(String name, String quantity, String quantityType, boolean checked) {
         this.name = name;
         this.quantity = quantity;
         this.quantityType = quantityType;
         this.checked = checked;
-        this.listID = listID;
     }
 
     //Getter&Setter
-    public int getProductID() {
-        return ProductID;
-    }
-
-    public void setProductID(int productID) {
-        ProductID = productID;
-    }
 
     public String getName() {
         return name;
@@ -65,21 +58,13 @@ public class ProductClass implements Comparable<ProductClass>{
     public void setChecked(boolean checked) {
         this.checked = checked;
     }
-
+    @Exclude
     public boolean isSelected() {
         return selected;
     }
-
+    @Exclude
     public void setSelected(boolean selected) {
         this.selected = selected;
-    }
-
-    public String getListID() {
-        return listID;
-    }
-
-    public void setListID(String listID) {
-        this.listID = listID;
     }
 
     @Override
@@ -94,6 +79,8 @@ public class ProductClass implements Comparable<ProductClass>{
 
     @Override
     public int compareTo(ProductClass o) {
-        return this.getName().compareToIgnoreCase(o.getName());
+        return Comparator
+                .comparing(ProductClass::isChecked)
+                .thenComparing(ProductClass::getName).compare(this,o);
     }
 }

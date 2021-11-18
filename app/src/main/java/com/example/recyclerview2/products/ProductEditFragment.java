@@ -72,7 +72,6 @@ public class ProductEditFragment extends DialogFragment {
                 String modifiedQuantity = quantityField.getText().toString();
                 int modifiedQuantityType = unitSpinnerField.getSelectedItemPosition();
                 if (modifiedName.length() > 0) {
-                    Log.d("TAG", "onCreateView: " + originalProduct.getName());
                     ((ProductActivity)getActivity()).updateProduct(modifiedName, modifiedQuantity, modifiedQuantityType, position);
                     getDialog().dismiss();
                 }

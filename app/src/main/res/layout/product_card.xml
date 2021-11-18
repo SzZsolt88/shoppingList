@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_weight=".7"
-        android:gravity="start" />
+        android:textAppearance="?attr/textAppearanceHeadline6"/>
 
     <View
         android:layout_width="1.5dp"

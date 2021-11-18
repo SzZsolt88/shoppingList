@@ -15,11 +15,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ContactDB {
     private FirebaseFirestore fStore;
@@ -27,13 +26,17 @@ public class ContactDB {
     private List<ContactClass> contactList;
     private MutableLiveData<List<ContactClass>> contactListLiveData;
 
-
     private static final String COLLECTION_OF_USERS = "users";
     private static final String COLLECTION_OF_CONTACTS = "contactList";
+
     private static final String EMAIL = "contactEmail";
     private static final String FULL_NAME = "contactFullName";
     private static final String USER_NAME = "contactUserName";
-    private static final String CONTACT_CONFIRMED = "contactStatus";
+
+    private static final String CONTACT_STATUS = "contactStatus";
+    private static final String CONTACT_CONFIRMED = "0";
+    private static final String CONTACT_NOT_CONFIRMED = "1";
+    private static final String CONTACT_NEED_CONFIRM = "2";
 
 
     public ContactDB(UserClass currentUser) {
@@ -50,7 +53,11 @@ public class ContactDB {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        ContactClass getContact = new ContactClass(document.get(EMAIL).toString(),document.get(FULL_NAME).toString(),document.get(USER_NAME).toString(),document.get(CONTACT_CONFIRMED).toString());
+                        ContactClass getContact =
+                                new ContactClass(document.get(EMAIL).toString(),
+                                        document.get(FULL_NAME).toString(),
+                                        document.get(USER_NAME).toString(),
+                                        document.get(CONTACT_STATUS).toString());
                         contactList.add(getContact);
                     }
                     contactListLiveData.postValue(contactList);
@@ -65,7 +72,7 @@ public class ContactDB {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
-                            ContactClass getContact = new ContactClass(documentSnapshot.getId(),documentSnapshot.get("fullName").toString(), documentSnapshot.get("userName").toString(), "Megerősítettlen");
+                            ContactClass getContact = new ContactClass(documentSnapshot.getId(),documentSnapshot.get("fullName").toString(), documentSnapshot.get("userName").toString(), CONTACT_NOT_CONFIRMED);
                             addNewContact(getContact);
                         }
                         else {Log.d("TAG", "contactExists: false");}
@@ -79,12 +86,13 @@ public class ContactDB {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
-
+                    contactList.add(newContact);
+                    contactListLiveData.postValue(contactList);
                 }
             }
         });
         DocumentReference otherUserContactList = fStore.collection(COLLECTION_OF_USERS).document(newContact.getContactEmail()).collection(COLLECTION_OF_CONTACTS).document(currentUser.getuMail());
-        ContactClass mySelf = new ContactClass(currentUser.getuMail(),currentUser.getFullName(),currentUser.getuName(),"Megerősítendő");
+        ContactClass mySelf = new ContactClass(currentUser.getuMail(),currentUser.getFullName(),currentUser.getuName(),CONTACT_NEED_CONFIRM);
         otherUserContactList.set(mySelf).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -95,29 +103,52 @@ public class ContactDB {
         });
     }
 
-    public void updateContact(ContactClass updateContact) {
+    public void updateContact(ContactClass updateContact, int position) {
         DocumentReference contactRef = fStore.collection(COLLECTION_OF_USERS).document(currentUser.getuMail()).collection(COLLECTION_OF_CONTACTS).document(updateContact.getContactEmail());
-        contactRef.update(CONTACT_CONFIRMED, "Megerősített").addOnCompleteListener(new OnCompleteListener<Void>() {
+        contactRef.update(CONTACT_STATUS, CONTACT_CONFIRMED).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Log.d("TAG", "contactAdded: true");
-                contactList.add(updateContact);
+            public void onSuccess(Void aVoid) {
+                contactList.get(position).setContactStatus(CONTACT_CONFIRMED);
                 contactListLiveData.postValue(contactList);
             }
         });
-
         DocumentReference otherUserContactList = fStore.collection(COLLECTION_OF_USERS).document(updateContact.getContactEmail()).collection(COLLECTION_OF_CONTACTS).document(currentUser.getuMail());
-
+        otherUserContactList.update(CONTACT_STATUS, CONTACT_CONFIRMED);
     }
 
-    public void deleteContact(ContactClass updateContact) {
+    public void deleteContact(ContactClass updateContact, int position) {
         DocumentReference contactRef = fStore.collection(COLLECTION_OF_USERS).document(currentUser.getuMail()).collection(COLLECTION_OF_CONTACTS).document(updateContact.getContactEmail());
-
+        contactRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                contactList.remove(position);
+                contactListLiveData.postValue(contactList);
+            }
+        });
         DocumentReference otherUserContactList = fStore.collection(COLLECTION_OF_USERS).document(updateContact.getContactEmail()).collection(COLLECTION_OF_CONTACTS).document(currentUser.getuMail());
-
+        otherUserContactList.delete();
     }
-
 
     public MutableLiveData<List<ContactClass>> getContactListLiveData() { return contactListLiveData; }
+
+    public void getAllConfirmedUser() {
+        CollectionReference contactsRef = fStore.collection(COLLECTION_OF_USERS).document(currentUser.getuMail()).collection(COLLECTION_OF_CONTACTS);
+        contactsRef.whereEqualTo(CONTACT_STATUS, CONTACT_CONFIRMED).get(Source.CACHE).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if (queryDocumentSnapshots != null) {
+                    for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+                        Log.d("TAG", "onSuccess: " + queryDocumentSnapshot);
+                    }
+
+                }
+
+            }
+        });
+    }
+
+    public void shareList(ListClass sharedList, ContactClass shareWith) {
+        sharedList.setShared(true);
+    }
 
 }

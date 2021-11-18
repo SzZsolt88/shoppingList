@@ -53,22 +53,11 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
         title = intent.getStringExtra("name");
         listID = intent.getStringExtra("ID");
 
-        productDB = new ProductDB();
-        productDB.getAllProductsOfList(ownerMail, listID);
-
-        productDB.getProductsMutableLiveData().observe(this, new Observer<List<ProductClass>>() {
-            @Override
-            public void onChanged(List<ProductClass> productClasses) {
-                adapter.setProducts(productClasses);
-            }
-        });
-
         addProduct = findViewById(R.id.addProductBtn);
         productName = findViewById(R.id.productNameTextView);
         productQuantity = findViewById(R.id.quantityProduct);
         productQuantityUnit = findViewById(R.id.unitSpinner);
         productsListView = findViewById(R.id.productsLists);
-
 
         productsListView.setHasFixedSize(true);
         productsListView.setLayoutManager(new LinearLayoutManager(this));
@@ -85,6 +74,15 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
         String[] units = getResources().getStringArray(R.array.unit_variants);
         ArrayAdapter<String> adapterUnits = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,units);
         productQuantityUnit.setAdapter(adapterUnits);
+
+        productDB = new ProductDB(ownerMail, listID);
+        productDB.getAllProductsOfList();
+        productDB.getProductsMutableLiveData().observe(this, new Observer<List<ProductClass>>() {
+            @Override
+            public void onChanged(List<ProductClass> productClasses) {
+                adapter.setProducts(productClasses);
+            }
+        });
 
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +109,7 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
                 }
                 else {
                     ProductClass newProduct = new ProductClass(listItem,quantity,unitString);
-                    productDB.registerNewProduct(ownerMail,listID, newProduct);
+                    productDB.registerNewProduct(newProduct);
                     productName.getText().clear();
                     productQuantity.getText().clear();
                     productName.requestFocus();
@@ -119,17 +117,6 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
                 }
             }
         });
-    }
-
-    //Megvizsgálja, hogy van-e hasonló nevű lista
-    public boolean alreadyExits(String name) {
-        boolean exits = false;
-        for (int i = 0; i < adapter.getItemCount(); i++) {
-            if (adapter.getItem(i).getName().equals(name)) {
-                exits = true;
-            }
-        }
-        return exits;
     }
 
     @Override
@@ -152,6 +139,17 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
         return true;
     }
 
+    //Megvizsgálja, hogy van-e hasonló nevű lista
+    public boolean alreadyExits(String name) {
+        boolean exits = false;
+        for (int i = 0; i < adapter.getItemCount(); i++) {
+            if (adapter.getItem(i).getName().equals(name)) {
+                exits = true;
+            }
+        }
+        return exits;
+    }
+
     private void confirmationAndDelete() {
         AlertDialog.Builder deleteDialog = new AlertDialog.Builder(this);
         deleteDialog.setMessage("Szeretné törölni a kijelölt elemeket?")
@@ -166,7 +164,7 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
     private void deleteProduct() {
         for (int i = adapter.getItemCount()-1; i >= 0;  i--) {
             if (adapter.getItem(i).isSelected()) {
-                productDB.deleteProduct(ownerMail, listID, adapter.getItem(i));
+                productDB.deleteProduct(adapter.getItem(i));
             }
         }
     }
@@ -188,7 +186,7 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
             updatedQuantityType = productQuantityUnit.getItemAtPosition(quantityType).toString();
         }
         ProductClass alreadyUpdatedProduct = new ProductClass(updatedName,updatedQuantity,updatedQuantityType);
-        productDB.updateProduct(ownerMail, listID, adapter.getItem(position), alreadyUpdatedProduct);
+        productDB.updateProduct(adapter.getItem(position), alreadyUpdatedProduct);
     }
 
     //elem kijelölése a listában
@@ -200,6 +198,7 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
 
     @Override
     public void saveCheckedStatus(ProductClass product) {
+        productDB.saveCheckedStatus(product);
         adapter.notifyDataSetChanged();
     }
 }

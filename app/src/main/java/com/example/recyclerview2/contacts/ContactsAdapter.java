@@ -23,6 +23,10 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.contac
     private List<ContactClass> contactsList;
     private OnContactItemCL onContactItemCL;
 
+    private static final String CONTACT_CONFIRMED = "0";
+    private static final String CONTACT_NOT_CONFIRMED = "1";
+    private static final String CONTACT_NEED_CONFIRM = "2";
+
     ContactsAdapter(OnContactItemCL onContactItemCL) {
         this.contactsList = new ArrayList<>();
         this.onContactItemCL = onContactItemCL;
@@ -38,16 +42,18 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.contac
     @Override
     public void onBindViewHolder(@NonNull contactsViewHolder holder, int position) {
         final ContactClass contact = contactsList.get(position);
-        holder.contactUserName.setText("Felhasználó: " + contact.getContactUserName() + " (" + contact.getContactFullName() + ")");
-        holder.contactStatus.setText(contact.getContactStatus());
-        if (contact.getContactStatus().trim().equals("Megerősített")) {
+        holder.contactUserName.setText(contact.getContactUserName() + " (" + contact.getContactFullName() + ")");
+        if (contact.getContactStatus().equals(CONTACT_CONFIRMED)) {
             holder.contactContainer.setBackgroundResource(item_background);
+            holder.contactStatus.setText(R.string.confirmed);
         }
-        if (contact.getContactStatus().trim().equals("Megerősítettlen")) {
+        if (contact.getContactStatus().equals(CONTACT_NOT_CONFIRMED)) {
             holder.contactContainer.setBackgroundResource(contact_background_not_confirmed);
+            holder.contactStatus.setText(R.string.not_confirmed);
         }
-        if (contact.getContactStatus().trim().equals("Megerősítendő")) {
+        if (contact.getContactStatus().equals(CONTACT_NEED_CONFIRM)) {
             holder.contactContainer.setBackgroundResource(contact_background_confirm_needed);
+            holder.contactStatus.setText(R.string.need_confirmed);
         }
     }
 
@@ -59,7 +65,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.contac
             return 0;
         }
     }
-
 
     public class contactsViewHolder extends RecyclerView.ViewHolder {
         public CardView contactContainer;
@@ -76,7 +81,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.contac
                 public void onClick(View v) {
                     int position = getAbsoluteAdapterPosition();
                     if(onContactItemCL != null && position != RecyclerView.NO_POSITION) {
-                        onContactItemCL.OnContactClick(contactsList.get(position));
+                        onContactItemCL.OnContactClick(contactsList.get(position), position);
                     }
                 }
             });

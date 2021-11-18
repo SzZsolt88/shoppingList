@@ -1,6 +1,8 @@
 package com.example.recyclerview2.appDataBase;
 
-public class ContactClass {
+import java.util.Comparator;
+
+public class ContactClass implements Comparable<ContactClass> {
     private String contactEmail;
     private String contactFullName;
     private String contactUserName;
@@ -43,5 +45,12 @@ public class ContactClass {
 
     public void setContactStatus(String contactStatus) {
         this.contactStatus = contactStatus;
+    }
+
+    @Override
+    public int compareTo(ContactClass contactClass) {
+        return Comparator
+                .comparing(ContactClass::getContactStatus)
+                .thenComparing(ContactClass::getContactUserName).compare(this,contactClass);
     }
 }

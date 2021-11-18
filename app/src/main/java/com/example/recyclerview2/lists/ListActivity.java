@@ -14,7 +14,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,7 +30,6 @@ import com.example.recyclerview2.products.ProductActivity;
 import com.example.recyclerview2.user.UserEditDataActivity;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListActivity extends AppCompatActivity implements OnListItemCL {
@@ -115,6 +113,9 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
             case R.id.edit:
                 editLists();
                 break;
+            case R.id.share:
+                shareLists();
+                break;
             case R.id.userEditActivity:
                 createActivity(this, UserEditDataActivity.class);
                 break;
@@ -133,9 +134,19 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
         return super.onOptionsItemSelected(item);
     }
 
+    private void shareLists() {
+        for (int i = adapter.getItemCount()-1; i >= 0;  i--) {
+            if (adapter.getItem(i).isSelected()) {
+                ListShareFragment shareDialog = new ListShareFragment(adapter.getItem(i), i, currentUser);
+                shareDialog.show(getSupportFragmentManager(), "listNameEdit");
+            }
+        }
+    }
+
+
     // felhasználói adatainak módosítása vagy a kimutatás elindítás
-    private void createActivity(Context context, Class cls){
-        Intent startActivity = new Intent(context, cls);
+    private void createActivity(Context context, Class activity){
+        Intent startActivity = new Intent(context, activity);
         startActivity.putExtra("currentUser", currentUser);
         startActivity(startActivity);
     }

@@ -12,7 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.recyclerview2.appDataBase.ListClass;
 import com.example.recyclerview2.appDataBase.ProductClass;
 import com.example.recyclerview2.R;
 
@@ -23,11 +22,11 @@ import static com.example.recyclerview2.R.drawable.item_background;
 import static com.example.recyclerview2.R.drawable.item_background_selected;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productViewHolder> {
-    private List<ProductClass> shoppingListProductClassList;
+    private List<ProductClass> productList;
     private OnProductItemCL onProductClickListener;
 
     ProductAdapter(OnProductItemCL onProductClickListener){
-        shoppingListProductClassList = new ArrayList<>();
+        productList = new ArrayList<>();
         this.onProductClickListener = onProductClickListener;
     }
 
@@ -46,7 +45,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
                 public void onClick(View v) {
                     int position = getAbsoluteAdapterPosition();
                     if(onProductClickListener != null && position != RecyclerView.NO_POSITION) {
-                        onProductClickListener.onProductClick(shoppingListProductClassList.get(position));
+                        onProductClickListener.onProductClick(productList.get(position));
                     }
                 }
             });
@@ -62,38 +61,36 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
 
     @Override
     public void onBindViewHolder(@NonNull productViewHolder holder, int position) {
-        final ProductClass ProductClass = shoppingListProductClassList.get(position);
+        final ProductClass productClass = productList.get(position);
 
-        if (ProductClass.getQuantity().length() > 0) holder.pName.setText(ProductClass.getName() + " - " + ProductClass.getQuantity() + " " + ProductClass.getQuantityType());
-        else holder.pName.setText(ProductClass.getName());
+        if (productClass.getQuantity().length() > 0) holder.pName.setText(productClass.getName() + " - " + productClass.getQuantity() + " " + productClass.getQuantityType());
+        else holder.pName.setText(productClass.getName());
 
-        if (ProductClass.isChecked()) holder.pName.setPaintFlags(holder.pName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        if (productClass.isChecked()) holder.pName.setPaintFlags(holder.pName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         else holder.pName.setPaintFlags(holder.pName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
 
-        if (ProductClass.isSelected()) holder.itemContainer.setBackgroundResource(item_background_selected);
+        if (productClass.isSelected()) holder.itemContainer.setBackgroundResource(item_background_selected);
         else holder.itemContainer.setBackgroundResource(item_background);
 
         holder.checkBox.setOnCheckedChangeListener(null);
-        holder.checkBox.setChecked(ProductClass.isChecked());
+        holder.checkBox.setChecked(productClass.isChecked());
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ProductClass.setChecked(!ProductClass.isChecked());
-                onProductClickListener.saveCheckedStatus(ProductClass);
+                onProductClickListener.saveCheckedStatus(productClass);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return shoppingListProductClassList.size();
+        return productList.size();
     }
 
-    public ProductClass getItem(int position){   return shoppingListProductClassList.get(position);
-    }
+    public ProductClass getItem(int position){   return productList.get(position);    }
 
     public void setProducts(List<ProductClass> product){
-        this.shoppingListProductClassList = product;
+        this.productList = product;
         this.notifyDataSetChanged();
     }
 }

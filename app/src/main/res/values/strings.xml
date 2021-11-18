@@ -34,4 +34,7 @@
     <string name="contacts">Ismerősök</string>
     <string name="contactMailAddress">Az ismerősöd email címe</string>
     <string name="share">Megosztás</string>
+    <string name="confirmed">Megerősített</string>
+    <string name="not_confirmed">Megerősítettlen</string>
+    <string name="need_confirmed">Megerősítendő</string>
 </resources>
