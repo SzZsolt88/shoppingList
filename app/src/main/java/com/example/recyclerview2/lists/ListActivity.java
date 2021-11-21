@@ -144,14 +144,14 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     }
 
 
-    // felhasználói adatainak módosítása vagy a kimutatás elindítás
+    /* felhasználó adatainak módosítása vagy a kimutatás elindítása */
     private void createActivity(Context context, Class activity){
         Intent startActivity = new Intent(context, activity);
         startActivity.putExtra("currentUser", currentUser);
         startActivity(startActivity);
     }
 
-    // Megvizsgálja, hogy van-e hasonló nevű lista
+    // Megvizsgálja, hogy van-e már azonos nevű lista
     public boolean alreadyExits(String name) {
         boolean exits = false;
         for (int i = 0; i < adapter.getItemCount(); i++) {
@@ -162,7 +162,7 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
         return exits;
     }
 
-    // lista elemre kattintás
+    // listaelemre kattintás
     @Override
     public void onListClick(ListClass list) {
         Intent openList = new Intent(ListActivity.this, ProductActivity.class);
@@ -171,7 +171,7 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
         openList.putExtra("ownerMail", ownerMail);
         startActivity(openList);
     }
-    // lista elemre hosszan kattintás
+    // listaelemre hosszan kattintás - kijelölés
     @Override
     public void onListLongClick(ListClass list) {
         list.setSelected(!list.isSelected());

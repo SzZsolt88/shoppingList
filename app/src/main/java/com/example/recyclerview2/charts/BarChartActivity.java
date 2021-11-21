@@ -42,7 +42,7 @@ public class BarChartActivity extends AppCompatActivity {
 
         //barChart.setFitBars(true);
         barChart.setData(barData);
-        barChart.getDescription().setText("Termékek Oszlop Diagram");
+        barChart.getDescription().setText("Termékek Oszlopdiagram");
         barChart.animateY(2000);
 
     }
@@ -50,7 +50,7 @@ public class BarChartActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.register_menu, menu);
-        setTitle("Oszlop Diagram");
+        setTitle("Oszlopdiagram");
         return true;
     }
 

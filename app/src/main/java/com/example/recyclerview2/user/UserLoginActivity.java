@@ -56,7 +56,7 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginInt
             @Override
             public void onChanged(Boolean isSuccess) {
                 if (isSuccess) {
-                    Snackbar.make(forgetNP, "Helyreállító emailt kiküldtük!", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(forgetNP, "Helyreállító e-mailt kiküldtük!", Snackbar.LENGTH_LONG).show();
                 } else {
                     Snackbar.make(forgetNP, "Hiba történt, próbáld újra!", Snackbar.LENGTH_LONG).show();
                 }
@@ -93,7 +93,7 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginInt
                 createAuthDialog();
                 userLogin.authentication(email,password);
             } else {
-                Snackbar.make(forgetNP, "Add meg az email címed és jelszavad!", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(forgetNP, "Add meg az e-mail-címed és jelszavad!", Snackbar.LENGTH_LONG).show();
             }
         });
 
@@ -107,7 +107,7 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginInt
 
             final AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(UserLoginActivity.this);
             passwordResetDialog.setTitle("Elfelejtetted a jelszavad?");
-            passwordResetDialog.setMessage("Add meg az Email címed, amire elküldhetjük a jelszó helyreállító linket!");
+            passwordResetDialog.setMessage("Add meg az e-mail-címed, amire elküldhetjük a jelszó helyreállító linket!");
             passwordResetDialog.setView(resetMail);
             passwordResetDialog.setCancelable(false);
 
@@ -119,7 +119,7 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginInt
                         userLogin.pwReset(mail);
                     }
                     else {
-                        Toast.makeText(UserLoginActivity.this, "Nem adtad meg az email címedet!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(UserLoginActivity.this, "Nem adtad meg az e-mail-címedet!", Toast.LENGTH_LONG).show();
                     }
                 }
             }).setNegativeButton("Mégse", null);
@@ -137,7 +137,7 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginInt
             startActivity(login);
         }
         else {
-            Snackbar.make(forgetNP, "Rossz felhasználónév vagy email cím!", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(forgetNP, "Rossz felhasználónév vagy e-mail-cím!", Snackbar.LENGTH_LONG).show();
             loginDialog.dismiss();
         }
     }

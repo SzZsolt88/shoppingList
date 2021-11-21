@@ -52,7 +52,7 @@ public class ChartActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.register_menu, menu);
-        setTitle("Vásárlói szokások");
+        setTitle("Vásárlási szokások");
         return true;
     }
 

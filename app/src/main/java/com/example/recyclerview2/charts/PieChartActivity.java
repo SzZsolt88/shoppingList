@@ -25,11 +25,11 @@ public class PieChartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         ArrayList<PieEntry> productGroups = new ArrayList<>();
-        productGroups.add(new PieEntry(400, "Gyümölcs"));
+        productGroups.add(new PieEntry(400, "Zöldség és gyümölcs"));
         productGroups.add(new PieEntry(300, "Tejtermék"));
         productGroups.add(new PieEntry(200, "Ital"));
-        productGroups.add(new PieEntry(200, "Üditő"));
-        productGroups.add(new PieEntry(300, "Pékárú"));
+        productGroups.add(new PieEntry(200, "Üdítő"));
+        productGroups.add(new PieEntry(300, "Pékáru"));
         productGroups.add(new PieEntry(100, "Háztartási"));
         productGroups.add(new PieEntry(500, "Egyéb"));
 
@@ -58,7 +58,7 @@ public class PieChartActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.register_menu, menu);
-        setTitle("Torta Diagram");
+        setTitle("Tortadiagram");
         return true;
     }
 

@@ -1,5 +1,6 @@
 package com.example.recyclerview2.appDataBase;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -20,8 +21,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.auth.User;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,18 +63,21 @@ public class ListDB {
 
     private DocumentReference getDocRef(ListClass list) {
         String ownerMail = list.getOwner();
-        String listID = list.getListID();
+        @SuppressLint("SimpleDateFormat") String listID = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         return fStore.collection("users").document(ownerMail).collection("lists").document(listID);
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void createList(ListClass newList) {
         String ownerMail = newList.getOwner();
-        DocumentReference newListRef = fStore.collection("users").document(ownerMail).collection("lists").document();
+        String listID;
+        listID = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        DocumentReference newListRef = fStore.collection("users").document(ownerMail).collection("lists").document(listID);
         newListRef.set(newList).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                newListRef.update("listID", newListRef.getId());
-                newList.setListID(newListRef.getId());
+                newListRef.update("listID", listID);
+                newList.setListID(listID);
                 shoppingLists.add(0, newList);
                 Collections.sort(shoppingLists);
                 listMutableLiveData.postValue(shoppingLists);
@@ -92,7 +98,9 @@ public class ListDB {
     }
 
     public void updateList(ListClass updateList, int position, String newName) {
-        DocumentReference updateListRef = getDocRef(updateList);
+        DocumentReference updateListRef = fStore.collection("users").
+                document(updateList.getOwner()).collection("lists").
+                document(updateList.getListID());
         updateListRef.update("name", newName);
         shoppingLists.get(position).setName(newName);
         Collections.sort(shoppingLists);

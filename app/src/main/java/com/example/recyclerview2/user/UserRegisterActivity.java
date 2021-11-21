@@ -127,7 +127,7 @@ public class UserRegisterActivity extends AppCompatActivity {
             userMail.setError("Kötelező mező!");
             return false;
         } else if (!inputMail.contains("@")) {
-            userMail.setError("Érvényes email címet adjon meg!");
+            userMail.setError("Érvényes e-mail-címet adjon meg!");
             return false;
         }
         else {
@@ -142,7 +142,7 @@ public class UserRegisterActivity extends AppCompatActivity {
             userMailConfirm.setError("Kötelező mező!");
             return false;
         } else if (!inputMailConf.equals(userMail.getEditText().getText().toString().trim())) {
-            userMailConfirm.setError("A megadott mail címek nem egyeznek meg!");
+            userMailConfirm.setError("A megadott e-mail-címek nem egyeznek meg!");
             return false;
         } else {
             userMailConfirm.setError(null);

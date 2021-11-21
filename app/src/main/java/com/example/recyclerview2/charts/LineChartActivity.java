@@ -47,7 +47,7 @@ public class LineChartActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.register_menu, menu);
-        setTitle("Vonal Diagram");
+        setTitle("Vonaldiagram");
         return true;
     }
 

@@ -37,7 +37,7 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
     private RecyclerView productsListView;
     private ProductAdapter adapter;
     private ProductDB productDB;
-    //A bevásárlólista tulajdonosa,cím és ID
+    //A bevásárlólista tulajdonosa, cím és ID
     private String ownerMail;
     private String title;
     private String listID;
@@ -139,7 +139,7 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
         return true;
     }
 
-    //Megvizsgálja, hogy van-e hasonló nevű lista
+    //Megvizsgálja, hogy van-e azonos nevű termék a listán
     public boolean alreadyExits(String name) {
         boolean exits = false;
         for (int i = 0; i < adapter.getItemCount(); i++) {
