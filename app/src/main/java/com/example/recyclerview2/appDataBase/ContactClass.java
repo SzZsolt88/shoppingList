@@ -15,6 +15,12 @@ public class ContactClass implements Comparable<ContactClass> {
         this.contactStatus = contactStatus;
     }
 
+    public ContactClass(String contactEmail, String contactFullName, String contactUserName) {
+        this.contactEmail = contactEmail;
+        this.contactFullName = contactFullName;
+        this.contactUserName = contactUserName;
+    }
+
     public String getContactEmail() {
         return contactEmail;
     }

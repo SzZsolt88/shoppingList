@@ -3,6 +3,8 @@ package com.example.recyclerview2.user;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -92,11 +94,13 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
         });
 
         deleteUserButton.setOnClickListener(new View.OnClickListener() {
-
-            EditText uActualPW = new EditText(UserEditDataActivity.this);
             @Override
             public void onClick(View v) {
+                EditText uActualPW = new EditText(UserEditDataActivity.this);
+                uActualPW.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
                 final AlertDialog.Builder userDeleteDialog = new AlertDialog.Builder(UserEditDataActivity.this);
+
                 userDeleteDialog.setTitle("Felhasználó Törlés");
                 userDeleteDialog.setMessage("Add meg jelszavad, amennyiben tényleg törölni szeretnéd a fiókodat.");
                 userDeleteDialog.setView(uActualPW);

@@ -53,6 +53,7 @@ public class UserRegister {
         user.put("fullName", fName);
         user.put("userName", uName);
         user.put("activeStatus", true);
+        user.put("lists", null);
         documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {

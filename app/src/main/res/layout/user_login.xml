@@ -45,8 +45,8 @@
             android:layout_marginBottom="18dp"
             android:hint="@string/username"
             android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            android:imeOptions="actionNext"/>
+            android:inputType="textEmailAddress"
+            android:imeOptions="actionNext" />
         <EditText
             android:id="@+id/userPassword"
             android:layout_width="match_parent"

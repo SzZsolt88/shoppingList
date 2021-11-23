@@ -19,15 +19,20 @@
             android:id="@+id/listName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
             android:gravity="start"
-            android:textAppearance="?attr/textAppearanceHeadline6" />
+            android:textAppearance="?attr/textAppearanceHeadline5" />
 
         <TextView
             android:id="@+id/ownerName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:gravity="start"
+            android:textAppearance="?attr/textAppearanceBody2" />
+
+        <TextView
+            android:id="@+id/membersList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="start"
             android:textAppearance="?attr/textAppearanceBody2" />
 

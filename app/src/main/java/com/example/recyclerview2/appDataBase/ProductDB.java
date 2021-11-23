@@ -12,7 +12,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,6 +25,11 @@ public class ProductDB {
     private String ownerMail;
     private String listID;
 
+    private static final String USERS = "users";
+    private static final String LISTS = "lists";
+    private static final String PRODUCTS = "products";
+    private static final String PRODUCTS_OF_LIST = "productsOfList";
+
     public ProductDB(String ownerMail, String listID) {
         this.ownerMail = ownerMail;
         this.listID = listID;
@@ -35,7 +39,7 @@ public class ProductDB {
     }
 
     public void getAllProductsOfList() {
-        DocumentReference listRef = fStore.collection("users").document(ownerMail).collection("lists").document(listID);
+        DocumentReference listRef = fStore.collection(USERS).document(ownerMail).collection(LISTS).document(listID).collection(PRODUCTS).document(PRODUCTS_OF_LIST);
         listRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -59,7 +63,7 @@ public class ProductDB {
     }
 
     public void registerNewProduct(ProductClass productClass) {
-        DocumentReference listRef = fStore.collection("users").document(ownerMail).collection("lists").document(listID);
+        DocumentReference listRef = fStore.collection(USERS).document(ownerMail).collection(LISTS).document(listID).collection(PRODUCTS).document(PRODUCTS_OF_LIST);
         listRef.update("products", FieldValue.arrayUnion(productClass));
         productsList.add(productClass);
         Collections.sort(productsList);
@@ -67,7 +71,7 @@ public class ProductDB {
     }
 
     public void deleteProduct(ProductClass deleteProduct) {
-        DocumentReference listRef = fStore.collection("users").document(ownerMail).collection("lists").document(listID);
+        DocumentReference listRef = fStore.collection(USERS).document(ownerMail).collection(LISTS).document(listID).collection(PRODUCTS).document(PRODUCTS_OF_LIST);
         listRef.update("products", FieldValue.arrayRemove(deleteProduct));
         productsList.remove(deleteProduct);
         productsMutableLiveData.postValue(productsList);
@@ -79,7 +83,7 @@ public class ProductDB {
     }
 
     public void saveCheckedStatus(ProductClass boughtProduct) {
-        DocumentReference listRef = fStore.collection("users").document(ownerMail).collection("lists").document(listID);
+        DocumentReference listRef = fStore.collection(USERS).document(ownerMail).collection(LISTS).document(listID).collection(PRODUCTS).document(PRODUCTS_OF_LIST);
         listRef.update("products", FieldValue.arrayRemove(boughtProduct));
         productsList.remove(boughtProduct);
         boughtProduct.setChecked(!boughtProduct.isChecked());

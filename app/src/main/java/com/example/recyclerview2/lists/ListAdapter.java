@@ -1,6 +1,5 @@
 package com.example.recyclerview2.lists;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,24 +21,27 @@ import static com.example.recyclerview2.R.drawable.item_background_selected;
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listViewHolder> {
     private List<ListClass> listShoppingLists;
     private OnListItemCL onListCL;
-    private String ownerUName;
+    private String currentUserMail;
 
-    ListAdapter(OnListItemCL onListCL, String ownerUName){
+
+    ListAdapter(OnListItemCL onListCL, String currentUserMail){
         listShoppingLists = new ArrayList<>();
         this.onListCL = onListCL;
-        this.ownerUName = ownerUName;
+        this.currentUserMail = currentUserMail;
     }
 
     public class listViewHolder extends RecyclerView.ViewHolder  {
         public CardView itemContainer;
         public TextView listName;
         public TextView ownerName;
+        public TextView membersList;
 
         public listViewHolder(View itemView, OnListItemCL onListCL) {
             super(itemView);
             itemContainer = itemView.findViewById(R.id.shoppingListContainer);
             listName = itemView.findViewById(R.id.listName);
             ownerName = itemView.findViewById(R.id.ownerName);
+            membersList = itemView.findViewById(R.id.membersList);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -72,8 +74,26 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listViewHolder
     @Override
     public void onBindViewHolder(@NonNull listViewHolder holder, int position) {
         final ListClass shoppingList = listShoppingLists.get(position);
-        holder.listName.setText(shoppingList.getName());
-        holder.ownerName.setText(ownerUName + " listája");
+        holder.listName.setText(shoppingList.getListName());
+        if (shoppingList.isShared()) {
+            String ownerString = "";
+            String listMembersString = "Tagok: ";
+            for (int i = 0; i < shoppingList.getSharedWith().size(); i++) {
+                if (i < shoppingList.getSharedWith().size()-1) {
+                    listMembersString += shoppingList.getSharedWith().get(i).getContactUserName() + ", ";
+                } else listMembersString += shoppingList.getSharedWith().get(i).getContactUserName();
+            }
+            if (shoppingList.getOwner().equals(currentUserMail)) {
+               ownerString += "Saját lista";
+            } else ownerString += "Tulaj: " + shoppingList.getOwnerName();
+            holder.ownerName.setText(ownerString);
+            holder.ownerName.setVisibility(View.VISIBLE);
+            holder.membersList.setText(listMembersString);
+            holder.membersList.setVisibility(View.VISIBLE);
+        } else {
+            holder.ownerName.setVisibility(View.GONE);
+            holder.membersList.setVisibility(View.GONE);
+        }
         if (shoppingList.isSelected()) holder.itemContainer.setBackgroundResource(item_background_selected);
         else holder.itemContainer.setBackgroundResource(item_background);
     }
@@ -87,7 +107,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listViewHolder
         return listShoppingLists.get(position);
     }
 
-    public void setLists(List<ListClass> lists){
+    public void setLists(List<ListClass> lists) {
         this.listShoppingLists = lists;
         notifyDataSetChanged();
     }

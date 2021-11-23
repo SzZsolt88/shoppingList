@@ -37,4 +37,6 @@
     <string name="confirmed">Megerősített</string>
     <string name="not_confirmed">Megerősítettlen</string>
     <string name="need_confirmed">Megerősítendő</string>
+    <string name="cancel">Mégse</string>
+    <string name="shareList">Megosztás</string>
 </resources>

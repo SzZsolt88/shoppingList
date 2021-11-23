@@ -53,6 +53,7 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
         title = intent.getStringExtra("name");
         listID = intent.getStringExtra("ID");
 
+
         addProduct = findViewById(R.id.addProductBtn);
         productName = findViewById(R.id.productNameTextView);
         productQuantity = findViewById(R.id.quantityProduct);

@@ -25,6 +25,7 @@ public class ContactDB {
     private UserClass currentUser;
     private List<ContactClass> contactList;
     private MutableLiveData<List<ContactClass>> contactListLiveData;
+    private MutableLiveData<List<ContactClass>> confirmedContactsLiveData;
 
     private static final String COLLECTION_OF_USERS = "users";
     private static final String COLLECTION_OF_CONTACTS = "contactList";
@@ -32,8 +33,8 @@ public class ContactDB {
     private static final String EMAIL = "contactEmail";
     private static final String FULL_NAME = "contactFullName";
     private static final String USER_NAME = "contactUserName";
-
     private static final String CONTACT_STATUS = "contactStatus";
+
     private static final String CONTACT_CONFIRMED = "0";
     private static final String CONTACT_NOT_CONFIRMED = "1";
     private static final String CONTACT_NEED_CONFIRM = "2";
@@ -43,6 +44,7 @@ public class ContactDB {
         fStore = FirebaseFirestore.getInstance();
         contactList = new ArrayList<>();
         contactListLiveData = new MutableLiveData<>();
+        confirmedContactsLiveData = new MutableLiveData<>();
         this.currentUser = currentUser;
     }
 
@@ -133,22 +135,23 @@ public class ContactDB {
 
     public void getAllConfirmedUser() {
         CollectionReference contactsRef = fStore.collection(COLLECTION_OF_USERS).document(currentUser.getuMail()).collection(COLLECTION_OF_CONTACTS);
-        contactsRef.whereEqualTo(CONTACT_STATUS, CONTACT_CONFIRMED).get(Source.CACHE).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        contactsRef.whereEqualTo(CONTACT_STATUS, CONTACT_CONFIRMED).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 if (queryDocumentSnapshots != null) {
+                    List<ContactClass> contactClasses = new ArrayList<>();
                     for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
-                        Log.d("TAG", "onSuccess: " + queryDocumentSnapshot);
+                        ContactClass confirmedContact = new ContactClass(
+                                queryDocumentSnapshot.get(EMAIL).toString(),
+                                queryDocumentSnapshot.get(FULL_NAME).toString(),
+                                queryDocumentSnapshot.get(USER_NAME).toString());
+                        contactClasses.add(confirmedContact);
                     }
-
+                    confirmedContactsLiveData.postValue(contactClasses);
                 }
-
             }
         });
     }
 
-    public void shareList(ListClass sharedList, ContactClass shareWith) {
-        sharedList.setShared(true);
-    }
-
+    public MutableLiveData<List<ContactClass>> getConfirmedContactsLiveData() { return confirmedContactsLiveData; }
 }

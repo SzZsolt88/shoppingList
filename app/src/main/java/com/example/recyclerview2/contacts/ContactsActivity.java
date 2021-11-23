@@ -83,7 +83,6 @@ public class ContactsActivity extends AppCompatActivity implements OnContactItem
                 }
             }
         });
-        contactDB.getAllConfirmedUser();
     }
 
     @Override

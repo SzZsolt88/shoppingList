@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.recyclerview2.R;
+import com.example.recyclerview2.appDataBase.ContactClass;
 import com.example.recyclerview2.appDataBase.ListClass;
 import com.example.recyclerview2.appDataBase.ListDB;
 import com.example.recyclerview2.appDataBase.UserClass;
@@ -39,7 +40,7 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     private ListAdapter adapter;
     private ListDB listDB;
     private UserClass currentUser;
-    private String ownerMail;
+    private String currentUserMail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +50,10 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
 
         Intent getCurrentUser = getIntent();
         currentUser = getCurrentUser.getParcelableExtra("currentUser");
-        ownerMail = currentUser.getuMail();
+        currentUserMail = currentUser.getuMail();
 
-        listDB = new ListDB();
-        listDB.getListOfsUser(ownerMail);
+        listDB = new ListDB(currentUserMail);
+        listDB.getListOfsUser();
 
         listDB.getListMutableLiveData().observe(this, new Observer<List<ListClass>>() {
             @Override
@@ -68,23 +69,24 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
         shoppingListsView.setHasFixedSize(true);
         shoppingListsView.setLayoutManager(new LinearLayoutManager(this));
         shoppingListsView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new ListAdapter(this, currentUser.getuName());
+        adapter = new ListAdapter(this, currentUserMail);
         shoppingListsView.setAdapter(adapter);
 
         addList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = listName.getText().toString();
-                String owner = currentUser.getuMail();
-                if (name.isEmpty())
+                String nameOfList = listName.getText().toString();
+                String ownerMail = currentUser.getuMail();
+                String ownerName = currentUser.getuName();
+                if (nameOfList.isEmpty())
                     Snackbar.make(shoppingListsView, "Adj nevet a listának!", Snackbar.LENGTH_LONG).show();
-                else if (alreadyExits(name)) {
+                else if (alreadyExits(nameOfList)) {
                     Snackbar.make(shoppingListsView, "Van már ilyen lista, adj másik nevet!", Snackbar.LENGTH_LONG).show();
                     listName.getText().clear();
                     listName.requestFocus();
                 }
                 else {
-                    ListClass newList = new ListClass(name,owner);
+                    ListClass newList = new ListClass(nameOfList,ownerMail,ownerName);
                     listDB.createList(newList);
                     adapter.notifyDataSetChanged();
                     listName.getText().clear();
@@ -137,14 +139,14 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     private void shareLists() {
         for (int i = adapter.getItemCount()-1; i >= 0;  i--) {
             if (adapter.getItem(i).isSelected()) {
-                ListShareFragment shareDialog = new ListShareFragment(adapter.getItem(i), i, currentUser);
+                ListShareFragment shareDialog = new ListShareFragment(adapter.getItem(i), currentUser);
                 shareDialog.show(getSupportFragmentManager(), "listNameEdit");
             }
         }
     }
 
 
-    /* felhasználó adatainak módosítása vagy a kimutatás elindítása */
+    // felhasználói adatainak módosítása vagy a kimutatás elindítás
     private void createActivity(Context context, Class activity){
         Intent startActivity = new Intent(context, activity);
         startActivity.putExtra("currentUser", currentUser);
@@ -155,7 +157,7 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     public boolean alreadyExits(String name) {
         boolean exits = false;
         for (int i = 0; i < adapter.getItemCount(); i++) {
-            if (adapter.getItem(i).getName().equals(name)) {
+            if (adapter.getItem(i).getListName().equals(name)) {
                 exits = true;
             }
         }
@@ -166,9 +168,9 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     @Override
     public void onListClick(ListClass list) {
         Intent openList = new Intent(ListActivity.this, ProductActivity.class);
-        openList.putExtra("name", list.getName());
+        openList.putExtra("name", list.getListName());
         openList.putExtra("ID", list.getListID());
-        openList.putExtra("ownerMail", ownerMail);
+        openList.putExtra("ownerMail", list.getOwner());
         startActivity(openList);
     }
     // listaelemre hosszan kattintás - kijelölés
@@ -205,15 +207,20 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     private void editLists() {
         for (int i = 0; i < adapter.getItemCount(); i++) {
             if (adapter.getItem(i).isSelected()) {
-                ListEditFragment editDialog = new ListEditFragment(adapter.getItem(i), i);
+                ListEditFragment editDialog = new ListEditFragment(adapter.getItem(i));
                 editDialog.show(getSupportFragmentManager(), "listNameEdit");
             }
         }
     }
 
     // lista szerkesztése, adatbázis frissítése
-    public void editShoppingList(ListClass originalList, int position, String newName) {
-        listDB.updateList(originalList, position, newName);
+    public void editShoppingList(ListClass originalList, String newName) {
+        listDB.updateList(originalList, newName);
+    }
+
+    // lista megosztása adatbázis frissítése
+    public void shareList(ListClass shareList, List<ContactClass> sharedWith) {
+        listDB.shareList(shareList, sharedWith);
     }
 
     // felhasználó kijelentkeztetése

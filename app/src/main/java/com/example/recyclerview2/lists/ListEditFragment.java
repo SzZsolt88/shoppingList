@@ -15,20 +15,16 @@ import com.example.recyclerview2.R;
 import com.example.recyclerview2.appDataBase.ListClass;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.List;
-
 
 public class ListEditFragment extends DialogFragment {
 
     //widgets
     private AutoCompleteTextView listName;
     private Button modify;
-    private int position;
     private ListClass originalList;
 
-    public ListEditFragment(ListClass originalList, int position) {
+    public ListEditFragment(ListClass originalList) {
         this.originalList = originalList;
-        this.position = position;
     }
 
     @Nullable
@@ -38,7 +34,9 @@ public class ListEditFragment extends DialogFragment {
         listName = v.findViewById(R.id.modifyName);
         modify = v.findViewById(R.id.modifyButton);
 
-        listName.setText(originalList.getName());
+        getDialog().setCanceledOnTouchOutside(false);
+
+        listName.setText(originalList.getListName());
 
         modify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +48,7 @@ public class ListEditFragment extends DialogFragment {
                     Snackbar.make(modify, "Van már ilyen nevü lista, adj másik nevet!", Snackbar.LENGTH_LONG).show();
                 }
                 else {
-                    ((ListActivity) getActivity()).editShoppingList(originalList, position, modifiedName);
+                    ((ListActivity) getActivity()).editShoppingList(originalList, modifiedName);
                     getDialog().dismiss();
                 }
             }
