@@ -136,14 +136,6 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
         return super.onOptionsItemSelected(item);
     }
 
-    private void shareLists() {
-        for (int i = adapter.getItemCount()-1; i >= 0;  i--) {
-            if (adapter.getItem(i).isSelected()) {
-                ListShareFragment shareDialog = new ListShareFragment(adapter.getItem(i), currentUser);
-                shareDialog.show(getSupportFragmentManager(), "listNameEdit");
-            }
-        }
-    }
 
 
     // felhasználói adatainak módosítása vagy a kimutatás elindítás
@@ -207,8 +199,10 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     private void editLists() {
         for (int i = 0; i < adapter.getItemCount(); i++) {
             if (adapter.getItem(i).isSelected()) {
-                ListEditFragment editDialog = new ListEditFragment(adapter.getItem(i));
-                editDialog.show(getSupportFragmentManager(), "listNameEdit");
+                if(adapter.getItem(i).getOwner().equals(currentUserMail)) {
+                    ListEditFragment editDialog = new ListEditFragment(adapter.getItem(i));
+                    editDialog.show(getSupportFragmentManager(), "listNameEdit");
+                } else Snackbar.make(shoppingListsView, "Csak a saját listád tudod átnevezni!", Snackbar.LENGTH_LONG).show();
             }
         }
     }
@@ -216,6 +210,18 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     // lista szerkesztése, adatbázis frissítése
     public void editShoppingList(ListClass originalList, String newName) {
         listDB.updateList(originalList, newName);
+    }
+
+    //Lista megosztása: framgent létrehozása
+    private void shareLists() {
+        for (int i = adapter.getItemCount()-1; i >= 0;  i--) {
+            if (adapter.getItem(i).isSelected()) {
+                if (adapter.getItem(i).getOwner().equals(currentUserMail)) {
+                    ListShareFragment shareDialog = new ListShareFragment(adapter.getItem(i), currentUser);
+                    shareDialog.show(getSupportFragmentManager(), "listNameEdit");
+                } else Snackbar.make(shoppingListsView, "Csak a saját listád tudod megosztani!", Snackbar.LENGTH_LONG).show();
+            }
+        }
     }
 
     // lista megosztása adatbázis frissítése

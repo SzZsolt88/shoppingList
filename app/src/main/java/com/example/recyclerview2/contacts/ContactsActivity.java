@@ -68,6 +68,13 @@ public class ContactsActivity extends AppCompatActivity implements OnContactItem
             }
         });
 
+        contactDB.getErrorMessage().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String errorMessage) {
+                Snackbar.make(contactListView, errorMessage, Snackbar.LENGTH_LONG).show();
+            }
+        });
+
         contactAdapter = new ContactsAdapter(this);
         contactListView.setAdapter(contactAdapter);
 

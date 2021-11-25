@@ -1,12 +1,9 @@
 package com.example.recyclerview2.appDataBase;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -15,7 +12,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +22,7 @@ public class ContactDB {
     private List<ContactClass> contactList;
     private MutableLiveData<List<ContactClass>> contactListLiveData;
     private MutableLiveData<List<ContactClass>> confirmedContactsLiveData;
+    private MutableLiveData<String> errorMessage;
 
     private static final String COLLECTION_OF_USERS = "users";
     private static final String COLLECTION_OF_CONTACTS = "contactList";
@@ -39,12 +36,12 @@ public class ContactDB {
     private static final String CONTACT_NOT_CONFIRMED = "1";
     private static final String CONTACT_NEED_CONFIRM = "2";
 
-
     public ContactDB(UserClass currentUser) {
         fStore = FirebaseFirestore.getInstance();
         contactList = new ArrayList<>();
         contactListLiveData = new MutableLiveData<>();
         confirmedContactsLiveData = new MutableLiveData<>();
+        errorMessage = new MutableLiveData<>();
         this.currentUser = currentUser;
     }
 
@@ -77,32 +74,45 @@ public class ContactDB {
                             ContactClass getContact = new ContactClass(documentSnapshot.getId(),documentSnapshot.get("fullName").toString(), documentSnapshot.get("userName").toString(), CONTACT_NOT_CONFIRMED);
                             addNewContact(getContact);
                         }
-                        else {Log.d("TAG", "contactExists: false");}
+                        else {
+                            errorMessage.postValue("Nincs ilyen e-mail címmel regisztrált tagunk!");
+                        }
                     }
                 });
     }
 
     public void addNewContact(ContactClass newContact) {
-        DocumentReference contactRef = fStore.collection(COLLECTION_OF_USERS).document(currentUser.getuMail()).collection(COLLECTION_OF_CONTACTS).document(newContact.getContactEmail());
-        contactRef.set(newContact).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()) {
-                    contactList.add(newContact);
-                    contactListLiveData.postValue(contactList);
+        if(!isInContact(newContact)) {
+            DocumentReference contactRef = fStore.collection(COLLECTION_OF_USERS).document(currentUser.getuMail()).collection(COLLECTION_OF_CONTACTS).document(newContact.getContactEmail());
+            contactRef.set(newContact).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()) {
+                        contactList.add(newContact);
+                        contactListLiveData.postValue(contactList);
+                    }
                 }
-            }
-        });
-        DocumentReference otherUserContactList = fStore.collection(COLLECTION_OF_USERS).document(newContact.getContactEmail()).collection(COLLECTION_OF_CONTACTS).document(currentUser.getuMail());
-        ContactClass mySelf = new ContactClass(currentUser.getuMail(),currentUser.getFullName(),currentUser.getuName(),CONTACT_NEED_CONFIRM);
-        otherUserContactList.set(mySelf).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
+            });
+            DocumentReference otherUserContactList = fStore.collection(COLLECTION_OF_USERS).document(newContact.getContactEmail()).collection(COLLECTION_OF_CONTACTS).document(currentUser.getuMail());
+            ContactClass mySelf = new ContactClass(currentUser.getuMail(),currentUser.getFullName(),currentUser.getuName(),CONTACT_NEED_CONFIRM);
+            otherUserContactList.set(mySelf).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
 
+                    }
                 }
+            });
+        } else errorMessage.postValue("Már ismerősnek jelölted!");
+    }
+
+    private boolean isInContact(ContactClass contactClass) {
+        for (ContactClass contacts : contactList) {
+            if (contacts.getContactEmail().equals(contactClass.getContactEmail())) {
+                return true;
             }
-        });
+        }
+        return false;
     }
 
     public void updateContact(ContactClass updateContact, int position) {
@@ -154,4 +164,6 @@ public class ContactDB {
     }
 
     public MutableLiveData<List<ContactClass>> getConfirmedContactsLiveData() { return confirmedContactsLiveData; }
+
+    public MutableLiveData<String> getErrorMessage() { return errorMessage; }
 }

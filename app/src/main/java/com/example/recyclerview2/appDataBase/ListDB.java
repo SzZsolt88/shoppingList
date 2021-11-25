@@ -144,21 +144,35 @@ public class ListDB {
     public void deleteList(ListClass deleteList) {
         String listID = deleteList.getListID();
         DocumentReference deleteListRef = fStore.collection(USERS).document(deleteList.getOwner()).collection(LISTS).document(listID);
+        DocumentReference deleteProdRef = fStore.collection(USERS).document(deleteList.getOwner()).collection(LISTS).document(listID).collection(PRODUCTS).document(PRODUCTS_OF_LIST);
         if (fAuth.getCurrentUser().getEmail().equals(deleteList.getOwner())) {
             if (deleteList.isShared()) {
                 for (ContactClass deleteShares : deleteList.getSharedWith()) {
                     deleteSharing(listID,deleteShares.getContactEmail());
                 }
             }
+            deleteProdRef.delete();
             deleteListRef.delete();
         } else {
             List<ContactClass> sharedWithList = deleteList.getSharedWith();
             for (ContactClass sharedWith : sharedWithList) {
                 if (fAuth.getCurrentUser().getEmail().equals(sharedWith.getContactEmail())) {
                     sharedWithList.remove(sharedWith);
+                    break;
                 }
-                shareList(deleteList, sharedWithList);
             }
+
+            if (sharedWithList.size() == 0) {
+                deleteListRef.update(LIST_IS_SHARED, false);
+                deleteListRef.update(LIST_SHARED_WITH, null);
+            } else {
+                deleteListRef.update(LIST_SHARED_WITH, sharedWithList);
+            }
+            DocumentReference externalListsRef = fStore.collection(USERS).document(fAuth.getCurrentUser().getEmail());
+            Map<String, String> deleteSharedList = new HashMap<>();
+            deleteSharedList.put("ListID", deleteList.getListID());
+            deleteSharedList.put("OwnerMail", deleteList.getOwner());
+            externalListsRef.update("externalLists", FieldValue.arrayRemove(deleteSharedList));
         }
         shoppingLists.remove(deleteList);
         listMutableLiveData.postValue(shoppingLists);
