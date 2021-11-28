@@ -2,190 +2,375 @@
 <resources>
     <string-array name="product_variants">
         //fruit and vegetables
-        <item>Áfonya</item>
-        <item>Alma</item>
-        <item>Almapaprika</item>
-        <item>Ananász</item>
-        <item>Articsóka</item>
+        <item category="fruitandvegetables">Áfonya</item>
+        <item category="fruitandvegetables">Alma</item>
+        <item category="fruitandvegetables">Almapaprika</item>
+        <item category="fruitandvegetables">Ananász</item>
+        <item category="fruitandvegetables">Articsóka</item>
 
-        <item>Bab</item>
-        <item>Banán</item>
-        <item>Birsalma</item>
-        <item>Borsó</item>
-        <item>Brokkoli</item>
-        <item>Burgonya</item>
+        <item category="fruitandvegetables">Bab</item>
+        <item category="fruitandvegetables">Banán</item>
+        <item category="fruitandvegetables">Birsalma</item>
+        <item category="fruitandvegetables">Borsó</item>
+        <item category="fruitandvegetables">Brokkoli</item>
+        <item category="fruitandvegetables">Burgonya</item>
 
-        <item>Cékla</item>
-        <item>Citrom</item>
-        <item>Cukkini</item>
-        <item>Cukorborsó</item>
-        <item>Cseresznye</item>
-        <item>Csicseriborsó</item>
-        <item>Csicsóka</item>
+        <item category="fruitandvegetables">Cékla</item>
+        <item category="fruitandvegetables">Citrom</item>
+        <item category="fruitandvegetables">Cukkini</item>
+        <item category="fruitandvegetables">Cukorborsó</item>
+        <item category="fruitandvegetables">Cseresznye</item>
+        <item category="fruitandvegetables">Csicseriborsó</item>
+        <item category="fruitandvegetables">Csicsóka</item>
 
-        <item>Datolya</item>
+        <item category="fruitandvegetables">Datolya</item>
 
-        <item>Édesburgonya</item>
-        <item>Egres</item>
-        <item>Eper</item>
+        <item category="fruitandvegetables">Édesburgonya</item>
+        <item category="fruitandvegetables">Egres</item>
+        <item category="fruitandvegetables">Eper</item>
 
-        <item>Fehér hagyma</item>
-        <item>Fejes saláta</item>
-        <item>Fekete burgonya</item>
-        <item>Fodros kel</item>
-        <item>Fokhagyma</item>
-        <item>Füge</item>
+        <item category="fruitandvegetables">Fehér hagyma</item>
+        <item category="fruitandvegetables">Fejes saláta</item>
+        <item category="fruitandvegetables">Fekete burgonya</item>
+        <item category="fruitandvegetables">Fodros kel</item>
+        <item category="fruitandvegetables">Fokhagyma</item>
+        <item category="fruitandvegetables">Füge</item>
 
-        <item>Görögdinnye</item>
-        <item>Gránátalma</item>
-        <item>Grapefruit</item>
+        <item category="fruitandvegetables">Görögdinnye</item>
+        <item category="fruitandvegetables">Gránátalma</item>
+        <item category="fruitandvegetables">Grapefruit</item>
 
-        <item>Gyöngyhagyma</item>
+        <item category="fruitandvegetables">Gyöngyhagyma</item>
 
-        <item>Hagyma</item>
-        <item>Hokkaido tök</item>
+        <item category="fruitandvegetables">Hagyma</item>
+        <item category="fruitandvegetables">Hokkaido tök</item>
 
-        <item>Kajszibarack</item>
-        <item>Kaliforniai paprika</item>
-        <item>Káposzta</item>
-        <item>Karalábé</item>
-        <item>Karfiol</item>
-        <item>Kelbimbó</item>
-        <item>Kelkáposzta</item>
-        <item>Kínai kel</item>
-        <item>Kígyóuborka</item>
-        <item>Kiwi</item>
-        <item>Koktélparadicsom</item>
-        <item>Körte</item>
-        <item>Krumpli</item>
-        <item>Kukorica</item>
+        <item category="fruitandvegetables">Kajszibarack</item>
+        <item category="fruitandvegetables">Kaliforniai paprika</item>
+        <item category="fruitandvegetables">Káposzta</item>
+        <item category="fruitandvegetables">Karalábé</item>
+        <item category="fruitandvegetables">Karfiol</item>
+        <item category="fruitandvegetables">Kelbimbó</item>
+        <item category="fruitandvegetables">Kelkáposzta</item>
+        <item category="fruitandvegetables">Kínai kel</item>
+        <item category="fruitandvegetables">Kígyóuborka</item>
+        <item category="fruitandvegetables">Kiwi</item>
+        <item category="fruitandvegetables">Koktélparadicsom</item>
+        <item category="fruitandvegetables">Körte</item>
+        <item category="fruitandvegetables">Krumpli</item>
+        <item category="fruitandvegetables">Kukorica</item>
 
-        <item>Lencse</item>
-        <item>Licsi</item>
-        <item>Lime</item>
-        <item>Lilahagyma</item>
+        <item category="fruitandvegetables">Lencse</item>
+        <item category="fruitandvegetables">Licsi</item>
+        <item category="fruitandvegetables">Lime</item>
+        <item category="fruitandvegetables">Lilahagyma</item>
 
 
-        <item>Málna</item>
-        <item>Mandarin</item>
-        <item>Mangó</item>
-        <item>Mángold</item>
-        <item>Maracuja</item>
-        <item>Medvehagyma</item>
-        <item>Metélőhagyma</item>
-        <item>Meggy</item>
-        <item>Mungóbab</item>
+        <item category="fruitandvegetables">Málna</item>
+        <item category="fruitandvegetables">Mandarin</item>
+        <item category="fruitandvegetables">Mangó</item>
+        <item category="fruitandvegetables">Mángold</item>
+        <item category="fruitandvegetables">Maracuja</item>
+        <item category="fruitandvegetables">Medvehagyma</item>
+        <item category="fruitandvegetables">Metélőhagyma</item>
+        <item category="fruitandvegetables">Meggy</item>
+        <item category="fruitandvegetables">Mungóbab</item>
 
-        <item>Narancs</item>
-        <item>Naspolya</item>
-        <item>Nektarin</item>
+        <item category="fruitandvegetables">Narancs</item>
+        <item category="fruitandvegetables">Naspolya</item>
+        <item category="fruitandvegetables">Nektarin</item>
 
-        <item>Okra</item>
-        <item>Őszibarack</item>
+        <item category="fruitandvegetables">Okra</item>
+        <item category="fruitandvegetables">Őszibarack</item>
 
-        <item>Padlizsán</item>
-        <item>Pak choi</item>
-        <item>Paprika</item>
-        <item>Paradicsom</item>
-        <item>Papaya</item>
-        <item>Paraj</item>
-        <item>Paszternák</item>
-        <item>Patisszon</item>
-        <item>Pepperoni</item>
-        <item>Petrezselyem</item>
-        <item>Pomelo</item>
-        <item>Póréhagyma</item>
-        <item>Pritaminpaprika</item>
+        <item category="fruitandvegetables">Padlizsán</item>
+        <item category="fruitandvegetables">Pak choi</item>
+        <item category="fruitandvegetables">Paprika</item>
+        <item category="fruitandvegetables">Paradicsom</item>
+        <item category="fruitandvegetables">Papaya</item>
+        <item category="fruitandvegetables">Paraj</item>
+        <item category="fruitandvegetables">Paszternák</item>
+        <item category="fruitandvegetables">Patisszon</item>
+        <item category="fruitandvegetables">Pepperoni</item>
+        <item category="fruitandvegetables">Petrezselyem</item>
+        <item category="fruitandvegetables">Pomelo</item>
+        <item category="fruitandvegetables">Póréhagyma</item>
+        <item category="fruitandvegetables">Pritaminpaprika</item>
 
-        <item>Rebarbara</item>
-        <item>Retek</item>
-        <item>Ribizli</item>
-        <item>Rózsaburgonya</item>
+        <item category="fruitandvegetables">Rebarbara</item>
+        <item category="fruitandvegetables">Retek</item>
+        <item category="fruitandvegetables">Ribizli</item>
+        <item category="fruitandvegetables">Rózsaburgonya</item>
 
-        <item>Saláta</item>
-        <item>Salátahagyma</item>
-        <item>Salottahagyma</item>
-        <item>Sárgabarack</item>
-        <item>Sárgadinnye</item>
-        <item>Sárgarépa</item>
-        <item>Sárkánygyümölcs</item>
-        <item>Sonkahagyma</item>
-        <item>Sóska</item>
-        <item>Spárga</item>
-        <item>Spenót</item>
-        <item>Sütőtök</item>
+        <item category="fruitandvegetables">Saláta</item>
+        <item category="fruitandvegetables">Salátahagyma</item>
+        <item category="fruitandvegetables">Salottahagyma</item>
+        <item category="fruitandvegetables">Sárgabarack</item>
+        <item category="fruitandvegetables">Sárgadinnye</item>
+        <item category="fruitandvegetables">Sárgarépa</item>
+        <item category="fruitandvegetables">Sárkánygyümölcs</item>
+        <item category="fruitandvegetables">Sonkahagyma</item>
+        <item category="fruitandvegetables">Sóska</item>
+        <item category="fruitandvegetables">Spárga</item>
+        <item category="fruitandvegetables">Spenót</item>
+        <item category="fruitandvegetables">Sütőtök</item>
 
-        <item>Szamóca</item>
-        <item>Szeder</item>
-        <item>Szilva</item>
-        <item>Szója</item>
-        <item>Szőlő</item>
+        <item category="fruitandvegetables">Szamóca</item>
+        <item category="fruitandvegetables">Szeder</item>
+        <item category="fruitandvegetables">Szilva</item>
+        <item category="fruitandvegetables">Szója</item>
+        <item category="fruitandvegetables">Szőlő</item>
 
-        <item>Tépősaláta</item>
-        <item>Torma</item>
+        <item category="fruitandvegetables">Tépősaláta</item>
+        <item category="fruitandvegetables">Torma</item>
 
-        <item>Uborka</item>
-        <item>Újhagyma</item>
+        <item category="fruitandvegetables">Uborka</item>
+        <item category="fruitandvegetables">Újhagyma</item>
 
-        <item>Vörösbab</item>
-        <item>Vöröshagyma</item>
-        <item>Vöröskáposzta</item>
+        <item category="fruitandvegetables">Vörösbab</item>
+        <item category="fruitandvegetables">Vöröshagyma</item>
+        <item category="fruitandvegetables">Vöröskáposzta</item>
 
-        <item>Zeller</item>
-        <item>Zöldbab</item>
-        <item>Zöldpaprika</item>
+        <item category="fruitandvegetables">Zeller</item>
+        <item category="fruitandvegetables">Zöldbab</item>
+        <item category="fruitandvegetables">Zöldpaprika</item>
 
     //Bakery products
-        <item>Buci</item>
-        <item>Búrkifli</item>
-        <item>Ciabatta</item>
-        <item>Croissant</item>
-        <item>Császárbuci</item>
-        <item>Császárzsemle</item>
-        <item>Fonott kalács</item>
-        <item>Kakaós csiga</item>
-        <item>Kenyér</item>
-        <item>Kifli</item>
-        <item>Pogácsa</item>
-        <item>Rétes</item>
-        <item>Stangli</item>
-        <item>Túrós batyu</item>
-        <item>Vekni</item>
-        <item>Zsemle</item>
+        <item category="bakery">Buci</item>
+        <item category="bakery">Búrkifli</item>
+        <item category="bakery">Ciabatta</item>
+        <item category="bakery">Croissant</item>
+        <item category="bakery">Császárbuci</item>
+        <item category="bakery">Császárzsemle</item>
+        <item category="bakery">Fonott kalács</item>
+        <item category="bakery">Kakaós csiga</item>
+        <item category="bakery">Kenyér</item>
+        <item category="bakery">Kifli</item>
+        <item category="bakery">Pogácsa</item>
+        <item category="bakery">Rétes</item>
+        <item category="bakery">Stangli</item>
+        <item category="bakery">Túrós batyu</item>
+        <item category="bakery">Vekni</item>
+        <item category="bakery">Zsemle</item>
 
      //Dairy products
-        <item>Camembert</item>
-        <item>Habtejszín</item>
-        <item>Jégkrém</item>
-        <item>Joghurt</item>
-        <item>Juhtúró</item>
-        <item>Kefír</item>
-        <item>Kakaó</item>
-        <item>Karamellás tej</item>
-        <item>Kávétejszín</item>
-        <item>Ömlesztett sajt</item>
-        <item>Sajt</item>
-        <item>Tehéntúró</item>
-        <item>Tej</item>
-        <item>Tejföl</item>
-        <item>Tejszín</item>
-        <item>Tejszínhab</item>
-        <item>Túró</item>
-        <item>Trappista sajt</item>
-        <item>Vaj</item>
+        <item category="dairy">Camembert</item>
+        <item category="dairy">Habtejszín</item>
+        <item category="dairy">Jégkrém</item>
+        <item category="dairy">Joghurt</item>
+        <item category="dairy">Juhtúró</item>
+        <item category="dairy">Kefír</item>
+        <item category="dairy">Kakaó</item>
+        <item category="dairy">Karamellás tej</item>
+        <item category="dairy">Kávétejszín</item>
+        <item category="dairy">Ömlesztett sajt</item>
+        <item category="dairy">Sajt</item>
+        <item category="dairy">Tehéntúró</item>
+        <item category="dairy">Tej</item>
+        <item category="dairy">Tejföl</item>
+        <item category="dairy">Tejszín</item>
+        <item category="dairy">Tejszínhab</item>
+        <item category="dairy">Túró</item>
+        <item category="dairy">Trappista sajt</item>
+        <item category="dairy">Vaj</item>
 
         //Beverage
-        <item>Ásványvíz</item>
-        <item>Fehérbor</item>
-        <item>Pálinka</item>
-        <item>Pálinka</item>
-        <item>Pezsgő</item>
-        <item>Szódavíz</item>
-        <item>Tea</item>
-        <item>Pezsgő</item>
-        <item>Vörösbor</item>
+        <item category="beverage">Ásványvíz</item>
+        <item category="beverage">Fehérbor</item>
+        <item category="beverage">Pálinka</item>
+        <item category="beverage">Pálinka</item>
+        <item category="beverage">Pezsgő</item>
+        <item category="beverage">Szódavíz</item>
+        <item category="beverage">Tea</item>
+        <item category="beverage">Pezsgő</item>
+        <item category="beverage">Vörösbor</item>
+
+    </string-array>
+
+    <string-array name="product_categories">
+        //fruit and vegetables
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
 
 
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+        <item>fruitandvegetables</item>
+
+        //Bakery products
+        <item>bakery</item>
+        <item>bakery</item>
+        <item>bakery</item>
+        <item>bakery</item>
+        <item>bakery</item>
+        <item>bakery</item>
+        <item>bakery</item>
+        <item>bakery</item>
+        <item>bakery</item>
+        <item>bakery</item>
+        <item>bakery</item>
+        <item>bakery</item>
+        <item>bakery</item>
+        <item>bakery</item>
+        <item>bakery</item>
+        <item>bakery</item>
+
+        //Dairy products
+        <item>dairy</item>
+        <item>dairy</item>
+        <item>dairy</item>
+        <item>dairy</item>
+        <item>dairy</item>
+        <item>dairy</item>
+        <item>dairy</item>
+        <item>dairy</item>
+        <item>dairy</item>
+        <item>dairy</item>
+        <item>dairy</item>
+        <item>dairy</item>
+        <item>dairy</item>
+        <item>dairy</item>
+        <item>dairy</item>
+        <item>dairy</item>
+        <item>dairy</item>
+        <item>dairy</item>
+        <item>dairy</item>
+
+        //Beverage
+        <item>beverage</item>
+        <item>beverage</item>
+        <item>beverage</item>
+        <item>beverage</item>
+        <item>beverage</item>
+        <item>beverage</item>
+        <item>beverage</item>
+        <item>beverage</item>
+        <item>beverage</item>
 
     </string-array>
 </resources>

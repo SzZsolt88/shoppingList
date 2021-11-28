@@ -14,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,6 +56,34 @@ public class UserRegister {
         user.put("userName", uName);
         user.put("activeStatus", true);
         user.put("lists", null);
+        String  statisticsID = new SimpleDateFormat("yyyyMM").format(new Date());
+        DocumentReference StatisticsRef = fStore.collection("users").document(userMailAddress).collection("statistics").document(statisticsID);
+        Map<String, Object> fruitandvegetables = new HashMap<>();
+        fruitandvegetables.put("quantity", 0);
+
+        Map<String, Object> bakery = new HashMap<>();
+        bakery.put("quantity", 0);
+
+        Map<String, Object> dairy = new HashMap<>();
+        dairy.put("quantity", 0);
+
+        Map<String, Object> beverage = new HashMap<>();
+        beverage.put("quantity", 0);
+
+        Map<String, Object> other = new HashMap<>();
+        other.put("quantity", 0);
+
+        Map<String, Object> category = new HashMap<>();
+        category.put("fruitandvegetables", fruitandvegetables);
+        category.put("bakery", bakery);
+        category.put("dairy", dairy);
+        category.put("beverage", beverage);
+        category.put("other", beverage);
+
+        StatisticsRef.set(category);
+
+        user.put("statistics", StatisticsRef);
+
         documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {

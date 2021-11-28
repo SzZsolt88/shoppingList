@@ -26,6 +26,7 @@ import com.example.recyclerview2.R;
 import com.example.recyclerview2.appDataBase.ProductDB;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
     private String ownerMail;
     private String title;
     private String listID;
+    private int product_variants;
 
     //létrehozás, nézet elemeinek és funkcióinak beállítása
     @Override
@@ -199,7 +201,23 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
 
     @Override
     public void saveCheckedStatus(ProductClass product) {
-        productDB.saveCheckedStatus(product);
+
+        String[] productVariants = getResources().getStringArray(R.array.product_variants);
+        String[] productCategories = getResources().getStringArray(R.array.product_categories);
+        String category = "";
+        for (int i = 0; i < productVariants.length; i++) {
+            if (productVariants[i].contentEquals(product.getName())) {
+                category = productCategories[i];
+            }
+        }
+        if(category == "") {
+            category = "other";
+        }
+        try {
+            productDB.saveCheckedStatus(product, category);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         adapter.notifyDataSetChanged();
     }
 }
