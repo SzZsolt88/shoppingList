@@ -75,7 +75,6 @@ public class ListShareFragment extends DialogFragment implements ListShareInterf
 
 
         //visszaigazolt felhasználók listájának megjelenítése.
-        contactsView.setHasFixedSize(true);
         contactsView.setLayoutManager(new LinearLayoutManager(v.getContext()));
         contactsView.setItemAnimator(new DefaultItemAnimator());
         listShareContactAdapter = new ListShareContactAdapter(this);

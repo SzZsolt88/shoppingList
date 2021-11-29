@@ -16,7 +16,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactDB {
+public class ContactDB extends FireStoreInstance {
     private FirebaseFirestore fStore;
     private UserClass currentUser;
     private List<ContactClass> contactList;
@@ -24,17 +24,7 @@ public class ContactDB {
     private MutableLiveData<List<ContactClass>> confirmedContactsLiveData;
     private MutableLiveData<String> errorMessage;
 
-    private static final String COLLECTION_OF_USERS = "users";
-    private static final String COLLECTION_OF_CONTACTS = "contactList";
 
-    private static final String EMAIL = "contactEmail";
-    private static final String FULL_NAME = "contactFullName";
-    private static final String USER_NAME = "contactUserName";
-    private static final String CONTACT_STATUS = "contactStatus";
-
-    private static final String CONTACT_CONFIRMED = "0";
-    private static final String CONTACT_NOT_CONFIRMED = "1";
-    private static final String CONTACT_NEED_CONFIRM = "2";
 
     public ContactDB(UserClass currentUser) {
         fStore = FirebaseFirestore.getInstance();

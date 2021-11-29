@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class UserLogin {
+public class UserLogin extends FireStoreInstance{
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;
     private UserLoginInterface userLoginInterface;
@@ -47,7 +47,7 @@ public class UserLogin {
 
     public void startListActivity() {
         String userMailAddress = fAuth.getCurrentUser().getEmail();
-        fStore.collection("users").document(userMailAddress).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        fStore.collection(USERS).document(userMailAddress).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {

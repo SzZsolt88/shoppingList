@@ -27,25 +27,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ListDB {
+public class ListDB extends FireStoreInstance {
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;
     private List<ListClass> shoppingLists;
     private MutableLiveData<List<ListClass>> listMutableLiveData;
     private String ownerMail;
-
-    private static final String LIST_NAME = "listName";
-    private static final String LIST_ID = "listID";
-    private static final String OWNER = "owner";
-    private static final String OWNER_NAME = "ownerName";
-    private static final String LIST_IS_SHARED = "shared";
-    private static final String LIST_SHARED_WITH = "sharedWith";
-
-    private static final String USERS = "users";
-    private static final String LISTS = "lists";
-
-    private static final String PRODUCTS = "products";
-    private static final String PRODUCTS_OF_LIST = "productsOfList";
 
     //construktor
     public ListDB(String ownerMail) {
@@ -135,7 +122,7 @@ public class ListDB {
         newList.setListID(listID);
         newListRef.set(newList);
         postChanges(newList);
-        DocumentReference listRef = fStore.collection(USERS).document(ownerMail).collection(LISTS).document(listID).collection(PRODUCTS).document(PRODUCTS_OF_LIST);
+        DocumentReference listRef = fStore.collection(USERS).document(ownerMail).collection(LISTS).document(listID).collection(COLLECTION_PRODUCTS).document(PRODUCTS_OF_LIST);
         Map<String, Object> products = new HashMap<>();
         listRef.set(products);
     }
@@ -144,7 +131,7 @@ public class ListDB {
     public void deleteList(ListClass deleteList) {
         String listID = deleteList.getListID();
         DocumentReference deleteListRef = fStore.collection(USERS).document(deleteList.getOwner()).collection(LISTS).document(listID);
-        DocumentReference deleteProdRef = fStore.collection(USERS).document(deleteList.getOwner()).collection(LISTS).document(listID).collection(PRODUCTS).document(PRODUCTS_OF_LIST);
+        DocumentReference deleteProdRef = fStore.collection(USERS).document(deleteList.getOwner()).collection(LISTS).document(listID).collection(COLLECTION_PRODUCTS).document(PRODUCTS_OF_LIST);
         if (fAuth.getCurrentUser().getEmail().equals(deleteList.getOwner())) {
             if (deleteList.isShared()) {
                 for (ContactClass deleteShares : deleteList.getSharedWith()) {

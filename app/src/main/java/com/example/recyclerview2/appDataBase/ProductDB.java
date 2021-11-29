@@ -1,12 +1,11 @@
 package com.example.recyclerview2.appDataBase;
 
+import android.net.ConnectivityManager;
 import android.util.Log;
-import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-
-import com.example.recyclerview2.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -15,28 +14,24 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Source;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProductDB {
-    private static final String TAG = "ProductDB";
+public class ProductDB extends FireStoreInstance {
+    private static final String TAG = "TAG";
     private FirebaseFirestore fStore;
     private List<ProductClass> productsList;
     private MutableLiveData<List<ProductClass>> productsMutableLiveData;
     private String ownerMail;
     private String listID;
     private int quantity;
-
-    private static final String USERS = "users";
-    private static final String LISTS = "lists";
-    private static final String PRODUCTS = "products";
-    private static final String PRODUCTS_OF_LIST = "productsOfList";
+    private Source source;
 
     public ProductDB(String ownerMail, String listID) {
         this.ownerMail = ownerMail;
@@ -45,6 +40,7 @@ public class ProductDB {
         productsList = new ArrayList<>();
         productsMutableLiveData = new MutableLiveData<>();
         quantity = 0;
+        source = Source.CACHE;
     }
 
     public int getQuantity() {
@@ -55,21 +51,26 @@ public class ProductDB {
         this.quantity = quantity;
     }
 
-    public void getAllProductsOfList() {
-        DocumentReference listRef = fStore.collection(USERS).document(ownerMail).collection(LISTS).document(listID).collection(PRODUCTS).document(PRODUCTS_OF_LIST);
-        listRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    public void getAllProductsOfList(boolean connected) {
+        if (connected) {
+            source = Source.SERVER;
+        } else {
+            source = Source.CACHE;
+        }
+        DocumentReference listRef = fStore.collection(USERS).document(ownerMail).collection(LISTS).document(listID).collection(COLLECTION_PRODUCTS).document(PRODUCTS_OF_LIST);
+        listRef.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()) {
-                    if (task.getResult().get("products") != null) {
-                        List<Map<String, ProductClass>> products = (List<Map<String, ProductClass>>) task.getResult().get("products");
+                    if (task.getResult().get(PRODUCT_ARRAY) != null) {
+                        List<Map<String, ProductClass>> products = (List<Map<String, ProductClass>>) task.getResult().get(PRODUCT_ARRAY);
                         for (int i = 0; i<products.size(); i++) {
                             ProductClass productClass = new ProductClass(
-                                   String.valueOf(products.get(i).get("name")),
-                                   String.valueOf(products.get(i).get("quantity")),
-                                   String.valueOf(products.get(i).get("quantityType")),
-                                   Boolean.valueOf(String.valueOf(products.get(i).get("checked"))));
-                           productsList.add(productClass);
+                                    String.valueOf(products.get(i).get(PRODUCT_NAME)),
+                                    String.valueOf(products.get(i).get(PRODUCT_QUANTITY)),
+                                    String.valueOf(products.get(i).get(PRODUCT_QUANTITY_TYPE)),
+                                    Boolean.valueOf(String.valueOf(products.get(i).get(PRODUCT_CHECKED_STATUS))));
+                            productsList.add(productClass);
                         }
                         Collections.sort(productsList);
                         productsMutableLiveData.postValue(productsList);
@@ -78,38 +79,34 @@ public class ProductDB {
             }
         });
     }
-
     public void registerNewProduct(ProductClass productClass) {
-        DocumentReference listRef = fStore.collection(USERS).document(ownerMail).collection(LISTS).document(listID).collection(PRODUCTS).document(PRODUCTS_OF_LIST);
-        listRef.update("products", FieldValue.arrayUnion(productClass));
+        DocumentReference listRef = fStore.collection(USERS).document(ownerMail).collection(LISTS).document(listID).collection(COLLECTION_PRODUCTS).document(PRODUCTS_OF_LIST);
+        listRef.update(PRODUCT_ARRAY, FieldValue.arrayUnion(productClass));
         productsList.add(productClass);
         Collections.sort(productsList);
         productsMutableLiveData.postValue(productsList);
     }
-
     public void deleteProduct(ProductClass deleteProduct) {
-        DocumentReference listRef = fStore.collection(USERS).document(ownerMail).collection(LISTS).document(listID).collection(PRODUCTS).document(PRODUCTS_OF_LIST);
-        listRef.update("products", FieldValue.arrayRemove(deleteProduct));
+        DocumentReference listRef = fStore.collection(USERS).document(ownerMail).collection(LISTS).document(listID).collection(COLLECTION_PRODUCTS).document(PRODUCTS_OF_LIST);
+        listRef.update(PRODUCT_ARRAY, FieldValue.arrayRemove(deleteProduct));
         productsList.remove(deleteProduct);
         productsMutableLiveData.postValue(productsList);
     }
-
     public void updateProduct(ProductClass originalProduct, ProductClass alreadyUpdatedProduct) {
         deleteProduct(originalProduct);
         registerNewProduct(alreadyUpdatedProduct);
     }
-
     public void saveCheckedStatus(ProductClass boughtProduct, String category) throws InterruptedException {
-        DocumentReference listRef = fStore.collection(USERS).document(ownerMail).collection(LISTS).document(listID).collection(PRODUCTS).document(PRODUCTS_OF_LIST);
-        listRef.update("products", FieldValue.arrayRemove(boughtProduct));
+        DocumentReference listRef = fStore.collection(USERS).document(ownerMail).collection(LISTS).document(listID).collection(COLLECTION_PRODUCTS).document(PRODUCTS_OF_LIST);
+        listRef.update(PRODUCT_ARRAY, FieldValue.arrayRemove(boughtProduct));
         productsList.remove(boughtProduct);
         boughtProduct.setChecked(!boughtProduct.isChecked());
-        listRef.update("products", FieldValue.arrayUnion(boughtProduct));
+        listRef.update(PRODUCT_ARRAY, FieldValue.arrayUnion(boughtProduct));
         productsList.add(boughtProduct);
         Collections.sort(productsList);
         productsMutableLiveData.postValue(productsList);
         String  statisticsID = new SimpleDateFormat("yyyyMM").format(new Date());
-        DocumentReference statisticsRef = fStore.collection(USERS).document(ownerMail).collection("statistics").document(statisticsID);
+        DocumentReference statisticsRef = fStore.collection(USERS).document(ownerMail).collection(COLLECTION_OF_STATISTICS).document(statisticsID);
         statisticsRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -161,5 +158,4 @@ public class ProductDB {
     public MutableLiveData<List<ProductClass>> getProductsMutableLiveData() {
         return productsMutableLiveData;
     }
-
 }

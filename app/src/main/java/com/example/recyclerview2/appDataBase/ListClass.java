@@ -1,6 +1,5 @@
 package com.example.recyclerview2.appDataBase;
 
-
 import com.google.firebase.firestore.Exclude;
 
 import java.util.ArrayList;

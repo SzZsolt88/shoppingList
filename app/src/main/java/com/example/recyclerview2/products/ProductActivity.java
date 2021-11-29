@@ -1,7 +1,12 @@
 package com.example.recyclerview2.products;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkRequest;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,6 +17,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -26,9 +32,10 @@ import com.example.recyclerview2.R;
 import com.example.recyclerview2.appDataBase.ProductDB;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.io.Console;
-import java.util.ArrayList;
+
 import java.util.List;
+
+import javax.xml.transform.Source;
 
 public class ProductActivity extends AppCompatActivity implements OnProductItemCL {
     private Button addProduct;
@@ -43,6 +50,10 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
     private String title;
     private String listID;
     private int product_variants;
+    private ConnectivityManager cm;
+    private NetworkRequest networkRequest;
+    private ConnectivityManager.NetworkCallback callback;
+    private boolean connected;
 
     //létrehozás, nézet elemeinek és funkcióinak beállítása
     @Override
@@ -54,6 +65,7 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
         ownerMail = intent.getStringExtra("ownerMail");
         title = intent.getStringExtra("name");
         listID = intent.getStringExtra("ID");
+
 
 
         addProduct = findViewById(R.id.addProductBtn);
@@ -78,14 +90,11 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
         ArrayAdapter<String> adapterUnits = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,units);
         productQuantityUnit.setAdapter(adapterUnits);
 
+        checkInternet(this);
+        cm.registerNetworkCallback(networkRequest, callback);
         productDB = new ProductDB(ownerMail, listID);
-        productDB.getAllProductsOfList();
-        productDB.getProductsMutableLiveData().observe(this, new Observer<List<ProductClass>>() {
-            @Override
-            public void onChanged(List<ProductClass> productClasses) {
-                adapter.setProducts(productClasses);
-            }
-        });
+
+
 
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,5 +228,44 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
             e.printStackTrace();
         }
         adapter.notifyDataSetChanged();
+    }
+
+    private void checkInternet(Context context) {
+        cm = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
+        networkRequest = new NetworkRequest.Builder()
+                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+                .build();
+        callback = new ConnectivityManager.NetworkCallback() {
+            @Override
+            public void onAvailable(@NonNull Network network) {
+                super.onAvailable(network);
+                connected = true;
+            }
+
+            @Override
+            public void onLost(@NonNull Network network) {
+                super.onLost(network);
+                connected = false;
+            }
+        };
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        productDB.getAllProductsOfList(connected);
+        productDB.getProductsMutableLiveData().observe(this, new Observer<List<ProductClass>>() {
+            @Override
+            public void onChanged(List<ProductClass> productClasses) {
+                adapter.setProducts(productClasses);
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        cm.unregisterNetworkCallback(callback);
     }
 }
