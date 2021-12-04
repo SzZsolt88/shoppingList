@@ -12,14 +12,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class UserRegister {
+public class UserRegister extends FireStoreInstance {
 
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;
@@ -55,34 +56,6 @@ public class UserRegister {
         user.put("fullName", fName);
         user.put("userName", uName);
         user.put("activeStatus", true);
-        user.put("lists", null);
-        String  statisticsID = new SimpleDateFormat("yyyyMM").format(new Date());
-        DocumentReference StatisticsRef = fStore.collection("users").document(userMailAddress).collection("statistics").document(statisticsID);
-        Map<String, Object> fruitandvegetables = new HashMap<>();
-        fruitandvegetables.put("quantity", 0);
-
-        Map<String, Object> bakery = new HashMap<>();
-        bakery.put("quantity", 0);
-
-        Map<String, Object> dairy = new HashMap<>();
-        dairy.put("quantity", 0);
-
-        Map<String, Object> beverage = new HashMap<>();
-        beverage.put("quantity", 0);
-
-        Map<String, Object> other = new HashMap<>();
-        other.put("quantity", 0);
-
-        Map<String, Object> category = new HashMap<>();
-        category.put("fruitandvegetables", fruitandvegetables);
-        category.put("bakery", bakery);
-        category.put("dairy", dairy);
-        category.put("beverage", beverage);
-        category.put("other", beverage);
-
-        StatisticsRef.set(category);
-
-        user.put("statistics", StatisticsRef);
 
         documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -99,4 +72,27 @@ public class UserRegister {
 
     public MutableLiveData<Boolean> getIsRegSuccess() {return isRegSuccess;}
 
+    public void createProductCategory(List<String> fruitAndVegetables, List<String> bakery, List<String> beverage, List<String> dairy, List<String> meat){
+        List<String> other = new ArrayList<>();
+        DocumentReference productCategory = fStore.collection("users").document(fAuth.getCurrentUser().getEmail()).collection("productCategory").document("productCategory");
+        productCategory.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (!documentSnapshot.exists()) {
+                        Map<String, Object> category = new HashMap<>();
+                        category.put(CATEGORY_FRUIT_AND_VEG, fruitAndVegetables);
+                        category.put(CATEGORY_BAKERY, bakery);
+                        category.put(CATEGORY_DAIRY, dairy);
+                        category.put(CATEGORY_BEVERAGE, beverage);
+                        category.put(CATEGORY_MEAT, meat);
+                        category.put(CATEGORY_OTHER, other);
+                        productCategory.set(category);
+                    }
+                }
+            }
+        });
+
+    }
 }

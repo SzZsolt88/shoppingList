@@ -12,8 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkRequest;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +29,7 @@ import com.example.recyclerview2.R;
 import com.example.recyclerview2.appDataBase.ContactClass;
 import com.example.recyclerview2.appDataBase.ListClass;
 import com.example.recyclerview2.appDataBase.ListDB;
+import com.example.recyclerview2.appDataBase.ProductClass;
 import com.example.recyclerview2.appDataBase.UserClass;
 import com.example.recyclerview2.charts.ChartActivity;
 import com.example.recyclerview2.contacts.ContactsActivity;
@@ -41,26 +47,22 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     private ListDB listDB;
     private UserClass currentUser;
     private String currentUserMail;
+    private ConnectivityManager cm;
+    private NetworkRequest networkRequest;
+    private ConnectivityManager.NetworkCallback callback;
+    private boolean connected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lists);
-        deleteDatabase("shoppingList_Database");
+
+        checkInternet(this);
+        cm.registerNetworkCallback(networkRequest, callback);
 
         Intent getCurrentUser = getIntent();
         currentUser = getCurrentUser.getParcelableExtra("currentUser");
         currentUserMail = currentUser.getuMail();
-
-        listDB = new ListDB(currentUserMail);
-        listDB.getListOfsUser();
-
-        listDB.getListMutableLiveData().observe(this, new Observer<List<ListClass>>() {
-            @Override
-            public void onChanged(List<ListClass> strings) {
-                adapter.setLists(strings);
-            }
-        });
 
         listName = findViewById(R.id.shoppingListName);
         addList = findViewById(R.id.createListButton);
@@ -71,6 +73,17 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
         shoppingListsView.setItemAnimator(new DefaultItemAnimator());
         adapter = new ListAdapter(this, currentUserMail);
         shoppingListsView.setAdapter(adapter);
+
+
+        listDB = new ListDB(currentUserMail);
+        listDB.getListOfsUser(connected);
+
+        listDB.getListMutableLiveData().observe(this, new Observer<List<ListClass>>() {
+            @Override
+            public void onChanged(List<ListClass> strings) {
+                adapter.setLists(strings);
+            }
+        });
 
         addList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,8 +148,6 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
         adapter.notifyDataSetChanged();
         return super.onOptionsItemSelected(item);
     }
-
-
 
     // felhasználói adatainak módosítása vagy a kimutatás elindítás
     private void createActivity(Context context, Class activity){
@@ -229,15 +240,40 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
         listDB.shareList(shareList, sharedWith);
     }
 
+    private void checkInternet(Context context) {
+        cm = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
+        networkRequest = new NetworkRequest.Builder()
+                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+                .build();
+        callback = new ConnectivityManager.NetworkCallback() {
+            @Override
+            public void onAvailable(@NonNull Network network) {
+                connected = true;
+                super.onAvailable(network);
+            }
+
+            @Override
+            public void onLost(@NonNull Network network) {
+                super.onLost(network);
+                connected = false;
+            }
+        };
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        cm.unregisterNetworkCallback(callback);
+    }
+
     // felhasználó kijelentkeztetése
     private void logOut() {
         listDB.singOut();
     }
 
-    // kijelentkezés a visszagomb megnyomására is!
+    // A vissza gomb megnyomásával lista nézetben semmi ne történjen
     @Override
     public void onBackPressed() {
-        logOut();
-        super.onBackPressed();
     }
 }

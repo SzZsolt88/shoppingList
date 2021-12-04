@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -25,21 +26,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
     private List<ProductClass> productList;
     private OnProductItemCL onProductClickListener;
 
+
     ProductAdapter(OnProductItemCL onProductClickListener){
         productList = new ArrayList<>();
         this.onProductClickListener = onProductClickListener;
+
     }
 
     public class productViewHolder extends RecyclerView.ViewHolder {
         private LinearLayout itemContainer;
+        private ImageView productCategoryIcon;
         private TextView pName;
         private CheckBox checkBox;
 
         public productViewHolder(View itemView, OnProductItemCL onProductItemCL) {
             super(itemView);
+            productCategoryIcon = itemView.findViewById(R.id.productCategoryIcon);
             pName = itemView.findViewById(R.id.itemName);
             checkBox = itemView.findViewById(R.id.checkBox);
             itemContainer = itemView.findViewById(R.id.shoppingListItemContainer);
+            productCategoryIcon.setImageResource(R.drawable.ic_dairy_products);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -62,6 +68,27 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
     @Override
     public void onBindViewHolder(@NonNull productViewHolder holder, int position) {
         final ProductClass productClass = productList.get(position);
+
+        switch (productClass.getProductCategory()) {
+            case "Gyümölcs és Zöldség":
+                holder.productCategoryIcon.setImageResource(R.drawable.ic_fruit_and_veg);
+                break;
+            case "Pékárú":
+                holder.productCategoryIcon.setImageResource(R.drawable.ic_bakery);
+                break;
+            case "Ital":
+                holder.productCategoryIcon.setImageResource(R.drawable.ic_beverage);
+                break;
+            case "Tejtermék":
+                holder.productCategoryIcon.setImageResource(R.drawable.ic_dairy_products);
+                break;
+            case "Hús":
+                Log.d("TAG", "onBindViewHolder: HÚS");
+                holder.productCategoryIcon.setImageResource(R.drawable.ic_meat_category_icon);
+                break;
+            default:
+                holder.productCategoryIcon.setImageResource(R.drawable.ic_unknown_category_icon);
+        }
 
         if (productClass.getQuantity().length() > 0) holder.pName.setText(productClass.getName() + " - " + productClass.getQuantity() + " " + productClass.getQuantityType());
         else holder.pName.setText(productClass.getName());
@@ -92,6 +119,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
     public void setProducts(List<ProductClass> product){
         this.productList = product;
         this.notifyDataSetChanged();
+    }
+
+    private boolean categorizeProduct(String[] category, ProductClass product) {
+        for (int i = 0; i < category.length; i++) {
+            if (product.getName().equals(category[i])) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

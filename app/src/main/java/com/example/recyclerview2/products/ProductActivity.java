@@ -17,8 +17,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,9 +33,9 @@ import com.example.recyclerview2.appDataBase.ProductDB;
 import com.google.android.material.snackbar.Snackbar;
 
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.transform.Source;
 
 public class ProductActivity extends AppCompatActivity implements OnProductItemCL {
     private Button addProduct;
@@ -45,15 +45,14 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
     private RecyclerView productsListView;
     private ProductAdapter adapter;
     private ProductDB productDB;
-    //A bevásárlólista tulajdonosa, cím és ID
     private String ownerMail;
     private String title;
     private String listID;
-    private int product_variants;
     private ConnectivityManager cm;
     private NetworkRequest networkRequest;
     private ConnectivityManager.NetworkCallback callback;
     private boolean connected;
+    private  ArrayAdapter<String> adapterProducts;
 
     //létrehozás, nézet elemeinek és funkcióinak beállítása
     @Override
@@ -65,8 +64,6 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
         ownerMail = intent.getStringExtra("ownerMail");
         title = intent.getStringExtra("name");
         listID = intent.getStringExtra("ID");
-
-
 
         addProduct = findViewById(R.id.addProductBtn);
         productName = findViewById(R.id.productNameTextView);
@@ -80,11 +77,6 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
         adapter= new ProductAdapter(this);
         productsListView.setAdapter(adapter);
 
-        //A termék neve mező kapcsolása a javasolt termékek listájának erőforrások -> product_variants
-        String[] productVariants = getResources().getStringArray(R.array.product_variants);
-        ArrayAdapter<String> adapterProducts = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, productVariants);
-        productName.setAdapter(adapterProducts);
-
         //A mennyiségi egység spinner-hez értékek társítása a "unit_variants" erőforrásból
         String[] units = getResources().getStringArray(R.array.unit_variants);
         ArrayAdapter<String> adapterUnits = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,units);
@@ -94,7 +86,16 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
         cm.registerNetworkCallback(networkRequest, callback);
         productDB = new ProductDB(ownerMail, listID);
 
-
+        //A termék neve mező kapcsolása a javasolt termékek listájának erőforrások -> product_variants
+        adapterProducts = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        productDB.getListOfAvailableProductsMutableLiveData().observe(this, new Observer<String[]>() {
+            @Override
+            public void onChanged(String[] strings) {
+                String[] productVariants = strings;
+                adapterProducts.addAll(productVariants);
+                productName.setAdapter(adapterProducts);
+            }
+        });
 
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,7 +185,7 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
     private void editProduct(){
         for (int i = 0; i < adapter.getItemCount(); i++) {
             if (adapter.getItem(i).isSelected()) {
-                ProductClass originalProduct = new ProductClass(adapter.getItem(i).getName(), adapter.getItem(i).getQuantity(), adapter.getItem(i).getQuantityType());
+                ProductClass originalProduct = adapter.getItem(i);
                 ProductEditFragment editDialog = new ProductEditFragment(originalProduct,i);
                 editDialog.show(getSupportFragmentManager(), "listNameEdit");
             }
@@ -192,13 +193,13 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
     }
 
     //elem módosítása
-    public void updateProduct(String updatedName, String updatedQuantity, int quantityType, int position) {
+    public void updateProduct(String updatedName, String updatedProductCategory, String updatedQuantity, int quantityType, int position, boolean isProductCategoryModified) {
         String updatedQuantityType = "";
         if (updatedQuantity.length() > 0) {
             updatedQuantityType = productQuantityUnit.getItemAtPosition(quantityType).toString();
         }
-        ProductClass alreadyUpdatedProduct = new ProductClass(updatedName,updatedQuantity,updatedQuantityType);
-        productDB.updateProduct(adapter.getItem(position), alreadyUpdatedProduct);
+        ProductClass alreadyUpdatedProduct = new ProductClass(updatedName,updatedQuantity,updatedQuantityType, updatedProductCategory, adapter.getItem(position).isChecked());
+        productDB.updateProduct(adapter.getItem(position), alreadyUpdatedProduct, isProductCategoryModified);
     }
 
     //elem kijelölése a listában
@@ -210,23 +211,7 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
 
     @Override
     public void saveCheckedStatus(ProductClass product) {
-
-        String[] productVariants = getResources().getStringArray(R.array.product_variants);
-        String[] productCategories = getResources().getStringArray(R.array.product_categories);
-        String category = "";
-        for (int i = 0; i < productVariants.length; i++) {
-            if (productVariants[i].contentEquals(product.getName())) {
-                category = productCategories[i];
-            }
-        }
-        if(category == "") {
-            category = "other";
-        }
-        try {
-            productDB.saveCheckedStatus(product, category);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        productDB.saveCheckedStatus(product);
         adapter.notifyDataSetChanged();
     }
 
@@ -268,4 +253,9 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
         super.onPause();
         cm.unregisterNetworkCallback(callback);
     }
+
+    public ArrayAdapter<String> passProductAdapter(){
+        return adapterProducts;
+    }
+
 }

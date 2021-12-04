@@ -17,6 +17,9 @@ import com.example.recyclerview2.appDataBase.UserRegister;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class UserRegisterActivity extends AppCompatActivity {
     private TextInputLayout realName;
     private TextInputLayout userName;
@@ -43,12 +46,19 @@ public class UserRegisterActivity extends AppCompatActivity {
         registerButton = findViewById(R.id.sendRegisterButton);
         userRegister = new UserRegister();
 
+        List<String> fruitAndVegetables = Arrays.asList(getResources().getStringArray(R.array.fruitandvegetables));
+        List<String> bakery = Arrays.asList(getResources().getStringArray(R.array.bakery));
+        List<String> beverage = Arrays.asList(getResources().getStringArray(R.array.beverage));
+        List<String> dairy = Arrays.asList(getResources().getStringArray(R.array.dairy));
+        List<String> meat = Arrays.asList(getResources().getStringArray(R.array.meat));
+
         userRegister.getIsRegSuccess().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean regSuccessful) {
                 regDialog.dismiss();
                 if(regSuccessful) {
                     Snackbar.make(registerButton, "Felhasználó sikeresen regisztrálva!", Snackbar.LENGTH_LONG).show();
+                    userRegister.createProductCategory(fruitAndVegetables, bakery, beverage, dairy, meat);
                 } else {
                     Snackbar.make(registerButton, "Hiba történt, próbálja újra!", Snackbar.LENGTH_LONG).show();
                 }
@@ -70,6 +80,7 @@ public class UserRegisterActivity extends AppCompatActivity {
                 }
                 else {
                     userRegister.regUser(fName,email,uName,password);
+
                 }
             }
         });

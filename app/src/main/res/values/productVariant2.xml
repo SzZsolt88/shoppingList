@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="fruitandvegetables">
+        //fruit and vegetables
+        <item>Áfonya</item>
+        <item>Alma</item>
+        <item>Almapaprika</item>
+        <item>Ananász</item>
+        <item>Articsóka</item>
+
+        <item>Bab</item>
+        <item>Banán</item>
+        <item>Birsalma</item>
+        <item>Borsó</item>
+        <item>Brokkoli</item>
+        <item>Burgonya</item>
+
+        <item>Cékla</item>
+        <item>Citrom</item>
+        <item>Cukkini</item>
+        <item>Cukorborsó</item>
+        <item>Cseresznye</item>
+        <item>Csicseriborsó</item>
+        <item>Csicsóka</item>
+
+        <item>Datolya</item>
+
+        <item>Édesburgonya</item>
+        <item>Egres</item>
+        <item>Eper</item>
+
+        <item>Fehér hagyma</item>
+        <item>Fejes saláta</item>
+        <item>Fekete burgonya</item>
+        <item>Fodros kel</item>
+        <item>Fokhagyma</item>
+        <item>Füge</item>
+
+        <item>Görögdinnye</item>
+        <item>Gránátalma</item>
+        <item>Grapefruit</item>
+
+        <item>Gyöngyhagyma</item>
+
+        <item>Hagyma</item>
+        <item>Hokkaido tök</item>
+
+        <item>Kajszibarack</item>
+        <item>Kaliforniai paprika</item>
+        <item>Káposzta</item>
+        <item>Karalábé</item>
+        <item>Karfiol</item>
+        <item>Kelbimbó</item>
+        <item>Kelkáposzta</item>
+        <item>Kínai kel</item>
+        <item>Kígyóuborka</item>
+        <item>Kiwi</item>
+        <item>Koktélparadicsom</item>
+        <item>Körte</item>
+        <item>Krumpli</item>
+        <item>Kukorica</item>
+
+        <item>Lencse</item>
+        <item>Licsi</item>
+        <item>Lime</item>
+        <item>Lilahagyma</item>
+
+
+        <item>Málna</item>
+        <item>Mandarin</item>
+        <item>Mangó</item>
+        <item>Mángold</item>
+        <item>Maracuja</item>
+        <item>Medvehagyma</item>
+        <item>Metélőhagyma</item>
+        <item>Meggy</item>
+        <item>Mungóbab</item>
+
+        <item>Narancs</item>
+        <item>Naspolya</item>
+        <item>Nektarin</item>
+
+        <item>Okra</item>
+        <item>Őszibarack</item>
+
+        <item>Padlizsán</item>
+        <item>Pak choi</item>
+        <item>Paprika</item>
+        <item>Paradicsom</item>
+        <item>Papaya</item>
+        <item>Paraj</item>
+        <item>Paszternák</item>
+        <item>Patisszon</item>
+        <item>Pepperoni</item>
+        <item>Petrezselyem</item>
+        <item>Pomelo</item>
+        <item>Póréhagyma</item>
+        <item>Pritaminpaprika</item>
+
+        <item>Rebarbara</item>
+        <item>Retek</item>
+        <item>Ribizli</item>
+        <item>Rózsaburgonya</item>
+
+        <item>Saláta</item>
+        <item>Salátahagyma</item>
+        <item>Salottahagyma</item>
+        <item>Sárgabarack</item>
+        <item>Sárgadinnye</item>
+        <item>Sárgarépa</item>
+        <item>Sárkánygyümölcs</item>
+        <item>Sonkahagyma</item>
+        <item>Sóska</item>
+        <item>Spárga</item>
+        <item>Spenót</item>
+        <item>Sütőtök</item>
+
+        <item>Szamóca</item>
+        <item>Szeder</item>
+        <item>Szilva</item>
+        <item>Szója</item>
+        <item>Szőlő</item>
+
+        <item>Tépősaláta</item>
+        <item>Torma</item>
+
+        <item>Uborka</item>
+        <item>Újhagyma</item>
+
+        <item>Vörösbab</item>
+        <item>Vöröshagyma</item>
+        <item>Vöröskáposzta</item>
+
+        <item>Zeller</item>
+        <item>Zöldbab</item>
+        <item>Zöldpaprika</item>
+
+    </string-array>
+
+    <string-array name="bakery">
+
+    //Bakery products
+        <item>Buci</item>
+        <item>Búrkifli</item>
+        <item>Ciabatta</item>
+        <item>Croissant</item>
+        <item>Császárbuci</item>
+        <item>Császárzsemle</item>
+        <item>Fonott kalács</item>
+        <item>Kakaós csiga</item>
+        <item>Kenyér</item>
+        <item>Kifli</item>
+        <item>Pogácsa</item>
+        <item>Rétes</item>
+        <item>Stangli</item>
+        <item>Túrós batyu</item>
+        <item>Vekni</item>
+        <item>Zsemle</item>
+    </string-array>
+
+    <string-array name="dairy">
+     //Dairy products
+        <item>Camembert</item>
+        <item>Habtejszín</item>
+        <item>Jégkrém</item>
+        <item>Joghurt</item>
+        <item>Juhtúró</item>
+        <item>Kefír</item>
+        <item>Kakaó</item>
+        <item>Karamellás tej</item>
+        <item>Kávétejszín</item>
+        <item>Ömlesztett sajt</item>
+        <item>Sajt</item>
+        <item>Tehéntúró</item>
+        <item>Tej</item>
+        <item>Tejföl</item>
+        <item>Tejszín</item>
+        <item>Tejszínhab</item>
+        <item>Túró</item>
+        <item>Trappista sajt</item>
+        <item>Vaj</item>
+    </string-array>
+
+    <string-array name="beverage">
+        //Beverage
+        <item>Ásványvíz</item>
+        <item>Fehérbor</item>
+        <item>Pálinka</item>
+        <item>Pálinka</item>
+        <item>Pezsgő</item>
+        <item>Szódavíz</item>
+        <item>Tea</item>
+        <item>Pezsgő</item>
+        <item>Vörösbor</item>
+    </string-array>
+
+    <string-array name="meat">
+        <item>Csirkemell</item>
+        <item>Csirkecomb</item>
+        <item>Lapocka</item>
+        <item>Farhát</item>
+        <item>Kolbász</item>
+        <item>Szalámi</item>
+        <item>Sonka</item>
+        <item>Tarja</item>
+        <item>Hurka</item>
+        <item>Máj</item>
+    </string-array>
+</resources>

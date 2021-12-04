@@ -18,6 +18,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class ListDB extends FireStoreInstance {
     private List<ListClass> shoppingLists;
     private MutableLiveData<List<ListClass>> listMutableLiveData;
     private String ownerMail;
+    private Source source;
 
     //construktor
     public ListDB(String ownerMail) {
@@ -41,12 +43,18 @@ public class ListDB extends FireStoreInstance {
         shoppingLists = new ArrayList<>();
         listMutableLiveData = new MutableLiveData<>();
         this.ownerMail = ownerMail;
+        source = Source.CACHE;
     }
 
     //A felhasználó összes listájának lekérése
-    public void getListOfsUser() {
+    public void getListOfsUser(boolean connected) {
+        if (connected) {
+            source = Source.SERVER;
+        } else {
+            source = Source.CACHE;
+        }
         CollectionReference listsRef = fStore.collection(USERS).document(ownerMail).collection(LISTS);
-        listsRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        listsRef.get(source).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -72,7 +80,7 @@ public class ListDB extends FireStoreInstance {
             }
         });
         DocumentReference sharedListsRef = fStore.collection(USERS).document(ownerMail);
-        sharedListsRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        sharedListsRef.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -220,19 +228,6 @@ public class ListDB extends FireStoreInstance {
         listOfListsRef.update("externalLists", FieldValue.arrayRemove(listDate));
     }
 
-    //HasMap készítése a share, update és delete funkciók számára
-    private Map<String, Object> createHashMap(ListClass listClass) {
-        Map<String, Object> hashMapOfList = new HashMap<>();
-        hashMapOfList.put("ListID", listClass.getListID());
-        hashMapOfList.put("ListName", listClass.getListName());
-        hashMapOfList.put("isShared", listClass.isShared());
-        if (listClass.isShared()) {
-            hashMapOfList.put("sharedWith", listClass.getSharedWith());
-            Log.d("TAG", "createHashMap: " + listClass.getSharedWith().get(0).getContactUserName());
-        } else hashMapOfList.put("sharedWith", null);
-        return hashMapOfList;
-    }
-
     //A változások posztolásának metódusa
     private void postChanges(ListClass listClass) {
         shoppingLists.add(listClass);
@@ -242,4 +237,6 @@ public class ListDB extends FireStoreInstance {
 
     //kijelentkezés
     public void singOut() { fAuth.signOut(); }
+
+
 }

@@ -8,6 +8,7 @@ public class ProductClass implements Comparable<ProductClass>{
     private String name;
     private String quantity;
     private String quantityType;
+    private String productCategory;
     private boolean checked = false;
 
     private boolean selected = false;
@@ -18,10 +19,11 @@ public class ProductClass implements Comparable<ProductClass>{
         this.quantityType = quantityType;
     }
 
-    public ProductClass(String name, String quantity, String quantityType, boolean checked) {
+    public ProductClass(String name, String quantity, String quantityType, String productCategory, boolean checked) {
         this.name = name;
         this.quantity = quantity;
         this.quantityType = quantityType;
+        this.productCategory = productCategory;
         this.checked = checked;
     }
 
@@ -49,6 +51,14 @@ public class ProductClass implements Comparable<ProductClass>{
 
     public void setQuantityType(String quantityType) {
         this.quantityType = quantityType;
+    }
+
+    public String getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
     }
 
     public boolean isChecked() {

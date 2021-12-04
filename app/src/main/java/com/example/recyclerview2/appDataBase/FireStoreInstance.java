@@ -6,6 +6,7 @@ public abstract class FireStoreInstance {
     protected static final String COLLECTION_OF_CONTACTS = "contactList";
     protected static final String COLLECTION_PRODUCTS = "products";
     protected static final String COLLECTION_OF_STATISTICS = "statistics";
+    protected static final String COLLECTION_OF_CATEGORY = "productCategory";
 
     //Kontaktok adatai:
     protected static final String EMAIL = "contactEmail";
@@ -36,5 +37,15 @@ public abstract class FireStoreInstance {
     protected static final String PRODUCT_NAME = "name";
     protected static final String PRODUCT_QUANTITY = "quantity";
     protected static final String PRODUCT_QUANTITY_TYPE = "quantityType";
+    protected static final String PRODUCT_CATEGORY = "productCategory";
     protected static final String PRODUCT_CHECKED_STATUS = "checked";
+
+    //Product Statictics
+    protected static final String PRODUCT_STATISTICS = "statistics";
+    protected static final String CATEGORY_FRUIT_AND_VEG = "Gyümölcs és Zöldség";
+    protected static final String CATEGORY_BAKERY = "Pékárú";
+    protected static final String CATEGORY_DAIRY = "Tejtermék";
+    protected static final String CATEGORY_BEVERAGE = "Ital";
+    protected static final String CATEGORY_MEAT = "Hús";
+    protected static final String CATEGORY_OTHER = "Egyéb";
 }
