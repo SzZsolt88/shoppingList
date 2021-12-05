@@ -2,6 +2,8 @@ package com.example.recyclerview2.appDataBase;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+
+import com.example.recyclerview2.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -12,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Source;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -155,6 +158,56 @@ public class ProductDB extends AbstractFireStoreInstance {
                 }
             }
         });
+
+        if(boughtProduct.isChecked()) {
+            ArrayList<Integer> addedindexes = new ArrayList<Integer>();
+            ArrayList<StatisticsProductClass> productslist = new ArrayList<StatisticsProductClass>();
+            DocumentReference StatisticsRef2 = fStore.collection(USERS).document(ownerMail).collection(PRODUCT_STATISTICS).document("buyStatistic");
+            StatisticsRef2.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task2) {
+                    if(task2.isSuccessful()) {
+                        if (task2.getResult().getData() != null) {
+                            HashMap<String, Object> productslistdb = (HashMap<String, Object>) task2.getResult().getData();
+                            int i = 0;
+                            for (Map.Entry<String, Object> entry : productslistdb.entrySet()) {
+                                HashMap<String, Object> producthashmap = (HashMap<String, Object>) entry.getValue();
+                                StatisticsProductClass StatisticsProductClassIns = new StatisticsProductClass(
+                                        String.valueOf(producthashmap.get("name")),
+                                        String.valueOf(producthashmap.get("lastBuyDate")),
+                                        Integer.valueOf(String.valueOf(producthashmap.get("average"))));
+                                System.out.println(entry.getKey() + ":" + entry.getValue());
+                                i++;
+                                if(StatisticsProductClassIns.getname().contentEquals(boughtProduct.getName())) {
+                                    String buyDate2 = new SimpleDateFormat("yyyyMMdd").format(new Date());
+                                    StatisticsProductClassIns.setlastBuyDate(buyDate2);
+                                    StatisticsProductClassIns.setaverage(StatisticsProductClassIns.getaverage() + 1);
+                                    addedindexes.add(i);
+                                }
+                                productslist.add(StatisticsProductClassIns);
+                            }
+                        }
+                    }
+                }
+            });
+
+            DocumentReference StatisticsRef3 = fStore.collection(USERS).document(ownerMail).collection(PRODUCT_STATISTICS).document("buyStatistic");
+            StatisticsRef3.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task3) {
+                    if (addedindexes.size() == 0) {
+                        String buyDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+                        StatisticsProductClass product = new StatisticsProductClass(boughtProduct.getName(), buyDate, 0);
+                        productslist.add(product);
+                    }
+                    Map<String, Object> produkc = new HashMap<>();
+                    for (StatisticsProductClass friend : productslist) {
+                        produkc.put(friend.getname(), friend);
+                    }
+                    StatisticsRef3.set(produkc);
+                }
+        });
+        }
     }
 
     private void createStatisticDoc(ProductClass boughtProduct) {
@@ -190,6 +243,7 @@ public class ProductDB extends AbstractFireStoreInstance {
         if(boughtProduct.isChecked()) {
             StatisticsRef.update(boughtProduct.getProductCategory() + ".quantity", 1);
         }
+
     }
 
     private int registerBuyIntoStatistic(DocumentSnapshot document,ProductClass boughtProduct) {
