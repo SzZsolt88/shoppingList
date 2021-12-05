@@ -73,7 +73,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
             case "Gyümölcs és Zöldség":
                 holder.productCategoryIcon.setImageResource(R.drawable.ic_fruit_and_veg);
                 break;
-            case "Pékárú":
+            case "Pékáru":
                 holder.productCategoryIcon.setImageResource(R.drawable.ic_bakery);
                 break;
             case "Ital":

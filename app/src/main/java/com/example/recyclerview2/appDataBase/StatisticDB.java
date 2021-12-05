@@ -40,34 +40,38 @@ public class StatisticDB extends AbstractFireStoreInstance {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot statisticData = task.getResult();
-
-                    Map<String, Long> other = new HashMap<>();
-                    other.put(CATEGORY_OTHER,(Long) statisticData.get(CATEGORY_OTHER+ ".quantity"));
-
-                    Map<String, Long> meat = new HashMap<>();
-                    meat.put(CATEGORY_MEAT,(Long) statisticData.get(CATEGORY_MEAT+ ".quantity"));
-
-                    Map<String, Long> bakery = new HashMap<>();
-                    bakery.put(CATEGORY_BAKERY,(Long) statisticData.get(CATEGORY_BAKERY+ ".quantity"));
-
-                    Map<String, Long> beverage = new HashMap<>();
-                    beverage.put(CATEGORY_BEVERAGE, (Long) statisticData.get(CATEGORY_BEVERAGE+ ".quantity"));
-
-                    Map<String, Long> dairy = new HashMap<>();
-                    dairy.put(CATEGORY_DAIRY,(Long) statisticData.get(CATEGORY_DAIRY+ ".quantity"));
-
-                    Map<String, Long> fruitAndVeg = new HashMap<>();
-                    fruitAndVeg.put(CATEGORY_FRUIT_AND_VEG,(Long) statisticData.get(CATEGORY_FRUIT_AND_VEG+ ".quantity"));
-
                     productCategoryQuantity.clear();
-                    productCategoryQuantity.add(other);
-                    productCategoryQuantity.add(fruitAndVeg);
-                    productCategoryQuantity.add(meat);
-                    productCategoryQuantity.add(beverage);
-                    productCategoryQuantity.add(bakery);
-                    productCategoryQuantity.add(dairy);
+                    if (statisticData.exists()) {
+                        Map<String, Long> other = new HashMap<>();
+                        other.put(CATEGORY_OTHER, (Long) statisticData.get(CATEGORY_OTHER + ".quantity"));
 
-                    productCategoryQuantityMutableLiveDate.postValue(productCategoryQuantity);
+                        Map<String, Long> meat = new HashMap<>();
+                        meat.put(CATEGORY_MEAT, (Long) statisticData.get(CATEGORY_MEAT + ".quantity"));
+
+                        Map<String, Long> bakery = new HashMap<>();
+                        bakery.put(CATEGORY_BAKERY, (Long) statisticData.get(CATEGORY_BAKERY + ".quantity"));
+
+                        Map<String, Long> beverage = new HashMap<>();
+                        beverage.put(CATEGORY_BEVERAGE, (Long) statisticData.get(CATEGORY_BEVERAGE + ".quantity"));
+
+                        Map<String, Long> dairy = new HashMap<>();
+                        dairy.put(CATEGORY_DAIRY, (Long) statisticData.get(CATEGORY_DAIRY + ".quantity"));
+
+                        Map<String, Long> fruitAndVeg = new HashMap<>();
+                        fruitAndVeg.put(CATEGORY_FRUIT_AND_VEG, (Long) statisticData.get(CATEGORY_FRUIT_AND_VEG + ".quantity"));
+
+                        productCategoryQuantity.add(other);
+                        productCategoryQuantity.add(fruitAndVeg);
+                        productCategoryQuantity.add(meat);
+                        productCategoryQuantity.add(beverage);
+                        productCategoryQuantity.add(bakery);
+                        productCategoryQuantity.add(dairy);
+
+                        productCategoryQuantityMutableLiveDate.postValue(productCategoryQuantity);
+                    }
+                    else {
+                        productCategoryQuantityMutableLiveDate.postValue(null);
+                    }
                 }
             }
         });

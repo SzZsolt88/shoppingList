@@ -65,7 +65,7 @@ public class ProductEditFragment extends DialogFragment {
         unitSpinnerField.setAdapter(adapterUnits);
 
         //termékcategóriák Spiiner feltöltése
-        String[] category = {"Gyümölcs és Zöldség","Pékárú", "Tejtermék", "Ital", "Hús", "Egyéb"};
+        String[] category = {"Gyümölcs és Zöldség","Pékáru", "Tejtermék", "Ital", "Hús", "Egyéb"};
         ArrayAdapter<String> adapterProductCategory = new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,category);
         productCategorySpinner.setAdapter(adapterProductCategory);
 

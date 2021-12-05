@@ -229,7 +229,7 @@ public class ProductDB extends AbstractFireStoreInstance {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    if (originalCategory == "Pékárú") {
+                    if (originalCategory == "Pékáru") {
                         bakery.remove(productName);
                     } else if (originalCategory == "Gyümölcs és Zöldség") {
                         fruitAndVegetables.remove(productName);
@@ -243,7 +243,7 @@ public class ProductDB extends AbstractFireStoreInstance {
                         dairy.remove(productName);
                     }
 
-                    if (newCategory == "Pékárú") {
+                    if (newCategory == "Pékáru") {
                         bakery.add(productName);
                     } else if (newCategory == "Gyümölcs és Zöldség") {
                         fruitAndVegetables.add(productName);

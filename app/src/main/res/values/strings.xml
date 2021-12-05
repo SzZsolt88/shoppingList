@@ -25,12 +25,9 @@
     <string name="newPassword">Új jelszó:</string>
     <string name="newPasswordAgain">Új jelszó megerősítése:</string>
     <string name="deleteUser">Felhasználó Törlése</string>
-    <string name="bar_chart_title"><u><b><i>Oszlop Diagram:</i></b></u></string>
-    <string name="line_chart_title"><u><b><i>Vonal Diagram:</i></b></u></string>
-    <string name="pie_chart_title"><u><b><i>Torta Diagram:</i></b></u></string>
-    <string name="bar_chart_description">Az oszlop diagram segítségével megtekintheti a vásárlási szokásait havi lebontásban termékkategóriákként</string>
-    <string name="line_chart_description">A vonal diagram segítségével megtekintheti a vásárlási szokásait havi lebontásban termékkategóriákként</string>
-    <string name="pie_chart_description">A torta diagram segítségével megtekintheti a vásárlási szokásait havi lebontásban termékkategóriákként</string>
+    <string name="recommendedProducts"><u><b><i>Ajánlott termékek:</i></b></u></string>
+    <string name="pie_chart_title"><u><b><i>Kördiagram:</i></b></u></string>
+    <string name="pie_chart_description">A kördiagram segítségével megtekintheti vásárlási szokásait havi lebontásban termékkategóriákként</string>
     <string name="contacts">Ismerősök</string>
     <string name="contactMailAddress">Az ismerősöd email címe</string>
     <string name="share">Megosztás</string>

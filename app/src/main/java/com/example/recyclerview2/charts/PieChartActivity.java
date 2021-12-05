@@ -68,7 +68,10 @@ public class PieChartActivity extends AppCompatActivity {
         statisticDB.getProductCategoryQuantityMutableLiveDate().observe(this, new Observer<List<Map<String, Long>>>() {
             @Override
             public void onChanged(List<Map<String, Long>> maps) {
-                createChart(maps);
+                List<Map<String, Long>> statistic = new ArrayList<>();
+                statistic = maps;
+                Log.d("TAG", "onChanged: " + maps);
+                createChart(statistic);
             }
         });
 
@@ -97,39 +100,45 @@ public class PieChartActivity extends AppCompatActivity {
     }
 
     private void createChart(List<Map<String, Long>> statistic) {
-        ArrayList<PieEntry> productGroups = new ArrayList<>();
-        int sumOfProducts = 0;
-        for (Map<String, Long> category : statistic) {
-            for (Map.Entry<String, Long> data : category.entrySet()) {
-                if (data.getValue() != 0) {
-                    productGroups.add(new PieEntry(data.getValue().intValue(), data.getKey()));
-                    sumOfProducts += data.getValue();
+        if (statistic != null) {
+            ArrayList<PieEntry> productGroups = new ArrayList<>();
+            int sumOfProducts = 0;
+            for (Map<String, Long> category : statistic) {
+                for (Map.Entry<String, Long> data : category.entrySet()) {
+                    if (data.getValue() != 0) {
+                        productGroups.add(new PieEntry(data.getValue().intValue(), data.getKey()));
+                        sumOfProducts += data.getValue();
+                    }
                 }
             }
+
+            int[] colorList = new int[]{
+                    Color.parseColor("#C570C5"),
+                    Color.parseColor("#E0A2E0"),
+                    Color.parseColor("#DDBFDD"),
+                    Color.parseColor("#DDBF23"),
+                    Color.parseColor("#E7D7E7"),
+                    Color.parseColor("#DDBF75"),
+                    Color.parseColor("#E7D712")};
+
+            PieDataSet pieDataSet = new PieDataSet(productGroups, "Termékcsoportok");
+            pieDataSet.setColors(colorList);
+            pieDataSet.getValueTextColor(Color.BLACK);
+            pieDataSet.setValueTextSize(16f);
+
+            PieData pieData = new PieData(pieDataSet);
+
+            pieChart.setData(pieData);
+            pieChart.invalidate();
+            pieChart.getDescription().setEnabled(false);
+            pieChart.getLegend().setEnabled(false);
+            pieChart.setCenterText("Vásárolt termékek: " + sumOfProducts);
+            pieChart.animate();
+        } else {
+            pieChart.setData(null);
+            pieChart.setNoDataText("A megadott hónapra nincs adat!");
+            pieChart.invalidate();
         }
-        Log.d("TAG", "createChart: " + productGroups);
 
-        int[] colorList = new int[]{
-                Color.parseColor("#C570C5"),
-                Color.parseColor("#E0A2E0"),
-                Color.parseColor("#DDBFDD"),
-                Color.parseColor("#DDBF23"),
-                Color.parseColor("#E7D7E7"),
-                Color.parseColor("#DDBF75"),
-                Color.parseColor("#E7D712")};
-
-        PieDataSet pieDataSet = new PieDataSet(productGroups, "Termékcsoportok");
-        pieDataSet.setColors(colorList);
-        pieDataSet.getValueTextColor(Color.BLACK);
-        pieDataSet.setValueTextSize(16f);
-
-        PieData pieData = new PieData(pieDataSet);
-
-        pieChart.setData(pieData);
-        pieChart.invalidate();
-        pieChart.getDescription().setEnabled(false);
-        pieChart.getLegend().setEnabled(false);
-        pieChart.setCenterText("Vásárolt termékek: " + sumOfProducts);
-        pieChart.animate();
     }
 }

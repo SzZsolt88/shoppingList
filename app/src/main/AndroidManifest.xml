@@ -26,8 +26,7 @@
         <activity android:name=".products.ProductActivity"/>
         <activity android:name=".contacts.ContactsActivity"/>
         <activity android:name=".charts.ChartActivity"/>
-        <activity android:name=".charts.BarChartActivity"/>
-        <activity android:name=".charts.LineChartActivity"/>
+        <activity android:name=".charts.RecommendedProductsActivity"/>
         <activity android:name=".charts.PieChartActivity"/>
     </application>
 </manifest>

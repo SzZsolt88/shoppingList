@@ -19,48 +19,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bar_chart_title"/>
+                android:text="@string/recommendedProducts"/>
 
             <TextView
-                android:id="@+id/barChartDescription"
+                android:id="@+id/recommendedProductsDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/bar_chart_description" />
+                android:text="A vásárlási szokások alapján, megjelennek a javasolt termékek." />
 
             <Button
-                android:id="@+id/barChartButton"
+                android:id="@+id/recommendedProductsBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Oszlop Diagram" />
+                android:text="Ajánlott termékek" />
         </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/line_chart_title" />
-
-
-        <TextView
-            android:id="@+id/lineChartDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/line_chart_description" />
-
-        <Button
-            android:id="@+id/lineChartButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Vonal Diagram" />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

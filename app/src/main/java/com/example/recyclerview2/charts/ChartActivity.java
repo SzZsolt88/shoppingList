@@ -14,30 +14,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.recyclerview2.R;
 
 public class ChartActivity extends AppCompatActivity {
-    Button barChart;
-    Button lineChart;
+    Button recommendedProducts;
     Button pieChart;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.charts);
-            barChart = findViewById(R.id.barChartButton);
-            lineChart = findViewById(R.id.lineChartButton);
+            recommendedProducts = findViewById(R.id.recommendedProductsBtn);
             pieChart = findViewById(R.id.pieChartButton);
 
-            barChart.setOnClickListener(new View.OnClickListener() {
+            recommendedProducts.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent startBarChart = new Intent(ChartActivity.this, BarChartActivity.class);
+                    Intent startBarChart = new Intent(ChartActivity.this, RecommendedProductsActivity.class);
                     startActivity(startBarChart);
-                }
-            });
-            lineChart.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent startLineChart = new Intent(ChartActivity.this, LineChartActivity.class);
-                    startActivity(startLineChart);
                 }
             });
             pieChart.setOnClickListener(new View.OnClickListener() {
