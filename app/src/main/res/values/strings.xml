@@ -39,4 +39,7 @@
     <string name="need_confirmed">Megerősítendő</string>
     <string name="cancel">Mégse</string>
     <string name="shareList">Megosztás</string>
+    <string name="month">Hónap:</string>
+    <string name="Year">Év:</string>
+    <string name="evaluation">Kiértékelés</string>
 </resources>

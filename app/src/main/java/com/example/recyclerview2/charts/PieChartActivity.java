@@ -2,63 +2,84 @@ package com.example.recyclerview2.charts;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 
 import com.example.recyclerview2.R;
+import com.example.recyclerview2.appDataBase.StatisticDB;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class PieChartActivity extends AppCompatActivity {
+    private EditText yearInputEditText;
+    private Spinner monthSpinner;
+    private Button evaluationBtn;
+    private StatisticDB statisticDB;
+    private PieChart pieChart;
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.charts_pie_chart);
-        PieChart pieChart = findViewById(R.id.pieChart);
+        yearInputEditText = findViewById(R.id.yearInputEditText);
+        monthSpinner = findViewById(R.id.monthSpinner);
+        evaluationBtn = findViewById(R.id.evaluationBtn);
+        pieChart = findViewById(R.id.pieChart);
+        statisticDB = new StatisticDB();
+
+        String  year = new SimpleDateFormat("yyyy").format(new Date());
+        yearInputEditText.setText(year);
+        pieChart.setNoDataText("A diagram megjelenítéséhez add meg a kívánt hónapot és évet!");
+
+        String[] months = getResources().getStringArray(R.array.monthsList);
+        ArrayAdapter<String> adapterMonths = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,months);
+        monthSpinner.setAdapter(adapterMonths);
+        int month = Integer.parseInt(new SimpleDateFormat("MM").format(new Date()));
+        monthSpinner.setSelection(month-1);
+
+        evaluationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData(yearInputEditText.getText().toString(),monthSpinner.getSelectedItemPosition()+1);
+            }
+        });
+
+        statisticDB.getProductCategoryQuantityMutableLiveDate().observe(this, new Observer<List<Map<String, Long>>>() {
+            @Override
+            public void onChanged(List<Map<String, Long>> maps) {
+                createChart(maps);
+            }
+        });
+
+
         super.onCreate(savedInstanceState);
 
-        ArrayList<PieEntry> productGroups = new ArrayList<>();
-        productGroups.add(new PieEntry(400, "Zöldség és gyümölcs"));
-        productGroups.add(new PieEntry(300, "Tejtermék"));
-        productGroups.add(new PieEntry(200, "Ital"));
-        productGroups.add(new PieEntry(200, "Üdítő"));
-        productGroups.add(new PieEntry(300, "Pékáru"));
-        productGroups.add(new PieEntry(100, "Háztartási"));
-        productGroups.add(new PieEntry(500, "Egyéb"));
-
-        int[] colorList = new int[]{Color.parseColor("#C570C5"),
-                Color.parseColor("#E0A2E0"),
-                Color.parseColor("#DDBFDD"),
-                Color.parseColor("#DDBF23"),
-                Color.parseColor("#E7D7E7"),
-                Color.parseColor("#DDBF75"),
-                Color.parseColor("#E7D712")};
-
-
-        PieDataSet pieDataSet = new PieDataSet(productGroups, "Termékcsoportok");
-        pieDataSet.setColors(colorList);
-        pieDataSet.getValueTextColor(Color.BLACK);
-        pieDataSet.setValueTextSize(16f);
-
-        PieData pieData = new PieData(pieDataSet);
-
-        pieChart.setData(pieData);
-        pieChart.getDescription().setEnabled(false);
-        pieChart.getLegend().setEnabled(false);
-        pieChart.setCenterText("Termékcsoportok");
-        pieChart.animate();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.register_menu, menu);
-        setTitle("Tortadiagram");
+        setTitle("Kördiagram");
         return true;
     }
 
@@ -68,5 +89,47 @@ public class PieChartActivity extends AppCompatActivity {
             finish();
         }
         return true;
+    }
+
+    private void getData(String Year, int monthAdapterPosition) {
+        String yearAndMonth = Year + monthAdapterPosition;
+        statisticDB.getProductCategoryQuantity(yearAndMonth);
+    }
+
+    private void createChart(List<Map<String, Long>> statistic) {
+        ArrayList<PieEntry> productGroups = new ArrayList<>();
+        int sumOfProducts = 0;
+        for (Map<String, Long> category : statistic) {
+            for (Map.Entry<String, Long> data : category.entrySet()) {
+                if (data.getValue() != 0) {
+                    productGroups.add(new PieEntry(data.getValue().intValue(), data.getKey()));
+                    sumOfProducts += data.getValue();
+                }
+            }
+        }
+        Log.d("TAG", "createChart: " + productGroups);
+
+        int[] colorList = new int[]{
+                Color.parseColor("#C570C5"),
+                Color.parseColor("#E0A2E0"),
+                Color.parseColor("#DDBFDD"),
+                Color.parseColor("#DDBF23"),
+                Color.parseColor("#E7D7E7"),
+                Color.parseColor("#DDBF75"),
+                Color.parseColor("#E7D712")};
+
+        PieDataSet pieDataSet = new PieDataSet(productGroups, "Termékcsoportok");
+        pieDataSet.setColors(colorList);
+        pieDataSet.getValueTextColor(Color.BLACK);
+        pieDataSet.setValueTextSize(16f);
+
+        PieData pieData = new PieData(pieDataSet);
+
+        pieChart.setData(pieData);
+        pieChart.invalidate();
+        pieChart.getDescription().setEnabled(false);
+        pieChart.getLegend().setEnabled(false);
+        pieChart.setCenterText("Vásárolt termékek: " + sumOfProducts);
+        pieChart.animate();
     }
 }

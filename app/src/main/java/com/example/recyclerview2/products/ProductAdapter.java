@@ -83,7 +83,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
                 holder.productCategoryIcon.setImageResource(R.drawable.ic_dairy_products);
                 break;
             case "Hús":
-                Log.d("TAG", "onBindViewHolder: HÚS");
                 holder.productCategoryIcon.setImageResource(R.drawable.ic_meat_category_icon);
                 break;
             default:

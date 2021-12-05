@@ -1,7 +1,6 @@
 package com.example.recyclerview2.appDataBase;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -28,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ListDB extends FireStoreInstance {
+public class ListDB extends AbstractFireStoreInstance {
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;
     private List<ListClass> shoppingLists;

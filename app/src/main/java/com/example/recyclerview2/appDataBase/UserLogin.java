@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class UserLogin extends FireStoreInstance{
+public class UserLogin extends AbstractFireStoreInstance {
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;
     private UserLoginInterface userLoginInterface;

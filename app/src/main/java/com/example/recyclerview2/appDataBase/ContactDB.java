@@ -16,15 +16,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactDB extends FireStoreInstance {
+public class ContactDB extends AbstractFireStoreInstance {
     private FirebaseFirestore fStore;
     private UserClass currentUser;
     private List<ContactClass> contactList;
     private MutableLiveData<List<ContactClass>> contactListLiveData;
     private MutableLiveData<List<ContactClass>> confirmedContactsLiveData;
     private MutableLiveData<String> errorMessage;
-
-
 
     public ContactDB(UserClass currentUser) {
         fStore = FirebaseFirestore.getInstance();

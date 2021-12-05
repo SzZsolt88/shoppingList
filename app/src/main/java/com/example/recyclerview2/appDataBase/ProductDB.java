@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProductDB extends FireStoreInstance {
+public class ProductDB extends AbstractFireStoreInstance {
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;
     private List<ProductClass> productsList;
@@ -79,6 +79,7 @@ public class ProductDB extends FireStoreInstance {
 
     public void registerNewProduct(ProductClass productClass) {
         DocumentReference listRef = fStore.collection(USERS).document(ownerMail).collection(LISTS).document(listID).collection(COLLECTION_PRODUCTS).document(PRODUCTS_OF_LIST);
+        DocumentReference categoryRef = fStore.collection(USERS).document(fAuth.getCurrentUser().getEmail()).collection(COLLECTION_OF_CATEGORY).document(COLLECTION_OF_CATEGORY);
         if (dairy.contains(productClass.getName())) {
             productClass.setProductCategory(CATEGORY_DAIRY);
         }
@@ -96,6 +97,7 @@ public class ProductDB extends FireStoreInstance {
         }
         else {
             productClass.setProductCategory(CATEGORY_OTHER);
+            categoryRef.update(CATEGORY_OTHER,FieldValue.arrayUnion(productClass.getName()));
         }
         listRef.update(PRODUCT_ARRAY, FieldValue.arrayUnion(productClass));
         productsList.add(productClass);
@@ -138,7 +140,6 @@ public class ProductDB extends FireStoreInstance {
     }
 
     private void saveToStatistic(ProductClass boughtProduct) {
-
         String  statisticsID = new SimpleDateFormat("yyyyMM").format(new Date());
         DocumentReference statisticsRef = fStore.collection(USERS).document(ownerMail).collection(COLLECTION_OF_STATISTICS).document(statisticsID);
         statisticsRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

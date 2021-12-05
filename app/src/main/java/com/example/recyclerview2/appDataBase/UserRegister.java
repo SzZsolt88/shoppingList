@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UserRegister extends FireStoreInstance {
+public class UserRegister extends AbstractFireStoreInstance {
 
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;

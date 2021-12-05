@@ -1,6 +1,6 @@
 package com.example.recyclerview2.appDataBase;
 
-public abstract class FireStoreInstance {
+public abstract class AbstractFireStoreInstance {
     //Kollekciók három szinten: felhasználók: kontaktok/listák/statisztika; Listák: termékek
     protected static final String COLLECTION_OF_USERS = "users";
     protected static final String COLLECTION_OF_CONTACTS = "contactList";
