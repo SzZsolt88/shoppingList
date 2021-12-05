@@ -12,6 +12,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Source;
+
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +22,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ProductDB extends AbstractFireStoreInstance {
@@ -175,13 +179,17 @@ public class ProductDB extends AbstractFireStoreInstance {
                                 StatisticsProductClass StatisticsProductClassIns = new StatisticsProductClass(
                                         String.valueOf(producthashmap.get("name")),
                                         String.valueOf(producthashmap.get("lastBuyDate")),
-                                        Integer.valueOf(String.valueOf(producthashmap.get("average"))));
+                                        Long.valueOf(String.valueOf(producthashmap.get("average"))));
                                 System.out.println(entry.getKey() + ":" + entry.getValue());
                                 i++;
                                 if(StatisticsProductClassIns.getname().contentEquals(boughtProduct.getName())) {
                                     String buyDate2 = new SimpleDateFormat("yyyyMMdd").format(new Date());
+                                    Long buyDate2Int = Long.valueOf(buyDate2);
+                                    Long lastbuyDate2Int = Long.valueOf(StatisticsProductClassIns.getlastBuyDate());
+                                    Long DiffDate2Int = buyDate2Int - lastbuyDate2Int;
+
                                     StatisticsProductClassIns.setlastBuyDate(buyDate2);
-                                    StatisticsProductClassIns.setaverage(StatisticsProductClassIns.getaverage() + 1);
+                                    StatisticsProductClassIns.setaverage(DiffDate2Int);
                                     addedindexes.add(i);
                                 }
                                 productslist.add(StatisticsProductClassIns);
@@ -197,14 +205,14 @@ public class ProductDB extends AbstractFireStoreInstance {
                 public void onComplete(@NonNull Task<DocumentSnapshot> task3) {
                     if (addedindexes.size() == 0) {
                         String buyDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-                        StatisticsProductClass product = new StatisticsProductClass(boughtProduct.getName(), buyDate, 0);
+                        StatisticsProductClass product = new StatisticsProductClass(boughtProduct.getName(), buyDate, (long) 0);
                         productslist.add(product);
                     }
-                    Map<String, Object> produkc = new HashMap<>();
-                    for (StatisticsProductClass friend : productslist) {
-                        produkc.put(friend.getname(), friend);
+                    Map<String, Object> productsmap = new HashMap<>();
+                    for (StatisticsProductClass productIns : productslist) {
+                        productsmap.put(productIns.getname(), productIns);
                     }
-                    StatisticsRef3.set(produkc);
+                    StatisticsRef3.set(productsmap);
                 }
         });
         }

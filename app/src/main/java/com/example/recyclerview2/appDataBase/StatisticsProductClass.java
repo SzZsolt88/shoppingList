@@ -7,9 +7,9 @@ import java.util.Comparator;
 public class StatisticsProductClass{
     private String name;
     private String lastBuyDate;
-    private int average;
+    private Long average;
 
-    public StatisticsProductClass(String name, String lastBuyDate, int average) {
+    public StatisticsProductClass(String name, String lastBuyDate, Long average) {
         this.name = name;
         this.lastBuyDate = lastBuyDate;
         this.average = average;
@@ -33,11 +33,11 @@ public class StatisticsProductClass{
         this.lastBuyDate = lastBuyDate;
     }
 
-    public int getaverage() {
+    public Long getaverage() {
         return average;
     }
 
-    public void setaverage(int average) {
+    public void setaverage(Long average) {
         this.average = average;
     }
 
