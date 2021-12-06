@@ -15,12 +15,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class UserEditData {
-    private FirebaseAuth fAuth;
-    private FirebaseFirestore fStore;
-    private UserClass currentUser;
-    private UserEditDataInterface userEditDataInterface;
-    private MutableLiveData<Boolean> isChangePWSuccess;
-    private MutableLiveData<Boolean> isDeleteSuccess;
+    private final FirebaseAuth fAuth;
+    private final FirebaseFirestore fStore;
+    private final UserClass currentUser;
+    private final UserEditDataInterface userEditDataInterface;
+    private final MutableLiveData<Boolean> isChangePWSuccess;
+    private final MutableLiveData<Boolean> isDeleteSuccess;
 
     private static final String fullNameField = "fullName";
     private static final String uNameField = "userName";
@@ -108,4 +108,6 @@ public class UserEditData {
     }
 
     public MutableLiveData<Boolean> getDeleteSuccess() { return isDeleteSuccess; }
+
+    public void signOut() { fAuth.signOut();}
 }

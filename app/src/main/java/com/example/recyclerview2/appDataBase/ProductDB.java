@@ -1,7 +1,10 @@
 package com.example.recyclerview2.appDataBase;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+import androidx.room.Database;
 
 import com.example.recyclerview2.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,20 +21,22 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class ProductDB extends AbstractFireStoreInstance {
-    private FirebaseAuth fAuth;
-    private FirebaseFirestore fStore;
-    private List<ProductClass> productsList;
-    private MutableLiveData<List<ProductClass>> productsMutableLiveData;
-    private String ownerMail;
-    private String listID;
+    private final FirebaseAuth fAuth;
+    private final FirebaseFirestore fStore;
+    private final List<ProductClass> productsList;
+    private final MutableLiveData<List<ProductClass>> productsMutableLiveData;
+    private final String ownerMail;
+    private final String listID;
     private Source source;
     private List<String> fruitAndVegetables = new ArrayList<>();
     private List<String> bakery = new ArrayList<>();
@@ -39,8 +44,8 @@ public class ProductDB extends AbstractFireStoreInstance {
     private List<String> dairy = new ArrayList<>();
     private List<String> meat = new ArrayList<>();
     private List<String> other = new ArrayList<>();
-    private List<String> listOfAvailableProducts = new ArrayList<>();
-    private MutableLiveData<String[]> listOfAvailableProductsMutableLiveData;
+    private final List<String> listOfAvailableProducts = new ArrayList<>();
+    private final MutableLiveData<String[]> listOfAvailableProductsMutableLiveData;
 
     public ProductDB(String ownerMail, String listID) {
         this.ownerMail = ownerMail;
@@ -73,7 +78,7 @@ public class ProductDB extends AbstractFireStoreInstance {
                                     String.valueOf(products.get(i).get(PRODUCT_QUANTITY)),
                                     String.valueOf(products.get(i).get(PRODUCT_QUANTITY_TYPE)),
                                     String.valueOf(products.get(i).get(PRODUCT_CATEGORY)),
-                                    Boolean.valueOf(String.valueOf(products.get(i).get(PRODUCT_CHECKED_STATUS))));
+                                    Boolean.parseBoolean(String.valueOf(products.get(i).get(PRODUCT_CHECKED_STATUS))));
                             productsList.add(productClass);
                         }
                         Collections.sort(productsList);
@@ -166,7 +171,7 @@ public class ProductDB extends AbstractFireStoreInstance {
         if(boughtProduct.isChecked()) {
             ArrayList<Integer> addedindexes = new ArrayList<Integer>();
             ArrayList<StatisticsProductClass> productslist = new ArrayList<StatisticsProductClass>();
-            DocumentReference StatisticsRef2 = fStore.collection(USERS).document(ownerMail).collection(PRODUCT_STATISTICS).document("buyStatistic");
+            DocumentReference StatisticsRef2 = fStore.collection(USERS).document(ownerMail).collection(COLLECTION_OF_STATISTICS).document(PRODUCT_STATISTICS);
             StatisticsRef2.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task2) {
@@ -183,13 +188,13 @@ public class ProductDB extends AbstractFireStoreInstance {
                                 System.out.println(entry.getKey() + ":" + entry.getValue());
                                 i++;
                                 if(StatisticsProductClassIns.getname().contentEquals(boughtProduct.getName())) {
-                                    String buyDate2 = new SimpleDateFormat("yyyyMMdd").format(new Date());
-                                    Long buyDate2Int = Long.valueOf(buyDate2);
-                                    Long lastbuyDate2Int = Long.valueOf(StatisticsProductClassIns.getlastBuyDate());
-                                    Long DiffDate2Int = buyDate2Int - lastbuyDate2Int;
+                                    Date today = getTodayDate();
+                                    String latestBuyDate = StatisticsProductClassIns.getlastBuyDate();
+                                    Long dateDiff = dateDiff(latestBuyDate, today);
+                                    String strToday = new SimpleDateFormat("yyyyMMdd").format(today);
 
-                                    StatisticsProductClassIns.setlastBuyDate(buyDate2);
-                                    StatisticsProductClassIns.setaverage(DiffDate2Int);
+                                    StatisticsProductClassIns.setlastBuyDate(strToday);
+                                    StatisticsProductClassIns.setaverage(dateDiff);
                                     addedindexes.add(i);
                                 }
                                 productslist.add(StatisticsProductClassIns);
@@ -199,7 +204,7 @@ public class ProductDB extends AbstractFireStoreInstance {
                 }
             });
 
-            DocumentReference StatisticsRef3 = fStore.collection(USERS).document(ownerMail).collection(PRODUCT_STATISTICS).document("buyStatistic");
+            DocumentReference StatisticsRef3 = fStore.collection(USERS).document(ownerMail).collection(COLLECTION_OF_STATISTICS).document(PRODUCT_STATISTICS);
             StatisticsRef3.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task3) {
@@ -220,7 +225,7 @@ public class ProductDB extends AbstractFireStoreInstance {
 
     private void createStatisticDoc(ProductClass boughtProduct) {
         String  statisticsID = new SimpleDateFormat("yyyyMM").format(new Date());
-        DocumentReference StatisticsRef = fStore.collection(USERS).document(ownerMail).collection(PRODUCT_STATISTICS).document(statisticsID);
+        DocumentReference StatisticsRef = fStore.collection(USERS).document(ownerMail).collection(COLLECTION_OF_STATISTICS).document(statisticsID);
         Map<String, Object> fruitandvegetables = new HashMap<>();
         fruitandvegetables.put(PRODUCT_QUANTITY, 0);
 
@@ -291,33 +296,47 @@ public class ProductDB extends AbstractFireStoreInstance {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    if (originalCategory == "Pékáru") {
-                        bakery.remove(productName);
-                    } else if (originalCategory == "Gyümölcs és Zöldség") {
-                        fruitAndVegetables.remove(productName);
-                    } else if (originalCategory == "Ital") {
-                        beverage.remove(productName);
-                    } else if (originalCategory == "Tejtermék") {
-                        dairy.remove(productName);
-                    } else if (originalCategory == "Hús") {
-                        meat.remove(productName);
-                    } else if (originalCategory == "Egyéb") {
-                        dairy.remove(productName);
+                    switch (originalCategory) {
+                        case "Pékáru":
+                            bakery.remove(productName);
+                            break;
+                        case "Gyümölcs és Zöldség":
+                            fruitAndVegetables.remove(productName);
+                            break;
+                        case "Ital":
+                            beverage.remove(productName);
+                            break;
+                        case "Tejtermék":
+                            dairy.remove(productName);
+                            break;
+                        case "Hús":
+                            meat.remove(productName);
+                            break;
+                        case "Egyéb":
+                            other.remove(productName);
+                            break;
                     }
 
-                    if (newCategory == "Pékáru") {
-                        bakery.add(productName);
-                    } else if (newCategory == "Gyümölcs és Zöldség") {
-                        fruitAndVegetables.add(productName);
-                    } else if (newCategory == "Ital") {
-                        beverage.add(productName);
-                    } else if (newCategory == "Tejtermék") {
-                        dairy.add(productName);
-                    } else if (newCategory == "Hús") {
-                        meat.add(productName);
-                    } else if (newCategory == "Egyéb") {
-                        other.add(productName);
+                    switch (newCategory) {
+                        case "Pékáru":
+                            bakery.add(productName);
+                            break;
+                        case "Gyümölcs és Zöldség":
+                            fruitAndVegetables.add(productName);
+                            break;
+                        case "Ital":
+                            beverage.add(productName);
+                            break;
+                        case "Tejtermék":
+                            dairy.add(productName);
+                            break;
+                        case "Hús":
+                            meat.add(productName);
+                            break;
+                        case "Egyéb":
+                            other.add(productName);
 
+                            break;
                     }
                     categoryRef.update(originalCategory,FieldValue.arrayRemove(productName));
                     categoryRef.update(newCategory,FieldValue.arrayUnion(productName));
@@ -338,4 +357,22 @@ public class ProductDB extends AbstractFireStoreInstance {
     }
 
     public MutableLiveData<String[]> getListOfAvailableProductsMutableLiveData() { return listOfAvailableProductsMutableLiveData; }
+
+    public static Date getTodayDate() {
+        Calendar now = Calendar.getInstance();
+        now.set(Calendar.HOUR_OF_DAY, 0);
+        now.set(Calendar.MINUTE, 0);
+        now.set(Calendar.SECOND, 0);
+        return now.getTime();
+    }
+
+    public static Long dateDiff(String strLatestBuyDate, Date today) {
+        Date latestBuyDate = null;
+        try {
+            latestBuyDate = new SimpleDateFormat("yyyyMMdd").parse(strLatestBuyDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return TimeUnit.DAYS.convert((today.getTime() - latestBuyDate.getTime()), TimeUnit.MILLISECONDS);
+    }
 }

@@ -20,8 +20,8 @@ import static com.example.recyclerview2.R.drawable.item_background_selected;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listViewHolder> {
     private List<ListClass> listShoppingLists;
-    private OnListItemCL onListCL;
-    private String currentUserMail;
+    private final OnListItemCL onListCL;
+    private final String currentUserMail;
 
 
     ListAdapter(OnListItemCL onListCL, String currentUserMail){
@@ -31,10 +31,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.listViewHolder
     }
 
     public class listViewHolder extends RecyclerView.ViewHolder  {
-        public CardView itemContainer;
-        public TextView listName;
-        public TextView ownerName;
-        public TextView membersList;
+        public final CardView itemContainer;
+        public final TextView listName;
+        public final TextView ownerName;
+        public final TextView membersList;
 
         public listViewHolder(View itemView, OnListItemCL onListCL) {
             super(itemView);

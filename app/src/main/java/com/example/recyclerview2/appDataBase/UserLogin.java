@@ -14,10 +14,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class UserLogin extends AbstractFireStoreInstance {
-    private FirebaseAuth fAuth;
-    private FirebaseFirestore fStore;
-    private UserLoginInterface userLoginInterface;
-    private MutableLiveData<Boolean> isPWResetSuccess;
+    private final FirebaseAuth fAuth;
+    private final FirebaseFirestore fStore;
+    private final UserLoginInterface userLoginInterface;
+    private final MutableLiveData<Boolean> isPWResetSuccess;
 
     public UserLogin(UserLoginInterface userLoginInterface) {
         this.userLoginInterface = userLoginInterface;

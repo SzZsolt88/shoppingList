@@ -20,7 +20,7 @@ import java.util.List;
 public class ListShareContactAdapter extends RecyclerView.Adapter<ListShareContactAdapter.listSCAViewHolder> {
     private List<ContactClass> contactClasses;
     private List<ContactClass> sharedWith;
-    private ListShareInterface listShareInterface;
+    private final ListShareInterface listShareInterface;
 
     ListShareContactAdapter(ListShareInterface listShareInterface) {
         this.contactClasses = new ArrayList<>();
@@ -28,10 +28,10 @@ public class ListShareContactAdapter extends RecyclerView.Adapter<ListShareConta
         this.listShareInterface = listShareInterface;
     }
 
-    public class listSCAViewHolder extends RecyclerView.ViewHolder {
-        public CardView contactsContainer;
-        public TextView contactName;
-        public CheckBox checkBox;
+    public static class listSCAViewHolder extends RecyclerView.ViewHolder {
+        public final CardView contactsContainer;
+        public final TextView contactName;
+        public final CheckBox checkBox;
 
         public listSCAViewHolder(View contactView) {
             super(contactView);

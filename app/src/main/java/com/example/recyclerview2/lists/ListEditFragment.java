@@ -21,7 +21,7 @@ public class ListEditFragment extends DialogFragment {
     //widgets
     private AutoCompleteTextView listName;
     private Button modify;
-    private ListClass originalList;
+    private final ListClass originalList;
 
     public ListEditFragment(ListClass originalList) {
         this.originalList = originalList;

@@ -17,12 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ContactDB extends AbstractFireStoreInstance {
-    private FirebaseFirestore fStore;
-    private UserClass currentUser;
-    private List<ContactClass> contactList;
-    private MutableLiveData<List<ContactClass>> contactListLiveData;
-    private MutableLiveData<List<ContactClass>> confirmedContactsLiveData;
-    private MutableLiveData<String> errorMessage;
+    private final FirebaseFirestore fStore;
+    private final UserClass currentUser;
+    private final List<ContactClass> contactList;
+    private final MutableLiveData<List<ContactClass>> contactListLiveData;
+    private final MutableLiveData<List<ContactClass>> confirmedContactsLiveData;
+    private final MutableLiveData<String> errorMessage;
 
     public ContactDB(UserClass currentUser) {
         fStore = FirebaseFirestore.getInstance();
@@ -83,14 +83,7 @@ public class ContactDB extends AbstractFireStoreInstance {
             });
             DocumentReference otherUserContactList = fStore.collection(COLLECTION_OF_USERS).document(newContact.getContactEmail()).collection(COLLECTION_OF_CONTACTS).document(currentUser.getuMail());
             ContactClass mySelf = new ContactClass(currentUser.getuMail(),currentUser.getFullName(),currentUser.getuName(),CONTACT_NEED_CONFIRM);
-            otherUserContactList.set(mySelf).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-
-                    }
-                }
-            });
+            otherUserContactList.set(mySelf);
         } else errorMessage.postValue("Már ismerősnek jelölted!");
     }
 

@@ -13,18 +13,28 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.w3c.dom.Document;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class StatisticDB extends AbstractFireStoreInstance {
-    private FirebaseFirestore fStore;
-    private FirebaseAuth fAuth;
-    private CollectionReference statisticCollectionRef;
+    private final FirebaseFirestore fStore;
+    private final FirebaseAuth fAuth;
+    private final CollectionReference statisticCollectionRef;
 
-    private List<Map<String,Long>> productCategoryQuantity = new ArrayList<>();
-    private MutableLiveData<List<Map<String,Long>>> productCategoryQuantityMutableLiveDate;
+    private final List<Map<String,Long>> productCategoryQuantity = new ArrayList<>();
+    private final MutableLiveData<List<Map<String,Long>>> productCategoryQuantityMutableLiveDate;
+
+    private final List<String> listOfRecommendedProducts = new ArrayList<>();
+    private final MutableLiveData<List<String>> lisOfRecommendedProductsLiveData = new MutableLiveData<>();
 
     public StatisticDB() {
         fStore = FirebaseFirestore.getInstance();
@@ -79,6 +89,32 @@ public class StatisticDB extends AbstractFireStoreInstance {
 
     public MutableLiveData<List<Map<String,Long>>> getProductCategoryQuantityMutableLiveDate() {return productCategoryQuantityMutableLiveDate; }
 
+    public void getRecommendedProducts() {
+        DocumentReference getBuyStatistic = statisticCollectionRef.document(PRODUCT_STATISTICS);
+        getBuyStatistic.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (task.getResult().exists()) {
+                        Date today = ProductDB.getTodayDate();
+                        DocumentSnapshot buyStat = task.getResult();
+                        Map<String, Object> listOfProducts = buyStat.getData();
+                        for (Map.Entry<String, Object> product : listOfProducts.entrySet()) {
+                            HashMap<String, Object> productHash = (HashMap<String, Object>) product.getValue();
+                            String lastBuyDate = String.valueOf(productHash.get(PRODUCT_LAST_BUY_DATE));
+                            Long frequency = Long.valueOf(String.valueOf(productHash.get(PRODUCT_BUY_FREQUENCY)));
+                            Long dateDiff = ProductDB.dateDiff(lastBuyDate, today);
+                            if (frequency != 0 && frequency < dateDiff) {
+                                listOfRecommendedProducts.add(String.valueOf(productHash.get(PRODUCT_NAME)));
+                            }
+                        }
+                        lisOfRecommendedProductsLiveData.postValue(listOfRecommendedProducts);
+                    }
+                }
+            }
+        });
 
+    }
 
+    public MutableLiveData<List<String>> getLisOfRecommendedProductsLiveData() { return lisOfRecommendedProductsLiveData; }
 }

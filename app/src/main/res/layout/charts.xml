@@ -22,7 +22,6 @@
                 android:text="@string/recommendedProducts"/>
 
             <TextView
-                android:id="@+id/recommendedProductsDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="A vásárlási szokások alapján, megjelennek a javasolt termékek." />
@@ -31,7 +30,7 @@
                 android:id="@+id/recommendedProductsBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ajánlott termékek" />
+                android:text="@string/recommendedProductsBtn" />
         </LinearLayout>
 
     <LinearLayout
@@ -49,7 +48,6 @@
             android:text="@string/pie_chart_title"/>
 
         <TextView
-            android:id="@+id/pieChartDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/pie_chart_description" />
@@ -58,7 +56,7 @@
             android:id="@+id/pieChartButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Torta Diagram" />
+            android:text="@string/pie_chart_Btn" />
     </LinearLayout>
 
     </LinearLayout>

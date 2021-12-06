@@ -262,6 +262,14 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     }
 
     @Override
+    protected void onResume() {
+        if (listDB.getCurrentUser() == null) {
+            finish();
+        }
+        super.onResume();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         cm.unregisterNetworkCallback(callback);

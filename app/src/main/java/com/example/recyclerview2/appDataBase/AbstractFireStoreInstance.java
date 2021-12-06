@@ -41,7 +41,9 @@ public abstract class AbstractFireStoreInstance {
     protected static final String PRODUCT_CHECKED_STATUS = "checked";
 
     //Product Statictics
-    protected static final String PRODUCT_STATISTICS = "statistics";
+    protected static final String PRODUCT_STATISTICS = "buyStatistic";
+    protected static final String PRODUCT_BUY_FREQUENCY = "average";
+    protected static final String PRODUCT_LAST_BUY_DATE = "lastBuyDate";
     protected static final String CATEGORY_FRUIT_AND_VEG = "Gyümölcs és Zöldség";
     protected static final String CATEGORY_BAKERY = "Pékáru";
     protected static final String CATEGORY_DAIRY = "Tejtermék";

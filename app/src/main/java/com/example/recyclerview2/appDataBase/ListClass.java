@@ -9,8 +9,8 @@ public class ListClass implements Comparable<ListClass> {
     //változók
     private String listID;
     private String listName;
-    private String owner;
-    private String ownerName;
+    private final String owner;
+    private final String ownerName;
     boolean isShared;
     private List<ContactClass> sharedWith;
     private boolean selected;

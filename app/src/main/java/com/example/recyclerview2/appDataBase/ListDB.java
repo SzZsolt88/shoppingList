@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -28,14 +29,14 @@ import java.util.List;
 import java.util.Map;
 
 public class ListDB extends AbstractFireStoreInstance {
-    private FirebaseAuth fAuth;
-    private FirebaseFirestore fStore;
-    private List<ListClass> shoppingLists;
-    private MutableLiveData<List<ListClass>> listMutableLiveData;
-    private String ownerMail;
+    private final FirebaseAuth fAuth;
+    private final FirebaseFirestore fStore;
+    private final List<ListClass> shoppingLists;
+    private final MutableLiveData<List<ListClass>> listMutableLiveData;
+    private final String ownerMail;
     private Source source;
 
-    //construktor
+    //constructor
     public ListDB(String ownerMail) {
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -232,6 +233,10 @@ public class ListDB extends AbstractFireStoreInstance {
         shoppingLists.add(listClass);
         Collections.sort(shoppingLists);
         listMutableLiveData.postValue(shoppingLists);
+    }
+
+    public FirebaseUser getCurrentUser() {
+        return fAuth.getCurrentUser();
     }
 
     //kijelentkezés

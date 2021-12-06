@@ -24,7 +24,7 @@ import static com.example.recyclerview2.R.drawable.item_background_selected;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productViewHolder> {
     private List<ProductClass> productList;
-    private OnProductItemCL onProductClickListener;
+    private final OnProductItemCL onProductClickListener;
 
 
     ProductAdapter(OnProductItemCL onProductClickListener){
@@ -34,10 +34,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
     }
 
     public class productViewHolder extends RecyclerView.ViewHolder {
-        private LinearLayout itemContainer;
-        private ImageView productCategoryIcon;
-        private TextView pName;
-        private CheckBox checkBox;
+        private final LinearLayout itemContainer;
+        private final ImageView productCategoryIcon;
+        private final TextView pName;
+        private final CheckBox checkBox;
 
         public productViewHolder(View itemView, OnProductItemCL onProductItemCL) {
             super(itemView);
@@ -121,8 +121,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
     }
 
     private boolean categorizeProduct(String[] category, ProductClass product) {
-        for (int i = 0; i < category.length; i++) {
-            if (product.getName().equals(category[i])) {
+        for (String s : category) {
+            if (product.getName().equals(s)) {
                 return true;
             }
         }

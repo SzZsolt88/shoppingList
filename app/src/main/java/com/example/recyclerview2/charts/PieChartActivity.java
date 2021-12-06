@@ -2,7 +2,6 @@ package com.example.recyclerview2.charts;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,13 +21,13 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class PieChartActivity extends AppCompatActivity {
     private EditText yearInputEditText;
@@ -36,8 +35,6 @@ public class PieChartActivity extends AppCompatActivity {
     private Button evaluationBtn;
     private StatisticDB statisticDB;
     private PieChart pieChart;
-
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +67,6 @@ public class PieChartActivity extends AppCompatActivity {
             public void onChanged(List<Map<String, Long>> maps) {
                 List<Map<String, Long>> statistic = new ArrayList<>();
                 statistic = maps;
-                Log.d("TAG", "onChanged: " + maps);
                 createChart(statistic);
             }
         });
@@ -115,7 +111,7 @@ public class PieChartActivity extends AppCompatActivity {
             int[] colorList = new int[]{
                     Color.parseColor("#C570C5"),
                     Color.parseColor("#E0A2E0"),
-                    Color.parseColor("#DDBFDD"),
+                    Color.parseColor("#C0BFDD"),
                     Color.parseColor("#DDBF23"),
                     Color.parseColor("#E7D7E7"),
                     Color.parseColor("#DDBF75"),
@@ -128,10 +124,20 @@ public class PieChartActivity extends AppCompatActivity {
 
             PieData pieData = new PieData(pieDataSet);
 
+            pieData.setValueFormatter(new ValueFormatter() {
+                @Override
+                public String getFormattedValue(float value) {
+                    return String.valueOf((int) Math.floor(value));
+                }
+            });
+
+            //set the data
             pieChart.setData(pieData);
+            //refresh the chart
             pieChart.invalidate();
             pieChart.getDescription().setEnabled(false);
             pieChart.getLegend().setEnabled(false);
+            //set center text
             pieChart.setCenterText("Vásárolt termékek: " + sumOfProducts);
             pieChart.animate();
         } else {

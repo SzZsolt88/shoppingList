@@ -21,10 +21,10 @@ import com.example.recyclerview2.appDataBase.ProductClass;
 import com.google.android.material.snackbar.Snackbar;
 
 public class ProductEditFragment extends DialogFragment {
-    private String productName;
-    private String productQuantity;
-    private String productQuantityType;
-    private String productCategory;
+    private final String productName;
+    private final String productQuantity;
+    private final String productQuantityType;
+    private final String productCategory;
     private AutoCompleteTextView nameField;
     private EditText quantityField;
     private Spinner unitSpinnerField;
@@ -32,7 +32,7 @@ public class ProductEditFragment extends DialogFragment {
     private Button modify;
     private Button cancelModifyProduct;
 
-    private int position;
+    private final int position;
 
     public ProductEditFragment(ProductClass originalProduct, int position) {
         this.productName = originalProduct.getName();

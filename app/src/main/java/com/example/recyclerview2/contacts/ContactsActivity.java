@@ -115,11 +115,16 @@ public class ContactsActivity extends AppCompatActivity implements OnContactItem
             editContactDialog.setMessage(contactsClass.getContactUserName() + " (" + contactsClass.getContactFullName() + ")" +
                     " fel szeretné venni veled a kapcsolatot, elfogadod a felkérést?");
             editContactDialog.setCancelable(false);
+            editContactDialog.setNeutralButton("Mégse", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
             editContactDialog.setPositiveButton("Megerősítés", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     contactDB.updateContact(contactsClass, position);
-
                 }
             });
             editContactDialog.setNegativeButton("Elutasítás", new DialogInterface.OnClickListener() {

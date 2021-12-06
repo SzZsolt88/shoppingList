@@ -21,7 +21,7 @@ import static com.example.recyclerview2.R.drawable.item_background;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.contactsViewHolder> {
     private List<ContactClass> contactsList;
-    private OnContactItemCL onContactItemCL;
+    private final OnContactItemCL onContactItemCL;
 
     private static final String CONTACT_CONFIRMED = "0";
     private static final String CONTACT_NOT_CONFIRMED = "1";
@@ -59,17 +59,13 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.contac
 
     @Override
     public int getItemCount() {
-        if (contactsList.size() > 0) {
-            return contactsList.size();
-        } else {
-            return 0;
-        }
+        return Math.max(contactsList.size(), 0);
     }
 
     public class contactsViewHolder extends RecyclerView.ViewHolder {
-        public CardView contactContainer;
-        public TextView contactStatus;
-        public TextView contactUserName;
+        public final CardView contactContainer;
+        public final TextView contactStatus;
+        public final TextView contactUserName;
 
         public contactsViewHolder(View contactView) {
             super(contactView);

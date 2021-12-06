@@ -70,6 +70,7 @@ public class UserEditDataActivity extends AppCompatActivity implements UserEditD
                 UEDDialog.dismiss();
                 if (isSuccess) {
                     Snackbar.make(deleteUserButton, "A felhasználót töröltük!", Snackbar.LENGTH_LONG).show();
+                    userEditData.signOut();
                 } else {
                     Snackbar.make(deleteUserButton, "Hiba történt, próbáld újra!", Snackbar.LENGTH_LONG).show();
                 }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/loginRootContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -15,7 +14,6 @@
         android:visibility="invisible"
         >
         <ImageView
-            android:id="@+id/LoginActivityPicture"
             android:layout_width="wrap_content"
             android:layout_height= "match_parent"
             android:layout_marginTop="4dp"
@@ -30,7 +28,6 @@
         android:gravity="center_horizontal"
         android:visibility="invisible">
         <TextView
-            android:id="@+id/loginTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -56,7 +53,6 @@
             android:inputType="textPassword"
             android:imeOptions="actionDone"/>
         <LinearLayout
-            android:id="@+id/buttonsLoginActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -66,7 +62,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Login"
-                android:layout_marginEnd="8dp"/>
+                android:layout_marginEnd="8dp"
+                style="?android:attr/buttonBarButtonStyle"/>
 
             <Button
                 android:id="@+id/registerButton"
@@ -74,7 +71,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/register"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"/>
+                app:layout_constraintHorizontal_bias="0.5"
+                style="?android:attr/buttonBarButtonStyle"/>
         </LinearLayout>
         <TextView
             android:id="@+id/forgetPasswordUsername"

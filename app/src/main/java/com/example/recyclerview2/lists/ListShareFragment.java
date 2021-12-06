@@ -26,10 +26,10 @@ import java.util.List;
 
 public class ListShareFragment extends DialogFragment implements ListShareInterface {
 
-    private ListClass shareList;
-    private List<ContactClass> sharedWith;
+    private final ListClass shareList;
+    private final List<ContactClass> sharedWith;
 
-    private ContactDB contactDB;
+    private final ContactDB contactDB;
     private ListShareContactAdapter listShareContactAdapter;
 
     private TextView listName;

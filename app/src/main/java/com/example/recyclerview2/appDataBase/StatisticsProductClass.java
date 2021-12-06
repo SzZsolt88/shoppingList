@@ -1,9 +1,5 @@
 package com.example.recyclerview2.appDataBase;
 
-import com.google.firebase.firestore.Exclude;
-
-import java.util.Comparator;
-
 public class StatisticsProductClass{
     private String name;
     private String lastBuyDate;

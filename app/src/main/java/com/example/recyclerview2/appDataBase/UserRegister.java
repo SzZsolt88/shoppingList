@@ -22,9 +22,9 @@ import java.util.Map;
 
 public class UserRegister extends AbstractFireStoreInstance {
 
-    private FirebaseAuth fAuth;
-    private FirebaseFirestore fStore;
-    private MutableLiveData<Boolean> isRegSuccess;
+    private final FirebaseAuth fAuth;
+    private final FirebaseFirestore fStore;
+    private final MutableLiveData<Boolean> isRegSuccess;
 
     public UserRegister() {
         fAuth = FirebaseAuth.getInstance();
