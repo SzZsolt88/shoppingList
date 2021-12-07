@@ -65,7 +65,7 @@ public class PieChartActivity extends AppCompatActivity {
         statisticDB.getProductCategoryQuantityMutableLiveDate().observe(this, new Observer<List<Map<String, Long>>>() {
             @Override
             public void onChanged(List<Map<String, Long>> maps) {
-                List<Map<String, Long>> statistic = new ArrayList<>();
+                List<Map<String, Long>> statistic;
                 statistic = maps;
                 createChart(statistic);
             }

@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.recyclerview2.R;
 import com.example.recyclerview2.appDataBase.StatisticDB;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

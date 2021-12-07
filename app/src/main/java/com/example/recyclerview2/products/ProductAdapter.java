@@ -1,7 +1,6 @@
 package com.example.recyclerview2.products;
 
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,15 +117,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.productV
     public void setProducts(List<ProductClass> product){
         this.productList = product;
         this.notifyDataSetChanged();
-    }
-
-    private boolean categorizeProduct(String[] category, ProductClass product) {
-        for (String s : category) {
-            if (product.getName().equals(s)) {
-                return true;
-            }
-        }
-        return false;
     }
 }
 

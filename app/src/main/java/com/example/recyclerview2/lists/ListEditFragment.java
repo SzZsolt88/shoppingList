@@ -21,6 +21,7 @@ public class ListEditFragment extends DialogFragment {
     //widgets
     private AutoCompleteTextView listName;
     private Button modify;
+    private Button cancelModify;
     private final ListClass originalList;
 
     public ListEditFragment(ListClass originalList) {
@@ -32,6 +33,7 @@ public class ListEditFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.lists_edit, container, false);
         listName = v.findViewById(R.id.modifyName);
+        cancelModify = v.findViewById(R.id.cancelModifyListBtn);
         modify = v.findViewById(R.id.modifyButton);
 
         getDialog().setCanceledOnTouchOutside(false);
@@ -51,6 +53,12 @@ public class ListEditFragment extends DialogFragment {
                     ((ListActivity) getActivity()).editShoppingList(originalList, modifiedName);
                     getDialog().dismiss();
                 }
+            }
+        });
+        cancelModify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDialog().dismiss();
             }
         });
         return v;

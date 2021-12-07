@@ -37,4 +37,5 @@
     <string name="month">Hónap:</string>
     <string name="Year">Év:</string>
     <string name="evaluation">Kiértékelés</string>
+    <string name="renameList">Lista átnevezése:</string>
 </resources>

@@ -6,7 +6,7 @@ import android.os.Parcelable;
 public class UserClass implements Parcelable {
     private String userID;
     private String fullName;
-    private String uName;
+    private String userName;
     private String uMail;
 
     public UserClass() {};
@@ -14,7 +14,7 @@ public class UserClass implements Parcelable {
     public UserClass(String userID, String fullName, String uName, String uMail) {
         this.userID = userID;
         this.fullName = fullName;
-        this.uName = uName;
+        this.userName = uName;
         this.uMail = uMail;
     }
 
@@ -36,11 +36,11 @@ public class UserClass implements Parcelable {
     }
 
     public String getuName() {
-        return uName;
+        return userName;
     }
 
     public void setuName(String uName) {
-        this.uName = uName;
+        this.userName = uName;
     }
 
     public String getuMail() {
@@ -60,14 +60,14 @@ public class UserClass implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(userID);
         dest.writeString(fullName);
-        dest.writeString(uName);
+        dest.writeString(userName);
         dest.writeString(uMail);
     }
 
     protected UserClass(Parcel in) {
         userID = in.readString();
         fullName = in.readString();
-        uName = in.readString();
+        userName = in.readString();
         uMail = in.readString();
     }
 

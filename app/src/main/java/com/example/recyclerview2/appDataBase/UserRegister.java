@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,15 +50,19 @@ public class UserRegister extends AbstractFireStoreInstance {
         });
     }
 
-    private void saveUserData(String fName, String uName) {
+    private void saveUserData(String fullName, String userName) {
         String userMailAddress = fAuth.getCurrentUser().getEmail();
+        String userID = fAuth.getCurrentUser().getUid();
         DocumentReference documentReference = fStore.collection("users").document(userMailAddress);
+
         Map<String, Object> user = new HashMap<>();
-        user.put("fullName", fName);
-        user.put("userName", uName);
+        user.put("fullName", fullName);
+        user.put("userName", userName);
         user.put("activeStatus", true);
 
+
         documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+
             @Override
             public void onSuccess(Void aVoid) {
                 isRegSuccess.postValue(true);

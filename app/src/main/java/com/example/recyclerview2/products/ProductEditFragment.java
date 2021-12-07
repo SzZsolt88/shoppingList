@@ -2,7 +2,6 @@ package com.example.recyclerview2.products;
 
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +73,7 @@ public class ProductEditFragment extends DialogFragment {
         quantityField.setText(productQuantity);
 
         productCategorySpinner.setSelection(adapterProductCategory.getPosition(productCategory));
-        if (productQuantity!= "") {
+        if (!productQuantity.equals("")) {
             unitSpinnerField.setSelection(adapterUnits.getPosition(productQuantityType));
         } else {
             unitSpinnerField.setSelection(0);

@@ -45,7 +45,8 @@
             android:hint="@string/username"
             android:importantForAutofill="no"
             android:inputType="textEmailAddress"
-            android:imeOptions="actionNext"/>
+            android:imeOptions="actionNext"
+            android:minHeight="48dp"/>
         <EditText
             android:id="@+id/userPassword"
             android:layout_width="match_parent"
@@ -53,7 +54,8 @@
             android:ems="10"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:imeOptions="actionDone"/>
+            android:imeOptions="actionDone"
+            android:minHeight="48dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -79,6 +81,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/teal_700"
+            android:minHeight="48dp"
+            android:gravity="center"
             android:text="@string/forgetPasswordUserName" />
     </LinearLayout>
 </LinearLayout>

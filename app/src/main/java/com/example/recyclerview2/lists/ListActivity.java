@@ -18,7 +18,6 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +28,6 @@ import com.example.recyclerview2.R;
 import com.example.recyclerview2.appDataBase.ContactClass;
 import com.example.recyclerview2.appDataBase.ListClass;
 import com.example.recyclerview2.appDataBase.ListDB;
-import com.example.recyclerview2.appDataBase.ProductClass;
 import com.example.recyclerview2.appDataBase.UserClass;
 import com.example.recyclerview2.charts.ChartActivity;
 import com.example.recyclerview2.contacts.ContactsActivity;
@@ -41,7 +39,6 @@ import java.util.List;
 
 public class ListActivity extends AppCompatActivity implements OnListItemCL {
     private EditText listName;
-    private Button addList;
     private RecyclerView shoppingListsView;
     private ListAdapter adapter;
     private ListDB listDB;
@@ -65,7 +62,7 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
         currentUserMail = currentUser.getuMail();
 
         listName = findViewById(R.id.shoppingListName);
-        addList = findViewById(R.id.createListButton);
+        Button addList = findViewById(R.id.createListButton);
         shoppingListsView = findViewById(R.id.shoppingLists);
 
         shoppingListsView.setHasFixedSize(true);
@@ -121,35 +118,29 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     // Menü elemek programozása
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.delete:
-                confirmationAndDelete();
-                break;
-            case R.id.edit:
-                editLists();
-                break;
-            case R.id.share:
-                shareLists();
-                break;
-            case R.id.userEditActivity:
-                createActivity(this, UserEditDataActivity.class);
-                break;
-            case R.id.contacts:
-                createActivity(this, ContactsActivity.class);
-                break;
-            case R.id.chartsMenuButton:
-                createActivity(this,ChartActivity.class);
-                break;
-            case R.id.logOutMenu:
-                logOut();
-                finish();
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.delete) {
+            confirmationAndDelete();
+        } else if (itemId == R.id.edit) {
+            editLists();
+        } else if (itemId == R.id.share) {
+            shareLists();
+        } else if (itemId == R.id.userEditActivity) {
+            createActivity(this, UserEditDataActivity.class);
+        } else if (itemId == R.id.contacts) {
+            createActivity(this, ContactsActivity.class);
+        } else if (itemId == R.id.chartsMenuButton) {
+            createActivity(this, ChartActivity.class);
+        } else if (itemId == R.id.logOutMenu) {
+            logOut();
+            finish();
         }
         adapter.notifyDataSetChanged();
         return super.onOptionsItemSelected(item);
     }
 
     // felhasználói adatainak módosítása vagy a kimutatás elindítás
+    @SuppressWarnings("rawtypes")
     private void createActivity(Context context, Class activity){
         Intent startActivity = new Intent(context, activity);
         startActivity.putExtra("currentUser", currentUser);
@@ -213,9 +204,13 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
                 if(adapter.getItem(i).getOwner().equals(currentUserMail)) {
                     ListEditFragment editDialog = new ListEditFragment(adapter.getItem(i));
                     editDialog.show(getSupportFragmentManager(), "listNameEdit");
-                } else Snackbar.make(shoppingListsView, "Csak a saját listád tudod átnevezni!", Snackbar.LENGTH_LONG).show();
+                } else {
+                    Snackbar.make(shoppingListsView, "Csak a saját listád tudod átnevezni!", Snackbar.LENGTH_LONG).show();
+                }
+                adapter.getItem(i).setSelected(false);
             }
         }
+        adapter.notifyDataSetChanged();
     }
 
     // lista szerkesztése, adatbázis frissítése
@@ -270,8 +265,8 @@ public class ListActivity extends AppCompatActivity implements OnListItemCL {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onDestroy() {
+        super.onDestroy();
         cm.unregisterNetworkCallback(callback);
     }
 

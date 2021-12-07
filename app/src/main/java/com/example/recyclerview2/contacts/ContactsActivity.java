@@ -3,7 +3,6 @@ package com.example.recyclerview2.contacts;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,7 +33,6 @@ public class ContactsActivity extends AppCompatActivity implements OnContactItem
     private ContactsAdapter contactAdapter;
     private ContactDB contactDB;
     private UserClass currentUser;
-    private String currentUserMail;
 
     private static final String CONTACT_CONFIRMED = "0";
     private static final String CONTACT_NOT_CONFIRMED = "1";
@@ -48,7 +46,6 @@ public class ContactsActivity extends AppCompatActivity implements OnContactItem
 
         Intent getCurrentUser = getIntent();
         currentUser = getCurrentUser.getParcelableExtra("currentUser");
-        currentUserMail = currentUser.getuMail();
 
         contactMailAddress = findViewById(R.id.contactMailAddressET);
         addContact = findViewById(R.id.addContactBtn);
@@ -110,64 +107,67 @@ public class ContactsActivity extends AppCompatActivity implements OnContactItem
     @Override
     public void OnContactClick(ContactClass contactsClass, int position) {
         final AlertDialog.Builder editContactDialog = new AlertDialog.Builder(ContactsActivity.this);
-        if (contactsClass.getContactStatus().equals(CONTACT_NEED_CONFIRM)) {
-            editContactDialog.setTitle("Felkérés visszaigozolása");
-            editContactDialog.setMessage(contactsClass.getContactUserName() + " (" + contactsClass.getContactFullName() + ")" +
-                    " fel szeretné venni veled a kapcsolatot, elfogadod a felkérést?");
-            editContactDialog.setCancelable(false);
-            editContactDialog.setNeutralButton("Mégse", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+        switch (contactsClass.getContactStatus()) {
+            case CONTACT_NEED_CONFIRM:
+                editContactDialog.setTitle("Felkérés visszaigozolása");
+                editContactDialog.setMessage(contactsClass.getContactUserName() + " (" + contactsClass.getContactFullName() + ")" +
+                        " fel szeretné venni veled a kapcsolatot, elfogadod a felkérést?");
+                editContactDialog.setCancelable(false);
+                editContactDialog.setNeutralButton("Mégse", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                }
-            });
-            editContactDialog.setPositiveButton("Megerősítés", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    contactDB.updateContact(contactsClass, position);
-                }
-            });
-            editContactDialog.setNegativeButton("Elutasítás", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    contactDB.deleteContact(contactsClass, position);
-                }
-            });
-        } else if (contactsClass.getContactStatus().equals(CONTACT_CONFIRMED)) {
-            editContactDialog.setTitle("Ismerős törlése");
-            editContactDialog.setMessage(contactsClass.getContactUserName() + " (" + contactsClass.getContactFullName() + ")" +
-                    " szeretnéd törölni az ismerőseid közül?");
-            editContactDialog.setCancelable(false);
-            editContactDialog.setPositiveButton("Törlés", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    contactDB.deleteContact(contactsClass, position);
-                }
-            });
-            editContactDialog.setNegativeButton("Mégse", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                editContactDialog.setPositiveButton("Megerősítés", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        contactDB.updateContact(contactsClass, position);
+                    }
+                });
+                editContactDialog.setNegativeButton("Elutasítás", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        contactDB.deleteContact(contactsClass, position);
+                    }
+                });
+                break;
+            case CONTACT_CONFIRMED:
+                editContactDialog.setTitle("Ismerős törlése");
+                editContactDialog.setMessage(contactsClass.getContactUserName() + " (" + contactsClass.getContactFullName() + ")" +
+                        " szeretnéd törölni az ismerőseid közül?");
+                editContactDialog.setCancelable(false);
+                editContactDialog.setPositiveButton("Törlés", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        contactDB.deleteContact(contactsClass, position);
+                    }
+                });
+                editContactDialog.setNegativeButton("Mégse", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                }
-            });
-        }
-        else if (contactsClass.getContactStatus().equals(CONTACT_NOT_CONFIRMED)) {
-            editContactDialog.setTitle("Felkérés visszavonása");
-            editContactDialog.setMessage(contactsClass.getContactUserName() + " (" + contactsClass.getContactFullName() + ")" +
-                    " még nem igazolta vissza a felkérést, szeretnéd visszavonni?");
-            editContactDialog.setCancelable(false);
-            editContactDialog.setPositiveButton("Visszavonás", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    contactDB.deleteContact(contactsClass, position);
-                }
-            });
-            editContactDialog.setNegativeButton("Mégse", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                break;
+            case CONTACT_NOT_CONFIRMED:
+                editContactDialog.setTitle("Felkérés visszavonása");
+                editContactDialog.setMessage(contactsClass.getContactUserName() + " (" + contactsClass.getContactFullName() + ")" +
+                        " még nem igazolta vissza a felkérést, szeretnéd visszavonni?");
+                editContactDialog.setCancelable(false);
+                editContactDialog.setPositiveButton("Visszavonás", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        contactDB.deleteContact(contactsClass, position);
+                    }
+                });
+                editContactDialog.setNegativeButton("Mégse", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                }
-            });
+                    }
+                });
+                break;
         }
         editContactDialog.show();
     }

@@ -8,7 +8,6 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,22 +30,16 @@ import com.example.recyclerview2.R;
 import com.example.recyclerview2.appDataBase.ProductDB;
 import com.google.android.material.snackbar.Snackbar;
 
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductActivity extends AppCompatActivity implements OnProductItemCL {
-    private Button addProduct;
     private AutoCompleteTextView productName;
     private EditText productQuantity;
     private Spinner productQuantityUnit;
     private RecyclerView productsListView;
     private ProductAdapter adapter;
     private ProductDB productDB;
-    private String ownerMail;
     private String title;
-    private String listID;
     private ConnectivityManager cm;
     private NetworkRequest networkRequest;
     private ConnectivityManager.NetworkCallback callback;
@@ -61,11 +53,11 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
         setContentView(R.layout.products);
 
         Intent intent = getIntent();
-        ownerMail = intent.getStringExtra("ownerMail");
+        String ownerMail = intent.getStringExtra("ownerMail");
         title = intent.getStringExtra("name");
-        listID = intent.getStringExtra("ID");
+        String listID = intent.getStringExtra("ID");
 
-        addProduct = findViewById(R.id.addProductBtn);
+        Button addProduct = findViewById(R.id.addProductBtn);
         productName = findViewById(R.id.productNameTextView);
         productQuantity = findViewById(R.id.quantityProduct);
         productQuantityUnit = findViewById(R.id.unitSpinner);
@@ -91,8 +83,7 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
         productDB.getListOfAvailableProductsMutableLiveData().observe(this, new Observer<String[]>() {
             @Override
             public void onChanged(String[] strings) {
-                String[] productVariants = strings;
-                adapterProducts.addAll(productVariants);
+                adapterProducts.addAll(strings);
                 productName.setAdapter(adapterProducts);
             }
         });
@@ -111,7 +102,6 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
                 else {
                     unitString = "";
                 }
-                Boolean checked = false;
                 if (listItem.isEmpty())
                     Snackbar.make(productsListView, "Adj nevet a terméknek!", Snackbar.LENGTH_LONG).show();
                 else if (alreadyExits(listItem)) {
@@ -185,11 +175,17 @@ public class ProductActivity extends AppCompatActivity implements OnProductItemC
     private void editProduct(){
         for (int i = 0; i < adapter.getItemCount(); i++) {
             if (adapter.getItem(i).isSelected()) {
-                ProductClass originalProduct = adapter.getItem(i);
-                ProductEditFragment editDialog = new ProductEditFragment(originalProduct,i);
-                editDialog.show(getSupportFragmentManager(), "listNameEdit");
+                if (!adapter.getItem(i).isChecked()) {
+                    ProductClass originalProduct = adapter.getItem(i);
+                    ProductEditFragment editDialog = new ProductEditFragment(originalProduct, i);
+                    editDialog.show(getSupportFragmentManager(), "listNameEdit");
+                } else {
+                    Snackbar.make(productsListView, "Már megvásárolt terméket nem módosíthatsz!", Snackbar.LENGTH_LONG).show();
+                }
+                adapter.getItem(i).setSelected(false);
             }
         }
+        adapter.notifyDataSetChanged();
     }
 
     //elem módosítása
